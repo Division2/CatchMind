@@ -17,7 +17,6 @@ import javax.swing.JTextField;
 
 import com.java.ex.database.DataBase;
 import com.java.ex.waiting.WaitingRoom;
-import com.sun.jdi.connect.spi.Connection;
 
 public class Login extends JFrame {
 
