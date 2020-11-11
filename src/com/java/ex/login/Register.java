@@ -24,6 +24,8 @@ import com.java.ex.database.DataBase;
 
 public class Register extends JFrame implements Runnable{
 
+	private String authCode;
+	
 	JPanel registerPanel = null;
 	
 	JLabel lblValidPassword = null;
@@ -51,6 +53,7 @@ public class Register extends JFrame implements Runnable{
 	JButton btnCancel = null;
 	JButton btnDuplicate = null;
 	JButton btnAuthStatus = null;
+	JButton btnAuthCode = null;
 
 	public Register() {
 		// --------------------- Login Form Disign ---------------------
@@ -82,6 +85,7 @@ public class Register extends JFrame implements Runnable{
 		btnCancel = new JButton("취소");
 		btnDuplicate = new JButton("중복확인");
 		btnAuthStatus = new JButton("확인");
+		btnAuthCode = new JButton("보내기");
 		
 		lblValidPassword.setBounds(131, 180, 200, 30);
 		lblValidEmail.setBounds(131, 240, 200, 30);
@@ -107,6 +111,7 @@ public class Register extends JFrame implements Runnable{
 		btnAuthStatus.setBounds(270, 270, 85, 30);
 		btnRegister.setBounds(80, 450, 100, 50);
 		btnCancel.setBounds(200, 450, 100, 50);
+		btnAuthCode.setBounds(270, 210, 85, 30);
 		
 		registerPanel.add(lblValidPassword);
 		registerPanel.add(lblValidEmail);
@@ -132,6 +137,7 @@ public class Register extends JFrame implements Runnable{
 		registerPanel.add(btnCancel);
 		registerPanel.add(btnDuplicate);
 		registerPanel.add(btnAuthStatus);
+		registerPanel.add(btnAuthCode);
 
 		// --------------------- Button Event ---------------------
 		btnDuplicate.addActionListener(new ActionListener() {
@@ -145,6 +151,13 @@ public class Register extends JFrame implements Runnable{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				isAuthStatusChecked();
+			}
+		});
+		
+		btnAuthCode.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				authCode = new Email(txtEmail.getText()).getAuthCode();
 			}
 		});
 		
@@ -224,8 +237,7 @@ public class Register extends JFrame implements Runnable{
 	
 	//인증번호 체크 메소드
 	public void isAuthStatusChecked() {
-		String test = "123";
-		if (txtAuthStatus.getText().equals(test)) {
+		if (txtAuthStatus.getText().equals(authCode)) {
 			JOptionPane.showMessageDialog(null, "인증되었습니다.");
 			txtAuthStatus.setEnabled(false);
 			btnAuthStatus.setEnabled(false);
@@ -234,7 +246,7 @@ public class Register extends JFrame implements Runnable{
 			JOptionPane.showMessageDialog(null, "코드가 입력되지 않았습니다.", "회원가입", JOptionPane.ERROR_MESSAGE);
 		}
 		else {
-			JOptionPane.showMessageDialog(null, "일치하지 않는 코드입니다.", "회원가입", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "유효하지 않는 코드입니다.", "회원가입", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
