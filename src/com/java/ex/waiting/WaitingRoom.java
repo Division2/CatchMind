@@ -1,9 +1,11 @@
 package com.java.ex.waiting;
 
 import java.awt.Container;
+import java.awt.Font;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -28,6 +30,14 @@ public class WaitingRoom extends JFrame{
 	JTable tabUser = null;
 	JTextArea chattingRoom = null;
 	JTextField chatting = null;
+	JButton btnSendChatting = null;
+	JLabel lblMyProfile = null;
+	JLabel lblMyNickName = null;
+	JLabel lblMyLevel = null;
+	JLabel lblMyExp = null;
+	JTextField txtMyNickName = null;
+	JTextField txtMyLevel = null;
+	JTextField txtMyExp = null;
 	
 	public WaitingRoom() {
 		Container ct = getContentPane();
@@ -37,17 +47,51 @@ public class WaitingRoom extends JFrame{
 		btnJoinRoom = new JButton("참여하기");
 		btnCreateRoom = new JButton("방만들기");
 		btnRanking = new JButton("랭킹");
-		btnUpdateProfile = new JButton("내 정보 수정");
-
+		btnUpdateProfile = new JButton("정보 수정");
+		btnLogout = new JButton("로그아웃");
+		btnExit = new JButton("게임종료");
+		btnSendChatting = new JButton("보내기");
+		lblMyProfile = new JLabel("내 정보");
+		lblMyNickName = new JLabel("닉네임");
+		lblMyLevel = new JLabel("레벨");
+		lblMyExp = new JLabel("경험치");
+		txtMyNickName = new JTextField(10);
+		txtMyLevel = new JTextField(10);
+		txtMyExp = new JTextField(10);
+		
 		btnJoinRoom.setBounds(20, 20, 100, 50);
 		btnCreateRoom.setBounds(140, 20, 100, 50);
 		btnRanking.setBounds(260, 20, 100, 50);
 		btnUpdateProfile.setBounds(380, 20, 100, 50);
+		btnLogout.setBounds(769, 20, 100, 50);
+		btnExit.setBounds(889, 20, 100, 50);
+		btnSendChatting.setBounds(535, 660, 85, 20);
+		lblMyProfile.setBounds(785, 455, 100, 50);
+		lblMyProfile.setFont(new Font("맑은 고딕", Font.BOLD, 15));;
+		lblMyNickName.setBounds(720, 500, 100, 50);
+		lblMyLevel.setBounds(720, 540, 100, 50);
+		lblMyExp.setBounds(720, 580, 100, 50);
+		txtMyNickName.setBounds(770, 515, 100, 20);
+		txtMyNickName.setEditable(false);
+		txtMyLevel.setBounds(770, 555, 100, 20);
+		txtMyLevel.setEditable(false);
+		txtMyExp.setBounds(770, 595, 100, 20);
+		txtMyExp.setEditable(false);
 		
 		waitingRoomPanel.add(btnJoinRoom);
 		waitingRoomPanel.add(btnCreateRoom);
 		waitingRoomPanel.add(btnRanking);
 		waitingRoomPanel.add(btnUpdateProfile);
+		waitingRoomPanel.add(btnLogout);
+		waitingRoomPanel.add(btnExit);
+		waitingRoomPanel.add(btnSendChatting);
+		waitingRoomPanel.add(lblMyProfile);
+		waitingRoomPanel.add(lblMyNickName);
+		waitingRoomPanel.add(lblMyLevel);
+		waitingRoomPanel.add(lblMyExp);
+		waitingRoomPanel.add(txtMyNickName);
+		waitingRoomPanel.add(txtMyLevel);
+		waitingRoomPanel.add(txtMyExp);
 		
 		//대기방 테이블
 		String[] roomField = { "NO", "제목", "방장", "인원", "비고" };

@@ -203,7 +203,7 @@ public class Register extends JFrame implements Runnable{
 	//회원가입 메소드
 	public void isRegister() {
 		DataBase db = new DataBase();
-		db.Insert("INSERT INTO account(UserID, Password, NickName, Email, PhoneNum, Level, Exp, AuthStatus) VALUES(?, ?, ?, ?, ?, 1, 0, 0)");
+		db.Insert("INSERT INTO account(UserID, Password, NickName, Email, PhoneNum, Level, Exp, AuthStatus) VALUES(?, ?, ?, ?, ?, 1, 0, 1)");
 		
 		if (!lblValidPassword.getForeground().equals(Color.blue) ||
 				!lblValidEmail.getForeground().equals(Color.blue) ||
