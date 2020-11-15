@@ -15,18 +15,14 @@ import javax.swing.JOptionPane;
 public class Email {
 	
 	private String authCode;
-	private String tempPW;
-
-	public String getTempPW() {
-		return tempPW;
-	}
-
+	
 	public String getAuthCode() {
 		return authCode;
 	}
 
 	public Email(String authEmail) {
 		
+		//인증번호 랜덤으로 생성
 		char ranChar1 = (char) ((int)(Math.random()*(90-65+1))+65); 
 		char ranChar2 = (char) ((int)(Math.random()*(90-65+1))+65); 
 		int ranNum1 = (int)(Math.random()*(9-1+1))+1;
@@ -36,10 +32,11 @@ public class Email {
 		
 		authCode = new String("" + ranChar1 + ranChar2 + ranNum1 + ranNum2 + ranNum3 + ranNum4);
 		
-		String userName = "yjsk7015@gmail.com"; // 네이버일 경우 네이버 계정, gmail경우 gmail 계정
-		String password = "tjdehd1@";   // 패스워드
+		//시스템 계정
+		String userName = "yjsk7015@gmail.com";
+		String password = "tjdehd1@";
 
-		// SMTP 서버 정보를 설정한다.
+		// SMTP 서버 정보를 설정
 		Properties prop = new Properties();
 		prop.put("mail.smtp.host", "smtp.gmail.com"); 
 		prop.put("mail.smtp.port", 465); 

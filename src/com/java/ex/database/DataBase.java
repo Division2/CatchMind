@@ -66,7 +66,7 @@ public class DataBase {
 	////SQL Update ¸Þ¼Òµå
 	public void Update(String dbUpdate) {
 		try {
-			rs = stmt.executeQuery(dbUpdate);
+			pstmt = conn.prepareStatement(dbUpdate);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}

@@ -287,11 +287,20 @@ public class Register extends JFrame implements Runnable{
 	
 	//입력한 정보 취소 메소드
 	public void isCancel() {
-		 txtPassword1st.setText("");
-		 txtPassword2rd.setText("");
-		 txtEmail.setText("");
-		 txtNickName.setText("");
-		 txtPhoneNum.setText("");
+		txtAccount.setText("");
+		txtPassword1st.setText("");
+		txtPassword2rd.setText("");
+		txtEmail.setText("");
+		txtAuthStatus.setText("");
+		txtNickName.setText("");
+		txtPhoneNum.setText("");
+		
+		txtAccount.setEnabled(true);
+		txtAuthStatus.setEnabled(true);
+		btnAuthStatus.setEnabled(true);
+		btnDuplicate.setEnabled(true);
+		
+		authCode = null;
 	}
 	// --------------------- Thread Method ---------------------
 	//이메일 유효성 검사 메소드

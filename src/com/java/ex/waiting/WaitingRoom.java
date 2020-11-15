@@ -2,10 +2,13 @@ package com.java.ex.waiting;
 
 import java.awt.Container;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -15,8 +18,13 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
+import com.java.ex.database.DataBase;
+import com.java.ex.login.Login;
+
 public class WaitingRoom extends JFrame{
 	
+	private String userid;
+
 	JPanel waitingRoomPanel = null;
 	JButton btnJoinRoom = null;
 	JButton btnCreateRoom = null;
@@ -39,7 +47,14 @@ public class WaitingRoom extends JFrame{
 	JTextField txtMyLevel = null;
 	JTextField txtMyExp = null;
 	
-	public WaitingRoom() {
+	public WaitingRoom(String userid) {
+		this.userid = userid;
+		
+		if (null == userid) {
+			JOptionPane.showMessageDialog(null, "비정상적인 접근입니다!", "캐치마인드", JOptionPane.ERROR_MESSAGE);
+			System.exit(0);
+		}
+	
 		Container ct = getContentPane();
 		waitingRoomPanel = new JPanel();
 		waitingRoomPanel.setLayout(null);
@@ -73,10 +88,13 @@ public class WaitingRoom extends JFrame{
 		lblMyExp.setBounds(720, 580, 100, 50);
 		txtMyNickName.setBounds(770, 515, 100, 20);
 		txtMyNickName.setEditable(false);
+		txtMyNickName.setHorizontalAlignment(JTextField.CENTER);
 		txtMyLevel.setBounds(770, 555, 100, 20);
 		txtMyLevel.setEditable(false);
+		txtMyLevel.setHorizontalAlignment(JTextField.CENTER);
 		txtMyExp.setBounds(770, 595, 100, 20);
 		txtMyExp.setEditable(false);
+		txtMyExp.setHorizontalAlignment(JTextField.CENTER);
 		
 		waitingRoomPanel.add(btnJoinRoom);
 		waitingRoomPanel.add(btnCreateRoom);
@@ -94,8 +112,8 @@ public class WaitingRoom extends JFrame{
 		waitingRoomPanel.add(txtMyExp);
 		
 		//대기방 테이블
-		String[] roomField = { "NO", "제목", "방장", "인원", "비고" };
-		roomModel = new DefaultTableModel(roomField, 0) {
+		String[] roomList = { "No", "방 제목", "방장", "인원", "비고" };
+		roomModel = new DefaultTableModel(roomList, 0) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false;
@@ -114,8 +132,8 @@ public class WaitingRoom extends JFrame{
 		//대기방 테이블
 		
 		//유저목록 테이블
-		String[] userField = { "닉네임", "레벨", "위치" };
-		userModel = new DefaultTableModel(userField, 0) {
+		String[] userList = { "닉네임", "레벨"};
+		userModel = new DefaultTableModel(userList, 0) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false;
@@ -139,22 +157,100 @@ public class WaitingRoom extends JFrame{
 		scroll3.setBounds(20, 450, 600, 200);
 		scroll3.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		chatting = new JTextField();
-		chatting.setBounds(80, 660, 450, 20);
+		chatting.setBounds(20, 660, 500, 20);
 		waitingRoomPanel.add(scroll3);
 		waitingRoomPanel.add(chatting);
 		// 채팅창 및 채팅 입력창
 		
+		// --------------------- Button Event ---------------------
+		//랭킹 버튼 이벤트
+		btnRanking.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new Ranking();
+			}
+		});
+		//정보수정 버튼 이벤트
+		btnUpdateProfile.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new ProfileUpdate(userid);
+			}
+		});
+		//로그아웃 버튼 이벤트
+		btnLogout.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Object[] options = {"예", "아니오"};
+				int logout = JOptionPane.showOptionDialog(null, "정말 로그아웃 하시겠습니까?", "캐치마인드", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+				if(JOptionPane.YES_OPTION == logout) {
+					new Login();
+					dispose();
+				}
+			}
+		});
+		//게임종료 버튼 이벤트
+		btnExit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Object[] options = {"예", "아니오"};
+				int exit = JOptionPane.showOptionDialog(null, "정말 종료하시겠습니까?", "캐치마인드", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
+				if (JOptionPane.YES_OPTION == exit) {
+					System.exit(0);
+				}
+			}
+		});
+		btnSendChatting.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				chattingRoom.append(chatting.getText() + "\n");
+			}
+		});
+		chatting.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				chattingRoom.append(chatting.getText() + "\n");
+				chatting.setText("");
+			}
+		});
 		
-		
+		myProfile();
+
 		ct.add(waitingRoomPanel);
 		
 		setTitle("캐치마인드 대기실");
 		setSize(1024, 768);
 		setResizable(false);
 		setLocationRelativeTo(null);
-		//종료 버튼이 생길 때 까지 주석처리
-		//setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		setVisible(true);
+	}
+	
+	public void myProfile() {
+		DataBase db = new DataBase();
+		db.Select("SELECT * FROM Account WHERE UserID = ?");
+		
+		try {
+			db.pstmt.setString(1, userid);
+			db.rs = db.pstmt.executeQuery();
+			if (db.rs.next()) {
+				txtMyNickName.setText(db.rs.getString("NickName"));
+				txtMyLevel.setText(db.rs.getString("Level"));
+				txtMyExp.setText(db.rs.getString("Exp"));
+			}
+		} catch (Exception e) {
+			JOptionPane.showConfirmDialog(null, e.getMessage());
+		}
+		db.Close();
+	}
+	
+	//getter & setter
+	public String getUserid() { 
+		return userid;
+	}
+
+	public void setUserid(String userid) {
+		this.userid = userid;
 	}
 }
