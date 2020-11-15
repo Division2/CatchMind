@@ -163,6 +163,12 @@ public class WaitingRoom extends JFrame{
 		// 채팅창 및 채팅 입력창
 		
 		// --------------------- Button Event ---------------------
+		btnCreateRoom.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new CreateRoom();
+			}
+		});
 		//랭킹 버튼 이벤트
 		btnRanking.addActionListener(new ActionListener() {
 			@Override
