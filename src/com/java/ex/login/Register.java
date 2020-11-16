@@ -140,40 +140,42 @@ public class Register extends JFrame implements Runnable{
 		registerPanel.add(btnAuthCode);
 
 		// --------------------- Button Event ---------------------
+		//중복확인 버튼 이벤트
 		btnDuplicate.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				isDuplicate();
 			}
 		});
-		
+		//인증확인 버튼 이벤트
 		btnAuthStatus.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				isAuthStatusChecked();
 			}
 		});
-		
+		//인증코드 전송 버튼 이벤트
 		btnAuthCode.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				authCode = new Email(txtEmail.getText()).getAuthCode();
 			}
 		});
-		
+		//회원가입 취소 버튼 이벤트
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				isCancel();
 			}
 		});
-		
+		//회원가입 버튼 이벤트
 		btnRegister.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				isRegister();
 			}
 		});
+		//전화번호 키입력 길이제한 이벤트
 		txtPhoneNum.addKeyListener(new KeyAdapter() {
 			public void keyTyped(KeyEvent e) {
 				char phoneNum = e.getKeyChar();

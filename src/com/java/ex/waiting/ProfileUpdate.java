@@ -94,6 +94,7 @@ public class ProfileUpdate extends JFrame {
 		profileUpdatePanel.add(btnModifyCancel);
 		
 		// --------------------- Button Event ---------------------
+		//프로필 수정 버튼 이벤트
 		btnModifyOk.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -120,6 +121,7 @@ public class ProfileUpdate extends JFrame {
 				}
 			}
 		});
+		//프로필 수정 취소 버튼 이벤트
 		btnModifyCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -137,6 +139,8 @@ public class ProfileUpdate extends JFrame {
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
+	// --------------------- Method ---------------------
+	//프로필 수정 메소드
 	public void profileModify() {
 		DataBase db = new DataBase();
 		db.Select("SELECT * FROM Account WHERE UserID = ?");

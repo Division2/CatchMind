@@ -22,8 +22,6 @@ public class Ranking extends JFrame {
 		rankingPanel = new JPanel();
 		rankingPanel.setLayout(null);
 
-
-		
 		String[] rankingList = {"순위", "닉네임", "레벨", "경험치"};
 		rankingModel = new DefaultTableModel(rankingList, 0) {
 			@Override
@@ -46,7 +44,8 @@ public class Ranking extends JFrame {
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
-	
+	// --------------------- Method ---------------------
+	//랭킹 출력 메소드
 	public void viewRanking() {
 		DataBase db = new DataBase();
 		db.Select("SELECT * FROM Account order by Level desc");

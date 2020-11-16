@@ -1,6 +1,10 @@
 package com.java.ex.waiting;
 
 import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -9,7 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class CreateRoom extends JFrame {
+public class CreateRoom extends JFrame{
 
 	JPanel createRoom = null;
 	
@@ -45,6 +49,7 @@ public class CreateRoom extends JFrame {
 		txtRoomName.setBounds(90, 15, 170, 20);
 		chkRoomStateCheck.setBounds(86, 45, 100, 20);
 		txtRoomPassword.setBounds(90, 75, 170, 20);
+		txtRoomPassword.setEnabled(false);
 		
 		btnMakeRoom.setBounds(20, 100, 100, 50);
 		btnMakeRoomCancel.setBounds(160, 100, 100, 50);
@@ -59,6 +64,36 @@ public class CreateRoom extends JFrame {
 		
 		createRoom.add(btnMakeRoom);
 		createRoom.add(btnMakeRoomCancel);
+		
+		// --------------------- Method Event ---------------------
+		
+		// --------------------- Button Event ---------------------
+		//방만들기 버튼 이벤트
+		btnMakeRoom.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		//방만들기 취소 이벤트
+		btnMakeRoomCancel.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+			}
+		});
+		//방 공개 & 비공개 여부 체크박스 이벤트
+		chkRoomStateCheck.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if(chkRoomStateCheck.isSelected()) {
+					txtRoomPassword.setEnabled(true);
+				}
+				else {
+					txtRoomPassword.setEnabled(false);
+					txtRoomPassword.setText("");
+				}
+			}
+		});
 		
 		ct.add(createRoom);
 		

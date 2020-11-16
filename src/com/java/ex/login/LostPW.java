@@ -52,6 +52,7 @@ public class LostPW extends JFrame{
 		lostPW.add(btnLostPW);
 		
 		// --------------------- Button Event ---------------------
+		//비밀번호 찾는 버튼 이벤트
 		btnLostPW.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

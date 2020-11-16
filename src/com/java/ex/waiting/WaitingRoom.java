@@ -164,6 +164,7 @@ public class WaitingRoom extends JFrame{
 		// 채팅창 및 채팅 입력창
 		
 		// --------------------- Button Event ---------------------
+		//방만들기 버튼 이벤트
 		btnCreateRoom.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -208,12 +209,14 @@ public class WaitingRoom extends JFrame{
 				}
 			}
 		});
+		//채팅 보내기 버튼 이벤트
 		btnSendChatting.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				chattingRoom.append(chatting.getText() + "\n");
 			}
 		});
+		//채팅 보내기 텍스트 이벤트(엔터)
 		chatting.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -233,7 +236,8 @@ public class WaitingRoom extends JFrame{
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		setVisible(true);
 	}
-	
+	// --------------------- Method ---------------------
+	//내 정보 불러오는 메소드
 	public void myProfile() {
 		DataBase db = new DataBase();
 		db.Select("SELECT * FROM Account WHERE UserID = ?");

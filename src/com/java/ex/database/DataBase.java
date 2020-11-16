@@ -11,8 +11,8 @@ import javax.swing.JOptionPane;
 public class DataBase {
 	private static final String DB_URL = "jdbc:mysql://localhost/catchmind?useSSL=false";
 	private static final String DB_DRIVER = "com.mysql.jdbc.Driver";
-	private static final String DB_USER = "catchmind";
-	private static final String DB_PASS = "tjdehd1@";
+	private static final String DB_USER = "root";
+	private static final String DB_PASS = "skdlxm12";
 	
 	private Connection conn = null;
 	private Statement stmt = null;

@@ -53,6 +53,7 @@ public class LostID extends JFrame{
 		lostID.add(btnLostID);
 		
 		// --------------------- Button Event ---------------------
+		//아이디 찾는 버튼 이벤트
 		btnLostID.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

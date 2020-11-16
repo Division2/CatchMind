@@ -133,6 +133,7 @@ public class GameRoom extends JFrame {
 		gameRoomPanel.add(memberField4);
 	
 		// --------------------- Button Event ---------------------
+		//게임종료 버튼 이벤트
 		btnExit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -140,6 +141,7 @@ public class GameRoom extends JFrame {
 				System.exit(0);
 			}
 		});
+		//채팅방 전송 이벤트
 		chatting.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
