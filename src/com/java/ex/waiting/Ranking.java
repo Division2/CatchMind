@@ -13,11 +13,13 @@ import javax.swing.table.DefaultTableModel;
 import com.java.ex.database.DataBase;
 
 public class Ranking extends JFrame {
+	
 	JPanel rankingPanel = null;
 	JTable tabRanking = null;
 	DefaultTableModel rankingModel = null;
 	
 	public Ranking() {
+		// --------------------- Login Form Disign ---------------------
 		Container ct = getContentPane();
 		rankingPanel = new JPanel();
 		rankingPanel.setLayout(null);

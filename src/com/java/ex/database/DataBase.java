@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class DataBase {
 	private static final String DB_URL = "jdbc:mysql://localhost/catchmind?useSSL=false";
@@ -44,7 +45,7 @@ public class DataBase {
 		}
 	}
 	
-	////SQL Select 메소드
+	//SQL Select 메소드
 	public void Select(String dbSelect) {
 		try {
 			pstmt = conn.prepareStatement(dbSelect);
@@ -54,7 +55,7 @@ public class DataBase {
 		}
 	}
 	
-	////SQL Delete 메소드
+	//SQL Delete 메소드
 	public void Delete(String dbDelete) {
 		try {
 			rs = stmt.executeQuery(dbDelete);
@@ -63,7 +64,7 @@ public class DataBase {
 		}
 	}
 	
-	////SQL Update 메소드
+	//SQL Update 메소드
 	public void Update(String dbUpdate) {
 		try {
 			pstmt = conn.prepareStatement(dbUpdate);
@@ -87,6 +88,26 @@ public class DataBase {
 			if (rs != null) {
 				rs.close();
 			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+	}
+	//접속 처리 메소드
+	public void setOnline(String userid) {
+		Update("UPDATE Account SET isOnline = 1 WHERE UserID = ?");
+		try {
+			pstmt.setString(1, userid);
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+	}
+	//로그아웃 처리 메소드
+	public void setOffline(String userid) {
+		Update("UPDATE Account SET isOnline = 0 WHERE UserID = ?");
+		try {
+			pstmt.setString(1, userid);
+			pstmt.executeUpdate();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}

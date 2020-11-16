@@ -61,7 +61,6 @@ public class LostID extends JFrame{
 			}
 		});
 		
-		
 		ct.add(lostID);
 		
 		setTitle("아이디 찾기");

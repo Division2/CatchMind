@@ -16,6 +16,7 @@ import com.java.ex.database.DataBase;
 public class ProfileUpdate extends JFrame {
 	
 	private String userid;
+	
 	JPanel profileUpdatePanel = null;
 	JLabel lblUserID = null;
 	JLabel lblCurrentPassword = null;
@@ -33,6 +34,7 @@ public class ProfileUpdate extends JFrame {
 	JButton btnModifyCancel = null;
 	
 	public ProfileUpdate(String userid) {
+		// --------------------- Login Form Disign ---------------------
 		this.userid = userid;
 		Container ct = getContentPane();
 		profileUpdatePanel = new JPanel();

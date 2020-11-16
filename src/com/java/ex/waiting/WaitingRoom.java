@@ -4,6 +4,8 @@ import java.awt.Container;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,13 +17,16 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 
 import com.java.ex.database.DataBase;
 import com.java.ex.login.Login;
 
-public class WaitingRoom extends JFrame{
+public class WaitingRoom extends JFrame {
 	
 	private String userid;
 
@@ -48,6 +53,7 @@ public class WaitingRoom extends JFrame{
 	JTextField txtMyExp = null;
 	
 	public WaitingRoom(String userid) {
+		// --------------------- Login Form Disign ---------------------
 		this.userid = userid;
 		
 		if (null == userid) {
@@ -189,9 +195,12 @@ public class WaitingRoom extends JFrame{
 		btnLogout.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				DataBase db = new DataBase();
 				Object[] options = {"예", "아니오"};
 				int logout = JOptionPane.showOptionDialog(null, "정말 로그아웃 하시겠습니까?", "캐치마인드", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+
 				if(JOptionPane.YES_OPTION == logout) {
+					db.setOffline(userid);
 					new Login();
 					dispose();
 				}
@@ -201,10 +210,12 @@ public class WaitingRoom extends JFrame{
 		btnExit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				DataBase db = new DataBase();
 				Object[] options = {"예", "아니오"};
 				int exit = JOptionPane.showOptionDialog(null, "정말 종료하시겠습니까?", "캐치마인드", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
 				if (JOptionPane.YES_OPTION == exit) {
+					db.setOffline(userid);
 					System.exit(0);
 				}
 			}
@@ -224,9 +235,38 @@ public class WaitingRoom extends JFrame{
 				chatting.setText("");
 			}
 		});
+		//프로필(내정보) 업데이트 스레드 메소드
+		Thread myProfile = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				myProfile();
+				try {
+					Thread.sleep(1000);
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, e.getMessage());
+				}
+			}
+		});
+		myProfile.start();
+		//접속자 리스트 스레드 메소드
+		Thread onlineUserCheck = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while (true) {
+					if (!waitingRoomPanel.isVisible()) {
+						break;
+					}
+					tabUser.setModel(online());
+					try {
+						Thread.sleep(1000);
+					} catch (Exception e) {
+						JOptionPane.showMessageDialog(null, e.getMessage());
+					}
+				}
+			}
+		});
+		onlineUserCheck.start();
 		
-		myProfile();
-
 		ct.add(waitingRoomPanel);
 		
 		setTitle("캐치마인드 대기실");
@@ -254,6 +294,47 @@ public class WaitingRoom extends JFrame{
 			JOptionPane.showConfirmDialog(null, e.getMessage());
 		}
 		db.Close();
+	}
+	//isOnline으로 접속자 리스트 받아오는 메소드
+	public List<String> getOnlineUserList() {
+		DataBase db = new DataBase();
+		db.Select("SELECT NickName FROM Account WHERE isOnline = 1");
+		ArrayList<String> list = new ArrayList<String>();
+		try {
+			db.rs = db.pstmt.executeQuery();
+			while (db.rs.next()) {
+				list.add(db.rs.getString("NickName"));
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+		db.Close();
+		return list;
+	}
+	//JTable(tabUser)에 접속자 리스트 넣는 메소드
+	public DefaultTableModel online() {
+		//유저목록 테이블
+		String[] userList = { "닉네임", "레벨"};
+		userModel = new DefaultTableModel(userList, 0) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		
+		DataBase db = new DataBase();
+		db.Select("SELECT NickName, Level FROM Account WHERE isOnline = 1");
+		try {
+			db.rs = db.pstmt.executeQuery();
+			while (db.rs.next()) {
+				Object data[] = { db.rs.getString("NickName"), db.rs.getString("Level") + "Lv" };
+				userModel.addRow(data);
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+		db.Close();
+		return userModel;
 	}
 	
 	//getter & setter

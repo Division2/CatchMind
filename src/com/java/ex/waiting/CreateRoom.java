@@ -16,7 +16,6 @@ import javax.swing.JTextField;
 public class CreateRoom extends JFrame{
 
 	JPanel createRoom = null;
-	
 	JLabel lblRoomName = null;
 	JLabel lblRoomState = null;
 	JLabel lblRoomPassword = null;
@@ -27,6 +26,7 @@ public class CreateRoom extends JFrame{
 	JButton btnMakeRoomCancel = null;
 	
 	public CreateRoom() {
+		// --------------------- Login Form Disign ---------------------
 		Container ct = getContentPane();
 		createRoom = new JPanel();
 		createRoom.setLayout(null);
@@ -65,8 +65,6 @@ public class CreateRoom extends JFrame{
 		createRoom.add(btnMakeRoom);
 		createRoom.add(btnMakeRoomCancel);
 		
-		// --------------------- Method Event ---------------------
-		
 		// --------------------- Button Event ---------------------
 		//방만들기 버튼 이벤트
 		btnMakeRoom.addActionListener(new ActionListener() {
@@ -103,4 +101,5 @@ public class CreateRoom extends JFrame{
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
+	// --------------------- Method ---------------------
 }

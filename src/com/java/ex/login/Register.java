@@ -22,17 +22,15 @@ import javax.swing.SwingConstants;
 
 import com.java.ex.database.DataBase;
 
-public class Register extends JFrame implements Runnable{
+public class Register extends JFrame implements Runnable {
 
 	private String authCode;
 	
 	JPanel registerPanel = null;
-	
 	JLabel lblValidPassword = null;
 	JLabel lblValidNickName = null;
 	JLabel lblValidEmail = null;
 	JLabel lblValidPhoneNum = null;
-	
 	JLabel lblRegister = null;
 	JLabel lblAccount = null;
 	JLabel lblAuthStatus = null;
@@ -189,8 +187,9 @@ public class Register extends JFrame implements Runnable{
 			}
 		});
 		
-		Thread th = new Thread(this);
-		th.start();
+		//유효성 검사 스레드
+		Thread txtCheck = new Thread(this);
+		txtCheck.start();
 		
 		ct.add(registerPanel);
 		
@@ -205,7 +204,7 @@ public class Register extends JFrame implements Runnable{
 	//회원가입 메소드
 	public void isRegister() {
 		DataBase db = new DataBase();
-		db.Insert("INSERT INTO account(UserID, Password, NickName, Email, PhoneNum, Level, Exp, AuthStatus) VALUES(?, ?, ?, ?, ?, 1, 0, 1)");
+		db.Insert("INSERT INTO account(UserID, Password, NickName, Email, PhoneNum, Level, Exp, AuthStatus, isOnline) VALUES(?, ?, ?, ?, ?, 1, 0, 1, 0)");
 		
 		if (!lblValidPassword.getForeground().equals(Color.blue) ||
 				!lblValidEmail.getForeground().equals(Color.blue) ||

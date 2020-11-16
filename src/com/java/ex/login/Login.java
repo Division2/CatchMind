@@ -75,6 +75,13 @@ public class Login extends JFrame {
 				isLoginCheck();
 			}
 		});
+		//비밀번호 텍스트 이벤트
+		txtPW.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				isLoginCheck();
+			}
+		});
 		//아이디 찾기 이벤트
 		lblLostID.addMouseListener(new MouseAdapter() {
 			@Override
@@ -118,13 +125,19 @@ public class Login extends JFrame {
 			db.rs = db.pstmt.executeQuery();
 			
 			if (db.rs.next()) {
-				if(db.rs.getString("AuthStatus").equals("0")){
-					JOptionPane.showMessageDialog(null, "인증되지 않은 사용자입니다.", "로그인", JOptionPane.ERROR_MESSAGE);
-				}
+				if (db.rs.getString("isOnline").equals("1")) {
+					JOptionPane.showMessageDialog(null, "이미 접속중입니다.", "로그인", JOptionPane.ERROR_MESSAGE);
+				} 
 				else {
-					new WaitingRoom(txtID.getText());
-					dispose();
-					JOptionPane.showMessageDialog(null, "로그인 성공하였습니다.", "로그인", JOptionPane.INFORMATION_MESSAGE);
+					if(db.rs.getString("AuthStatus").equals("0")){
+						JOptionPane.showMessageDialog(null, "인증되지 않은 사용자입니다.", "로그인", JOptionPane.ERROR_MESSAGE);
+					}
+					else {
+						db.setOnline(txtID.getText());
+						new WaitingRoom(txtID.getText());
+						dispose();
+						JOptionPane.showMessageDialog(null, "로그인 성공하였습니다.", "로그인", JOptionPane.INFORMATION_MESSAGE);
+					}
 				}
 			}
 			else if(txtID.getText().equals("")) {
