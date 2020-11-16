@@ -54,6 +54,7 @@ public class WaitingRoom extends JFrame{
 			JOptionPane.showMessageDialog(null, "비정상적인 접근입니다!", "캐치마인드", JOptionPane.ERROR_MESSAGE);
 			System.exit(0);
 		}
+		
 	
 		Container ct = getContentPane();
 		waitingRoomPanel = new JPanel();

@@ -122,9 +122,9 @@ public class Login extends JFrame {
 					JOptionPane.showMessageDialog(null, "인증되지 않은 사용자입니다.", "로그인", JOptionPane.ERROR_MESSAGE);
 				}
 				else {
-				new WaitingRoom(txtID.getText());
-				dispose();
-				JOptionPane.showMessageDialog(null, "로그인 성공하였습니다.", "로그인", JOptionPane.INFORMATION_MESSAGE);
+					new WaitingRoom(txtID.getText());
+					dispose();
+					JOptionPane.showMessageDialog(null, "로그인 성공하였습니다.", "로그인", JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
 			else if(txtID.getText().equals("")) {

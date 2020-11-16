@@ -100,18 +100,21 @@ public class ProfileUpdate extends JFrame {
 				DataBase db = new DataBase();
 				db.Update("UPDATE Account SET Password = ?, Email = ? WHERE UserID = ?");
 				try {
-					db.pstmt.setString(1, txtChangePassword.getText());
+					if (txtChangePassword.getText().equals("")) {
+						db.pstmt.setString(1, txtCurrentPassword.getText());
+					}
+					else {
+						db.pstmt.setString(1, txtChangePassword.getText());
+					}
 					db.pstmt.setString(2, txtCurrentEmail.getText());
 					db.pstmt.setString(3, userid);
 					int result = db.pstmt.executeUpdate();
 
-					if (txtChangePassword.getText().equals("")) {
-						txtChangePassword.setText(txtCurrentPassword.getText());
-					}
 					if (1 == result) {
 						JOptionPane.showMessageDialog(null, "회원정보가 성공적으로 변경되었습니다.", "캐치마인드", JOptionPane.INFORMATION_MESSAGE);
 						dispose();
 					}
+					
 				} catch (Exception e2) {
 					JOptionPane.showMessageDialog(null, e2.getMessage());
 				}
