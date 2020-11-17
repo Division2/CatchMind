@@ -12,7 +12,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.java.ex.database.DataBase;
-import com.java.ex.waiting.WaitingRoom;
 
 public class LostID extends JFrame{
 	

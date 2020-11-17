@@ -3,7 +3,6 @@ package com.java.ex.game;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -16,8 +15,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
-
-import com.java.ex.waiting.WaitingRoom;
 
 public class GameRoom extends JFrame {
 	

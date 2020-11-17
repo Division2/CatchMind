@@ -4,6 +4,11 @@ import java.awt.Container;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,18 +22,26 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumnModel;
 
 import com.java.ex.database.DataBase;
 import com.java.ex.login.Login;
+import com.java.ex.waiting.chatting.WaitChatSBC;
 
 public class WaitingRoom extends JFrame {
 	
 	private String userid;
+	
+	private static final String SERVER_IP = "127.0.0.1";
+	private static final int SERVER_PORT = 4444;
+	boolean inChat = false;
+	
+	Socket soc = null;
+	BufferedReader reader = null;
+	BufferedWriter writer = null;
+	String message;
+	String receiveData;
 
 	JPanel waitingRoomPanel = null;
 	JButton btnJoinRoom = null;
@@ -61,6 +74,10 @@ public class WaitingRoom extends JFrame {
 			System.exit(0);
 		}
 		
+		if (false == inChat) {
+			waitChatting();
+			inChat = true;
+		}
 	
 		Container ct = getContentPane();
 		waitingRoomPanel = new JPanel();
@@ -224,15 +241,31 @@ public class WaitingRoom extends JFrame {
 		btnSendChatting.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				chattingRoom.append(chatting.getText() + "\n");
+				try {
+					message = chatting.getText();
+					
+					writer.write(message + "\n");
+					writer.flush();
+					chatting.setText("");
+					chatting.requestFocus();
+				} catch (Exception e2) {
+					JOptionPane.showMessageDialog(null, e2.getMessage());
+				}
 			}
 		});
 		//채팅 보내기 텍스트 이벤트(엔터)
 		chatting.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				chattingRoom.append(chatting.getText() + "\n");
-				chatting.setText("");
+				try {
+					message = chatting.getText();
+					
+					writer.write(message + "\n");
+					writer.flush();
+					chatting.setText("");
+				} catch (Exception e2) {
+					JOptionPane.showMessageDialog(null, e2.getMessage());
+				}
 			}
 		});
 		//프로필(내정보) 업데이트 스레드 메소드
@@ -277,6 +310,38 @@ public class WaitingRoom extends JFrame {
 		setVisible(true);
 	}
 	// --------------------- Method ---------------------
+	//채팅방 접속 메소드
+	public void waitChatting() {
+		try {
+			soc = new Socket(SERVER_IP, SERVER_PORT);
+			reader = new BufferedReader(new InputStreamReader(soc.getInputStream()));
+			writer = new BufferedWriter(new OutputStreamWriter(soc.getOutputStream()));
+			
+			writer.write(userid + "\n");
+			writer.flush();
+			
+			Thread clThread  = new Thread(new WaitChatRecevier());
+			clThread.start();
+			
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+	}
+	//채팅방 수신 내부 클래스
+	class WaitChatRecevier implements Runnable {
+		@Override
+		public void run() {
+			try {
+				while (true) {
+					receiveData = reader.readLine();
+					chattingRoom.append(receiveData + "\n");
+					chattingRoom.setCaretPosition(chattingRoom.getText().length());
+				}
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, e.getMessage());
+			}
+		}
+	}
 	//내 정보 불러오는 메소드
 	public void myProfile() {
 		DataBase db = new DataBase();
@@ -344,5 +409,17 @@ public class WaitingRoom extends JFrame {
 
 	public void setUserid(String userid) {
 		this.userid = userid;
+	}
+	public JButton getBtnLogout() {
+		return btnLogout;
+	}
+	public void setBtnLogout(JButton btnLogout) {
+		this.btnLogout = btnLogout;
+	}
+	public JButton getBtnExit() {
+		return btnExit;
+	}
+	public void setBtnExit(JButton btnExit) {
+		this.btnExit = btnExit;
 	}
 }
