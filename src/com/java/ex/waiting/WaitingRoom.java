@@ -5,9 +5,10 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,21 +28,20 @@ import javax.swing.table.DefaultTableModel;
 
 import com.java.ex.database.DataBase;
 import com.java.ex.login.Login;
-import com.java.ex.waiting.chatting.WaitChatSBC;
 
 public class WaitingRoom extends JFrame {
 	
 	private String userid;
+	private String nickname;
 	
 	private static final String SERVER_IP = "127.0.0.1";
-	private static final int SERVER_PORT = 4444;
+	private static final int SERVER_PORT = 5000;
 	boolean inChat = false;
 	
 	Socket soc = null;
 	BufferedReader reader = null;
-	BufferedWriter writer = null;
+	PrintWriter writer = null;
 	String message;
-	String receiveData;
 
 	JPanel waitingRoomPanel = null;
 	JButton btnJoinRoom = null;
@@ -65,20 +65,16 @@ public class WaitingRoom extends JFrame {
 	JTextField txtMyLevel = null;
 	JTextField txtMyExp = null;
 	
-	public WaitingRoom(String userid) {
+	public WaitingRoom(String userid, String nickname) {
 		// --------------------- Login Form Disign ---------------------
 		this.userid = userid;
+		this.nickname = nickname;
 		
 		if (null == userid) {
 			JOptionPane.showMessageDialog(null, "비정상적인 접근입니다!", "캐치마인드", JOptionPane.ERROR_MESSAGE);
 			System.exit(0);
 		}
-		
-		if (false == inChat) {
-			waitChatting();
-			inChat = true;
-		}
-	
+
 		Container ct = getContentPane();
 		waitingRoomPanel = new JPanel();
 		waitingRoomPanel.setLayout(null);
@@ -216,10 +212,16 @@ public class WaitingRoom extends JFrame {
 				Object[] options = {"예", "아니오"};
 				int logout = JOptionPane.showOptionDialog(null, "정말 로그아웃 하시겠습니까?", "캐치마인드", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
-				if(JOptionPane.YES_OPTION == logout) {
-					db.setOffline(userid);
-					new Login();
-					dispose();
+				if (JOptionPane.YES_OPTION == logout) {
+					try {
+						db.setOffline(userid);
+						writer = new PrintWriter(new OutputStreamWriter(soc.getOutputStream()), true);
+						String receiveData = "quit\r\n";
+						writer.println(receiveData);
+						new Login();
+						dispose();
+					} catch (Exception e2) {
+					}
 				}
 			}
 		});
@@ -232,8 +234,16 @@ public class WaitingRoom extends JFrame {
 				int exit = JOptionPane.showOptionDialog(null, "정말 종료하시겠습니까?", "캐치마인드", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
 				if (JOptionPane.YES_OPTION == exit) {
-					db.setOffline(userid);
-					System.exit(0);
+	                try {
+						db.setOffline(userid);
+	                    writer = new PrintWriter(new OutputStreamWriter(soc.getOutputStream()), true);
+	                    String receiveData = "quit\r\n";
+	                    writer.println(receiveData);
+	                    System.exit(0);
+	                }
+	                catch (Exception e2) {
+	                    e2.printStackTrace();
+	                }
 				}
 			}
 		});
@@ -241,15 +251,18 @@ public class WaitingRoom extends JFrame {
 		btnSendChatting.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try {
-					message = chatting.getText();
+				if (chatting.getText().equals("")) {
 					
-					writer.write(message + "\n");
-					writer.flush();
-					chatting.setText("");
-					chatting.requestFocus();
-				} catch (Exception e2) {
-					JOptionPane.showMessageDialog(null, e2.getMessage());
+				} else {
+					try {
+						writer = new PrintWriter(new OutputStreamWriter(soc.getOutputStream()), true);
+						
+						message = chatting.getText();
+						writer.println("message:" + message);
+						chatting.setText("");
+					} catch (Exception e2) {
+						JOptionPane.showMessageDialog(null, e2.getMessage());
+					}
 				}
 			}
 		});
@@ -257,14 +270,18 @@ public class WaitingRoom extends JFrame {
 		chatting.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try {
-					message = chatting.getText();
+				if (chatting.getText().equals("")) {
 					
-					writer.write(message + "\n");
-					writer.flush();
-					chatting.setText("");
-				} catch (Exception e2) {
-					JOptionPane.showMessageDialog(null, e2.getMessage());
+				} else {
+					try {
+						writer = new PrintWriter(new OutputStreamWriter(soc.getOutputStream()), true);
+						
+						message = chatting.getText();
+						writer.println("message:" + message);
+						chatting.setText("");
+					} catch (Exception e2) {
+						JOptionPane.showMessageDialog(null, e2.getMessage());
+					}
 				}
 			}
 		});
@@ -300,6 +317,9 @@ public class WaitingRoom extends JFrame {
 		});
 		onlineUserCheck.start();
 		
+		waitChatting();
+		waitChatReceive(soc);
+		
 		ct.add(waitingRoomPanel);
 		
 		setTitle("캐치마인드 대기실");
@@ -314,33 +334,35 @@ public class WaitingRoom extends JFrame {
 	public void waitChatting() {
 		try {
 			soc = new Socket(SERVER_IP, SERVER_PORT);
-			reader = new BufferedReader(new InputStreamReader(soc.getInputStream()));
-			writer = new BufferedWriter(new OutputStreamWriter(soc.getOutputStream()));
+			System.out.println(nickname + "님이 서버와 연결되었습니다.");
 			
-			writer.write(userid + "\n");
-			writer.flush();
-			
-			Thread clThread  = new Thread(new WaitChatRecevier());
-			clThread.start();
+			writer = new PrintWriter(new OutputStreamWriter(soc.getOutputStream()), true);
+			String receiveData = "join:" + nickname + "\r\n";
+			writer.println(receiveData);
 			
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 	}
-	//채팅방 수신 내부 클래스
-	class WaitChatRecevier implements Runnable {
-		@Override
-		public void run() {
-			try {
-				while (true) {
-					receiveData = reader.readLine();
-					chattingRoom.append(receiveData + "\n");
-					chattingRoom.setCaretPosition(chattingRoom.getText().length());
+	public void waitChatReceive(Socket soc) {
+		this.soc = soc;
+		Runnable receiver = new Runnable() {
+			@Override
+			public void run() {
+				try {
+					reader = new BufferedReader(new InputStreamReader(soc.getInputStream()));
+					while (true) {
+						String msg = reader.readLine();
+						chattingRoom.append(msg + "\n");
+						chattingRoom.setCaretPosition(chattingRoom.getText().length());
+					}
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, e.getMessage());
 				}
-			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null, e.getMessage());
 			}
-		}
+		};
+		Thread clThread = new Thread(receiver);
+		clThread.start();
 	}
 	//내 정보 불러오는 메소드
 	public void myProfile() {
@@ -409,17 +431,5 @@ public class WaitingRoom extends JFrame {
 
 	public void setUserid(String userid) {
 		this.userid = userid;
-	}
-	public JButton getBtnLogout() {
-		return btnLogout;
-	}
-	public void setBtnLogout(JButton btnLogout) {
-		this.btnLogout = btnLogout;
-	}
-	public JButton getBtnExit() {
-		return btnExit;
-	}
-	public void setBtnExit(JButton btnExit) {
-		this.btnExit = btnExit;
 	}
 }

@@ -126,14 +126,14 @@ public class Login extends JFrame {
 			if (db.rs.next()) {
 				if (db.rs.getString("isOnline").equals("1")) {
 					JOptionPane.showMessageDialog(null, "이미 접속중입니다.", "로그인", JOptionPane.ERROR_MESSAGE);
-				} 
+				}
 				else {
 					if(db.rs.getString("AuthStatus").equals("0")){
 						JOptionPane.showMessageDialog(null, "인증되지 않은 사용자입니다.", "로그인", JOptionPane.ERROR_MESSAGE);
 					}
 					else {
 						db.setOnline(txtID.getText());
-						new WaitingRoom(txtID.getText());
+						new WaitingRoom(txtID.getText(), db.rs.getString("NickName"));
 						dispose();
 						JOptionPane.showMessageDialog(null, "로그인 성공하였습니다.", "로그인", JOptionPane.INFORMATION_MESSAGE);
 					}
