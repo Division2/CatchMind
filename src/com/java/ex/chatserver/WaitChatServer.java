@@ -1,4 +1,4 @@
-package com.java.ex.chatServer;
+package com.java.ex.chatserver;
 
 import java.io.PrintWriter;
 import java.net.ServerSocket;

@@ -1,4 +1,4 @@
-package com.java.ex.chatServer;
+package com.java.ex.chatserver;
 
 import java.io.BufferedReader;
 import java.io.IOException;
