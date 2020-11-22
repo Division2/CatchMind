@@ -4,14 +4,13 @@ import java.awt.Container;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -27,6 +26,7 @@ import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
 import com.java.ex.database.DataBase;
+import com.java.ex.game.GameRoom;
 import com.java.ex.login.Login;
 
 public class WaitingRoom extends JFrame {
@@ -183,11 +183,54 @@ public class WaitingRoom extends JFrame {
 		// 채팅창 및 채팅 입력창
 		
 		// --------------------- Button Event ---------------------
+		//참여하기 버튼 이벤트
+		btnJoinRoom.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int row = tabRoom.getSelectedRow();
+				Object test = tabRoom.getValueAt(row, 4);
+					
+				System.out.println(test);
+				if (test.equals("비공개")) {
+					new JoinRoom(userid, nickname);
+				}
+				else {
+					new GameRoom(userid, nickname);
+					dispose();
+				}
+			}
+		});
+		tabRoom.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+			@Override
+			public void mousePressed(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					int row = tabRoom.getSelectedRow();
+					Object test = tabRoom.getValueAt(row, 4);
+					
+					System.out.println(test);
+					if (test.equals("비공개")) {
+						new JoinRoom(userid, nickname);
+					}
+					else {
+						new GameRoom(userid, nickname);
+						dispose();
+					}
+				}
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {}
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			@Override
+			public void mouseClicked(MouseEvent e) {}
+		});
 		//방만들기 버튼 이벤트
 		btnCreateRoom.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new CreateRoom();
+				new CreateRoom(nickname);
 			}
 		});
 		//랭킹 버튼 이벤트
@@ -316,9 +359,27 @@ public class WaitingRoom extends JFrame {
 			}
 		});
 		onlineUserCheck.start();
+		//게임방 리스트 스레드 메소드
+		Thread onlineRoomCheck = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while (true) {
+					if (!waitingRoomPanel.isVisible()) {
+						break;
+					}
+					tabRoom.setModel(roomCheck());
+					try {
+						Thread.sleep(5000);
+					} catch (Exception e) {
+						JOptionPane.showMessageDialog(null, e.getMessage());
+					}
+				}
+			}
+		});
+		onlineRoomCheck.start();
 		
 		waitChatting();
-		waitChatReceive(soc);
+		waitChatReceive(soc);			
 		
 		ct.add(waitingRoomPanel);
 		
@@ -344,6 +405,7 @@ public class WaitingRoom extends JFrame {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 	}
+	//채팅방 브로드캐스트 수신 메소드
 	public void waitChatReceive(Socket soc) {
 		this.soc = soc;
 		Runnable receiver = new Runnable() {
@@ -382,22 +444,6 @@ public class WaitingRoom extends JFrame {
 		}
 		db.Close();
 	}
-	//isOnline으로 접속자 리스트 받아오는 메소드
-	public List<String> getOnlineUserList() {
-		DataBase db = new DataBase();
-		db.Select("SELECT NickName FROM Account WHERE isOnline = 1");
-		ArrayList<String> list = new ArrayList<String>();
-		try {
-			db.rs = db.pstmt.executeQuery();
-			while (db.rs.next()) {
-				list.add(db.rs.getString("NickName"));
-			}
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e.getMessage());
-		}
-		db.Close();
-		return list;
-	}
 	//JTable(tabUser)에 접속자 리스트 넣는 메소드
 	public DefaultTableModel online() {
 		//유저목록 테이블
@@ -423,7 +469,34 @@ public class WaitingRoom extends JFrame {
 		db.Close();
 		return userModel;
 	}
-	
+	//JTable(tabRoom)에 방 리스트 넣는 메소드
+	public DefaultTableModel roomCheck() {
+		//대기방 테이블
+		String[] roomList = { "No", "방 제목", "방장", "인원", "비고" };
+		roomModel = new DefaultTableModel(roomList, 0) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		
+		DataBase db = new DataBase();
+		db.Select("SELECT * FROM Game WHERE roomcheck = 1");
+		int roomNum = 1;
+		try {
+			db.rs = db.pstmt.executeQuery();
+			while (db.rs.next()) {
+				Object data[] = {roomNum, db.rs.getString("RoomTitle"), db.rs.getString("RoomOwner"), db.rs.getString("Personnel"), db.rs.getString("Status") };
+				roomModel.addRow(data);
+				roomNum++;
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+		db.Close();
+		return roomModel;
+	}
+
 	//getter & setter
 	public String getUserid() { 
 		return userid;

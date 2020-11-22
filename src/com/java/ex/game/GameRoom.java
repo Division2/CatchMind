@@ -16,6 +16,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
+import com.java.ex.waiting.WaitingRoom;
+
 public class GameRoom extends JFrame {
 	
 	private Canvas canvas;
@@ -48,7 +50,7 @@ public class GameRoom extends JFrame {
 	JLabel memberScore4 = null;
 	
 
-	public GameRoom() {
+	public GameRoom(String userid, String nickname) {
 		Container ct = getContentPane();
 		gameRoomPanel = new JPanel();
 		gameRoomPanel.setLayout(null);
@@ -134,8 +136,8 @@ public class GameRoom extends JFrame {
 		btnExit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//임시 종료 버튼
-				System.exit(0);
+				new WaitingRoom(userid, nickname);
+				dispose();
 			}
 		});
 		//채팅방 전송 이벤트

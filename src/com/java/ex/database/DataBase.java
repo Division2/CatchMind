@@ -29,7 +29,7 @@ public class DataBase {
 			Class.forName(DB_DRIVER);
 			conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
 			
-			stmt = conn.createStatement();
+		//	stmt = conn.createStatement();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
@@ -91,6 +91,7 @@ public class DataBase {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 	}
+	
 	//立加 贸府 皋家靛
 	public void setOnline(String userid) {
 		Update("UPDATE Account SET isOnline = 1 WHERE UserID = ?");
@@ -101,6 +102,7 @@ public class DataBase {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 	}
+	
 	//肺弊酒眶 贸府 皋家靛
 	public void setOffline(String userid) {
 		Update("UPDATE Account SET isOnline = 0 WHERE UserID = ?");

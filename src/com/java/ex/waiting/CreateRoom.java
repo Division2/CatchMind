@@ -10,12 +10,17 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.java.ex.database.DataBase;
+
 public class CreateRoom extends JFrame{
 
-	JPanel createRoom = null;
+	private String isStatus = "공개";
+	
+	JPanel createRoomPanel = null;
 	JLabel lblRoomName = null;
 	JLabel lblRoomState = null;
 	JLabel lblRoomPassword = null;
@@ -25,11 +30,11 @@ public class CreateRoom extends JFrame{
 	JButton btnMakeRoom = null;
 	JButton btnMakeRoomCancel = null;
 	
-	public CreateRoom() {
+	public CreateRoom(String ownerNickName) {
 		// --------------------- Login Form Disign ---------------------
 		Container ct = getContentPane();
-		createRoom = new JPanel();
-		createRoom.setLayout(null);
+		createRoomPanel = new JPanel();
+		createRoomPanel.setLayout(null);
 		
 		lblRoomName = new JLabel("방 제목 : ");
 		lblRoomState = new JLabel("상태 : ");
@@ -54,22 +59,32 @@ public class CreateRoom extends JFrame{
 		btnMakeRoom.setBounds(20, 100, 100, 50);
 		btnMakeRoomCancel.setBounds(160, 100, 100, 50);
 		
-		createRoom.add(lblRoomName);
-		createRoom.add(lblRoomState);
-		createRoom.add(lblRoomPassword);
+		createRoomPanel.add(lblRoomName);
+		createRoomPanel.add(lblRoomState);
+		createRoomPanel.add(lblRoomPassword);
 		
-		createRoom.add(txtRoomName);
-		createRoom.add(chkRoomStateCheck);
-		createRoom.add(txtRoomPassword);
+		createRoomPanel.add(txtRoomName);
+		createRoomPanel.add(chkRoomStateCheck);
+		createRoomPanel.add(txtRoomPassword);
 		
-		createRoom.add(btnMakeRoom);
-		createRoom.add(btnMakeRoomCancel);
+		createRoomPanel.add(btnMakeRoom);
+		createRoomPanel.add(btnMakeRoomCancel);
 		
 		// --------------------- Button Event ---------------------
 		//방만들기 버튼 이벤트
 		btnMakeRoom.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				if (txtRoomName.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "방 제목을 입력해주세요.", "캐치마인드", JOptionPane.INFORMATION_MESSAGE);
+				}
+				else if ((txtRoomPassword.isEnabled()) && (txtRoomPassword.getText().equals(""))) {
+					JOptionPane.showMessageDialog(null, "비공개 체크 시 방 비밀번호를 입력해야합니다.", "캐치마인드", JOptionPane.INFORMATION_MESSAGE);
+				}
+				else {
+					makingRoom(ownerNickName);
+					dispose();
+				}
 			}
 		});
 		//방만들기 취소 이벤트
@@ -85,15 +100,17 @@ public class CreateRoom extends JFrame{
 			public void itemStateChanged(ItemEvent e) {
 				if(chkRoomStateCheck.isSelected()) {
 					txtRoomPassword.setEnabled(true);
+					isStatus = "비공개";
 				}
 				else {
 					txtRoomPassword.setEnabled(false);
 					txtRoomPassword.setText("");
+					isStatus = "공개";
 				}
 			}
 		});
 		
-		ct.add(createRoom);
+		ct.add(createRoomPanel);
 		
 		setTitle("캐치마인드 방만들기");
 		setSize(300, 200);
@@ -102,4 +119,24 @@ public class CreateRoom extends JFrame{
 		setVisible(true);
 	}
 	// --------------------- Method ---------------------
+	//방만들기 메소드
+	public void makingRoom(String ownerNickName) {
+		DataBase db = new DataBase();
+		db.Insert("INSERT INTO Game(RoomTitle, RoomOwner, Personnel, Status, Password, RoomCheck) VALUES (?, ?, ?, ?, ?, ?)");
+		try {
+			db.pstmt.setString(1, txtRoomName.getText());
+			db.pstmt.setString(2, ownerNickName); //방인원
+			db.pstmt.setString(3, "1");
+			db.pstmt.setString(4, isStatus);
+			db.pstmt.setString(5, txtRoomPassword.getText());
+			db.pstmt.setString(6, "1");
+			int result = db.pstmt.executeUpdate();
+			
+			if (1 != result) {
+				JOptionPane.showMessageDialog(null, "방 생성중 문제가 발생하였습니다.", "캐치마인드", JOptionPane.ERROR_MESSAGE);
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+	}
 }
