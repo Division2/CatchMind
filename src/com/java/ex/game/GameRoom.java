@@ -16,6 +16,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
+import com.java.ex.database.DataBase;
 import com.java.ex.waiting.WaitingRoom;
 
 public class GameRoom extends JFrame {
@@ -157,5 +158,10 @@ public class GameRoom extends JFrame {
 		setLocationRelativeTo(null);
 		//setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setVisible(true);
+	}
+	
+	public void deleteRoom() {
+		DataBase db = new DataBase();
+		db.Delete(null);
 	}
 }

@@ -11,7 +11,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 //서버 브로드캐스트 클래스
-public class WaitChatSBC extends Thread {
+public class ServerBroadCast extends Thread {
 	
 	Socket soc = null;
 	String nickName = null;
@@ -19,7 +19,7 @@ public class WaitChatSBC extends Thread {
 	BufferedReader reader = null;
 	PrintWriter writer = null;
 	
-	public WaitChatSBC(Socket soc, List<PrintWriter> list) {
+	public ServerBroadCast(Socket soc, List<PrintWriter> list) {
 		this.soc = soc;
 		this.list = list;
 	}

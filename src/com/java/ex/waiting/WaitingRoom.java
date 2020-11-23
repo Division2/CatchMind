@@ -378,6 +378,7 @@ public class WaitingRoom extends JFrame {
 		});
 		onlineRoomCheck.start();
 		
+		//채팅방 접속
 		waitChatting();
 		waitChatReceive(soc);			
 		

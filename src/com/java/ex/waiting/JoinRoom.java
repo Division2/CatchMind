@@ -42,6 +42,7 @@ public class JoinRoom extends JFrame {
 		joinRoomPanel.add(btnJoin);
 		joinRoomPanel.add(btnCancel);
 		
+		//비밀번호 텍스트필드 이벤트
 		txtPassword.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -64,6 +65,7 @@ public class JoinRoom extends JFrame {
 				}
 			}
 		});
+		//참여하기 버튼 이벤트
 		btnJoin.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -85,6 +87,7 @@ public class JoinRoom extends JFrame {
 				}
 			}
 		});
+		//취소 버튼 이벤트
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
