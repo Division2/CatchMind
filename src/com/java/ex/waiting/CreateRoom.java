@@ -30,7 +30,7 @@ public class CreateRoom extends JFrame{
 	JButton btnMakeRoom = null;
 	JButton btnMakeRoomCancel = null;
 	
-	public CreateRoom(String ownerNickName) {
+	public CreateRoom(String ownerid, String ownerNickName) {
 		// --------------------- Login Form Disign ---------------------
 		Container ct = getContentPane();
 		createRoomPanel = new JPanel();
@@ -122,14 +122,30 @@ public class CreateRoom extends JFrame{
 	//방만들기 메소드
 	public void makingRoom(String ownerNickName) {
 		DataBase db = new DataBase();
+		
+		//Game 테이블에 방 생성
 		db.Insert("INSERT INTO Game(RoomTitle, RoomOwner, Personnel, Status, Password, RoomCheck) VALUES (?, ?, ?, ?, ?, ?)");
 		try {
 			db.pstmt.setString(1, txtRoomName.getText());
-			db.pstmt.setString(2, ownerNickName); //방인원
+			db.pstmt.setString(2, ownerNickName);
 			db.pstmt.setString(3, "1");
 			db.pstmt.setString(4, isStatus);
 			db.pstmt.setString(5, txtRoomPassword.getText());
 			db.pstmt.setString(6, "1");
+			int result = db.pstmt.executeUpdate();
+			
+			if (1 != result) {
+				JOptionPane.showMessageDialog(null, "방 생성중 문제가 발생하였습니다.", "캐치마인드", JOptionPane.ERROR_MESSAGE);
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+		
+		//RoomMember테이블에 방 제목과 방장을 Player1로 지정
+		db.Insert("INSERT INTO RoomMember(RoomTitle, Player1) VALUES(?, ?)");
+		try {
+			db.pstmt.setString(1, txtRoomName.getText());
+			db.pstmt.setString(2, ownerNickName);
 			int result = db.pstmt.executeUpdate();
 			
 			if (1 != result) {

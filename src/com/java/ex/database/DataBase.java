@@ -9,10 +9,10 @@ import java.sql.Statement;
 import javax.swing.JOptionPane;
 
 public class DataBase {
-	private static final String DB_URL = "jdbc:mysql://localhost:3307/catchmind?useSSL=false";
+	private static final String DB_URL = "jdbc:mysql://localhost:3306/catchmind?useSSL=false";
 	private static final String DB_DRIVER = "com.mysql.jdbc.Driver";
-	private static final String DB_USER = "root";
-	private static final String DB_PASS = "skdlxm12";
+	private static final String DB_USER = "catchmind";
+	private static final String DB_PASS = "tjdehd1@";
 	
 	private Connection conn = null;
 	private Statement stmt = null;
@@ -28,8 +28,6 @@ public class DataBase {
 		try {
 			Class.forName(DB_DRIVER);
 			conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
-			
-		//	stmt = conn.createStatement();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
@@ -48,7 +46,6 @@ public class DataBase {
 	public void Select(String dbSelect) {
 		try {
 			pstmt = conn.prepareStatement(dbSelect);
-		//	rs = stmt.executeQuery(dbSelect);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
@@ -57,7 +54,7 @@ public class DataBase {
 	//SQL Delete ¸Þ¼Òµå
 	public void Delete(String dbDelete) {
 		try {
-			rs = stmt.executeQuery(dbDelete);
+			pstmt = conn.prepareStatement(dbDelete);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}

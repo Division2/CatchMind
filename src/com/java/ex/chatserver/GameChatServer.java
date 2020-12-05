@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+//채팅 서버 클래스
 public class GameChatServer {
 	
 	ServerSocket svSoc = null;
@@ -36,5 +37,10 @@ public class GameChatServer {
 				JOptionPane.showMessageDialog(null, e.getMessage());
 			}
 		}
+	}
+	
+	public static void main(String[] args) {
+		//Chat 서버도 GUI를 만들어주자..
+		new GameChatServer();
 	}
 }

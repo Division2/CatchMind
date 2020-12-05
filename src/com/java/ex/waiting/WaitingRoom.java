@@ -36,7 +36,6 @@ public class WaitingRoom extends JFrame {
 	
 	private static final String SERVER_IP = "127.0.0.1";
 	private static final int SERVER_PORT = 5000;
-	boolean inChat = false;
 	
 	Socket soc = null;
 	BufferedReader reader = null;
@@ -188,10 +187,9 @@ public class WaitingRoom extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int row = tabRoom.getSelectedRow();
-				Object test = tabRoom.getValueAt(row, 4);
-					
-				System.out.println(test);
-				if (test.equals("비공개")) {
+				Object record = tabRoom.getValueAt(row, 4);
+				
+				if (record.equals("비공개")) {
 					new JoinRoom(userid, nickname);
 				}
 				else {
@@ -207,10 +205,9 @@ public class WaitingRoom extends JFrame {
 			public void mousePressed(MouseEvent e) {
 				if (e.getClickCount() == 2) {
 					int row = tabRoom.getSelectedRow();
-					Object test = tabRoom.getValueAt(row, 4);
+					Object record = tabRoom.getValueAt(row, 4);
 					
-					System.out.println(test);
-					if (test.equals("비공개")) {
+					if (record.equals("비공개")) {
 						new JoinRoom(userid, nickname);
 					}
 					else {
@@ -230,7 +227,7 @@ public class WaitingRoom extends JFrame {
 		btnCreateRoom.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new CreateRoom(nickname);
+				new CreateRoom(userid, nickname);
 			}
 		});
 		//랭킹 버튼 이벤트
@@ -369,7 +366,7 @@ public class WaitingRoom extends JFrame {
 					}
 					tabRoom.setModel(roomCheck());
 					try {
-						Thread.sleep(5000);
+						Thread.sleep(3000);
 					} catch (Exception e) {
 						JOptionPane.showMessageDialog(null, e.getMessage());
 					}
@@ -377,10 +374,34 @@ public class WaitingRoom extends JFrame {
 			}
 		});
 		onlineRoomCheck.start();
+		//내가 방장일 경우 해당 방에 자동 입장
+		Thread ownerJoinRoom = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				DataBase db = new DataBase();
+				db.Select("SELECT * FROM Game WHERE RoomOwner = ?");
+				
+				try {
+					db.pstmt.setString(1, nickname);
+					while (true) {
+						db.rs = db.pstmt.executeQuery();
+						if (db.rs.next()) {
+							new GameRoom(userid, nickname);
+							dispose();
+							break;
+						}
+					}
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, e.getMessage());
+				}
+			}
+		});
+		ownerJoinRoom.start();
+		//왜 다 야매지,, 이번엔 잘 몰랐으니까 다음엔 소켓같은거 하지말고 난이도 조절해서 하자..
 		
 		//채팅방 접속
 		waitChatting();
-		waitChatReceive(soc);			
+		waitChatReceive(soc);
 		
 		ct.add(waitingRoomPanel);
 		

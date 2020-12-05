@@ -5,11 +5,17 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.Socket;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -21,13 +27,23 @@ import com.java.ex.waiting.WaitingRoom;
 
 public class GameRoom extends JFrame {
 	
+	private String userid;
+	private String nickname;
+	
+	private static final String SERVER_IP = "127.0.0.1";
+	private static final int SERVER_PORT = 5001;
+	
+	Socket soc = null;
+	BufferedReader reader = null;
+	PrintWriter writer = null;
+	String message;
+	
 	private Canvas canvas;
 	
 	JPanel gameRoomPanel = null;
 	
 	JTextArea chattingRoom = null;
 	JTextField chatting = null;
-	
 	JButton btnExit = null;
 	JButton btnCanvasBlack = null;
 	JButton btnCanvasRed = null;
@@ -36,7 +52,6 @@ public class GameRoom extends JFrame {
 	JButton btnCanvasYellow = null;
 	JButton btnCanvasEraser = null;
 	JButton btnCanvasClear = null;
-	
 	JLabel memberField1 = null;
 	JLabel memberField2 = null;
 	JLabel memberField3 = null;
@@ -49,9 +64,11 @@ public class GameRoom extends JFrame {
 	JLabel memberScore2 = null;
 	JLabel memberScore3 = null;
 	JLabel memberScore4 = null;
-	
 
 	public GameRoom(String userid, String nickname) {
+		this.userid = userid;
+		this.nickname = nickname;
+		
 		Container ct = getContentPane();
 		gameRoomPanel = new JPanel();
 		gameRoomPanel.setLayout(null);
@@ -84,22 +101,22 @@ public class GameRoom extends JFrame {
 		btnCanvasClear = new JButton("전체 지우기");
 		btnCanvasClear.setBounds(675, 530, 100, 40);
 		
-		memberField1 = new JLabel();
+		memberField1 = new JLabel(nickname);
 		memberField1.setBounds(40, 70, 150, 100);
 		memberField1.setOpaque(true);
-		memberField1.setBorder(BorderFactory.createLineBorder(Color.white, 1));
+		memberField1.setBorder(BorderFactory.createLineBorder(Color.white, 1));		
 		
-		memberField2 = new JLabel();
+		memberField2 = new JLabel(nickname);
 		memberField2.setBounds(40, 180, 150, 100);
 		memberField2.setOpaque(true);
-		memberField2.setBorder(BorderFactory.createLineBorder(Color.white, 1));
+		memberField2.setBorder(BorderFactory.createLineBorder(Color.white, 1));	
 		
-		memberField3 = new JLabel();
+		memberField3 = new JLabel(nickname);
 		memberField3.setBounds(820, 70, 150, 100);
 		memberField3.setOpaque(true);
 		memberField3.setBorder(BorderFactory.createLineBorder(Color.white, 1));
 		
-		memberField4 = new JLabel();
+		memberField4 = new JLabel(nickname);
 		memberField4.setBounds(820, 180, 150, 100);
 		memberField4.setOpaque(true);
 		memberField4.setBorder(BorderFactory.createLineBorder(Color.white, 1));
@@ -118,7 +135,6 @@ public class GameRoom extends JFrame {
 		// 채팅창 및 채팅 입력창
 		
 		gameRoomPanel.add(canvas);
-		
 		gameRoomPanel.add(btnExit);
 		gameRoomPanel.add(btnCanvasBlack);
 		gameRoomPanel.add(btnCanvasRed);
@@ -133,22 +149,70 @@ public class GameRoom extends JFrame {
 		gameRoomPanel.add(memberField4);
 	
 		// --------------------- Button Event ---------------------
-		//게임종료 버튼 이벤트
+		//나가기 버튼 이벤트
 		btnExit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new WaitingRoom(userid, nickname);
-				dispose();
+				DataBase db = new DataBase();
+				db.Select("SELECT * FROM Game WHERE RoomOwner = ?");
+				try {
+					//방장 닉네임으로 된 방 찾기
+					db.pstmt.setString(1, nickname);
+					db.rs = db.pstmt.executeQuery();
+					
+					if (db.rs.next()) {
+						//방장이 방을 나오면 방장닉넴으로 된 레코드 삭제
+						db.Delete("DELETE FROM Game WHERE RoomOwner = ?");
+						db.pstmt.setString(1, nickname);
+						
+						int result = db.pstmt.executeUpdate();
+						
+						if (1 == result) {
+							new WaitingRoom(userid, nickname);
+							dispose();
+						}
+					}
+					else {
+						new WaitingRoom(userid, nickname);
+						dispose();
+					}
+					
+				} catch (Exception e2) {
+					JOptionPane.showMessageDialog(null, e2.getMessage());
+				}
 			}
 		});
 		//채팅방 전송 이벤트
 		chatting.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				chattingRoom.append(chatting.getText() + "\n");
-				chatting.setText("");
+				if (chatting.getText().equals("")) {
+					
+				} else {
+					try {
+						writer = new PrintWriter(new OutputStreamWriter(soc.getOutputStream()), true);
+						
+						message = chatting.getText();
+						writer.println("message:" + message);
+						chatting.setText("");
+					} catch (Exception e2) {
+						JOptionPane.showMessageDialog(null, e2.getMessage());
+					}
+				}
 			}
 		});
+		
+		Thread disappearRoom = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				DataBase db = new DataBase();
+				db.Select("SELECT * FROM ");
+			}
+		});
+	//	disappearRoom.start();
+		
+		gameChatting();
+		gameChatReceive(soc);
 		
 		ct.add(gameRoomPanel);
 		
@@ -156,12 +220,42 @@ public class GameRoom extends JFrame {
 		setSize(1024, 768);
 		setResizable(false);
 		setLocationRelativeTo(null);
-		//setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setVisible(true);
 	}
-	
-	public void deleteRoom() {
-		DataBase db = new DataBase();
-		db.Delete(null);
+	// --------------------- Method ---------------------
+	//채팅방 접속 메소드
+	public void gameChatting() {
+		try {
+			soc = new Socket(SERVER_IP, SERVER_PORT);
+			System.out.println(nickname + "님이 서버와 연결되었습니다.");
+			
+			writer = new PrintWriter(new OutputStreamWriter(soc.getOutputStream()), true);
+			String receiveData = "join:" + nickname + "\r\n";
+			writer.println(receiveData);
+			
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+		}
+	}
+	//채팅방 브로드캐스트 수신 메소드
+	public void gameChatReceive(Socket soc) {
+		this.soc = soc;
+		Runnable receiver = new Runnable() {
+			@Override
+			public void run() {
+				try {
+					reader = new BufferedReader(new InputStreamReader(soc.getInputStream()));
+					while (true) {
+						String msg = reader.readLine();
+						chattingRoom.append(msg + "\n");
+						chattingRoom.setCaretPosition(chattingRoom.getText().length());
+					}
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, e.getMessage());
+				}
+			}
+		};
+		Thread clThread = new Thread(receiver);
+		clThread.start();
 	}
 }

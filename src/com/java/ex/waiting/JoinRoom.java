@@ -75,6 +75,8 @@ public class JoinRoom extends JFrame {
 				try {
 					db.pstmt.setString(1, txtPassword.getText());
 					db.rs = db.pstmt.executeQuery();
+					
+					Object test = "asd";
 					if (db.rs.next()) {
 						new GameRoom(userid, nickname);
 						dispose();
