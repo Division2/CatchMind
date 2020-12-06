@@ -144,12 +144,12 @@ public class GameRoom extends JFrame {
 		memberField1 = new JLabel();
 		memberField1.setBounds(40, 70, 150, 100);
 		memberField1.setOpaque(true);
-		memberField1.setBorder(BorderFactory.createLineBorder(Color.white, 1));		
+		memberField1.setBorder(BorderFactory.createLineBorder(Color.white, 1));	
 		
 		memberField2 = new JLabel();
 		memberField2.setBounds(40, 180, 150, 100);
 		memberField2.setOpaque(true);
-		memberField2.setBorder(BorderFactory.createLineBorder(Color.white, 1));	
+		memberField2.setBorder(BorderFactory.createLineBorder(Color.white, 1));
 		
 		memberField3 = new JLabel();
 		memberField3.setBounds(820, 70, 150, 100);
