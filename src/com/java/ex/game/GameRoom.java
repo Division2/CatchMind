@@ -201,6 +201,7 @@ public class GameRoom extends JFrame {
 					
 					db.pstmt.setString(1, nickname);
 					db.rs = db.pstmt.executeQuery();
+					
 					if (db.rs.next()) {
 						//방장이 방을 나오면 방장닉넴으로 된 레코드 삭제(Game)
 						db.Delete("DELETE FROM Game WHERE RoomOwner = ?");
@@ -220,12 +221,49 @@ public class GameRoom extends JFrame {
 						}
 					}
 					else {
-						//방제목으로 어디방에 접속했는지 검색하고 플레이어들 마다 찾아서
-						//해당 플레이어가 어디 컬럼해 위치해있는지 보고 UPDATE로 NULL 지정해주자...
+						//해당 방의 방 제목 구해서 setString에 방 제목 넣어주자
 						db.Select("SELECT * FROM RoomMember WHERE RoomTitle = ?");
+						db.pstmt.setString(1, "테스트");
 						db.rs = db.pstmt.executeQuery();
-						new WaitingRoom(userid, nickname);
-						dispose();
+						
+						if (db.rs.next()) {
+							if (db.rs.getString("Player2").equals(nickname)) {
+								db.Delete("UPDATE RoomMember SET Player2 = ? WHERE Player2 = ?");
+								db.pstmt.setString(1, null);
+								db.pstmt.setString(2, nickname);
+								
+								int result = db.pstmt.executeUpdate();
+								
+								if (1 == result) {
+									new WaitingRoom(userid, nickname);
+									dispose();	
+								}
+							}
+							if (db.rs.getString("Player3").equals(nickname)) {
+								db.Delete("UPDATE RoomMember SET Player3 = ? WHERE Player3 = ?");
+								db.pstmt.setString(1, null);
+								db.pstmt.setString(2, nickname);
+								
+								int result = db.pstmt.executeUpdate();
+								
+								if (1 == result) {
+									new WaitingRoom(userid, nickname);
+									dispose();	
+								}
+							}
+							if (db.rs.getString("Player4").equals(nickname)) {
+								db.Delete("UPDATE RoomMember SET Player4 = ? WHERE Player4 = ?");
+								db.pstmt.setString(1, null);
+								db.pstmt.setString(2, nickname);
+								
+								int result = db.pstmt.executeUpdate();
+								
+								if (1 == result) {
+									new WaitingRoom(userid, nickname);
+									dispose();	
+								}
+							}
+						}
 					}
 				} catch (Exception e2) {
 					JOptionPane.showMessageDialog(null, e2.getMessage());
@@ -273,7 +311,7 @@ public class GameRoom extends JFrame {
 				}
 			}
 		});
-		disRoom.start();
+	//	disRoom.start();
 		
 		gameChatting();
 		gameChatReceive(soc);
