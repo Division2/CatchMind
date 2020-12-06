@@ -121,6 +121,7 @@ public class ProfileUpdate extends JFrame {
 				} catch (Exception e2) {
 					JOptionPane.showMessageDialog(null, e2.getMessage());
 				}
+				db.Close();
 			}
 		});
 		//프로필 수정 취소 버튼 이벤트
@@ -161,5 +162,6 @@ public class ProfileUpdate extends JFrame {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
+		db.Close();
 	}
 }

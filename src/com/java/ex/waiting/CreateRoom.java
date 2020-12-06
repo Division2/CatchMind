@@ -154,5 +154,7 @@ public class CreateRoom extends JFrame{
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
+		
+		db.Close();
 	}
 }

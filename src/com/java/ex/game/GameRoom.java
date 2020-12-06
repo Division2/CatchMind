@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Ellipse2D;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -13,6 +14,7 @@ import java.net.Socket;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -21,6 +23,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.WindowConstants;
 
 import com.java.ex.database.DataBase;
 import com.java.ex.waiting.WaitingRoom;
@@ -38,12 +41,15 @@ public class GameRoom extends JFrame {
 	PrintWriter writer = null;
 	String message;
 	
+	String player1, player2, player3, player4;
+	
 	private Canvas canvas;
 	
 	JPanel gameRoomPanel = null;
 	
 	JTextArea chattingRoom = null;
 	JTextField chatting = null;
+	JButton btnStart = null;
 	JButton btnExit = null;
 	JButton btnCanvasBlack = null;
 	JButton btnCanvasRed = null;
@@ -77,6 +83,11 @@ public class GameRoom extends JFrame {
 		canvas.setBounds(200, 70, 610, 450);
 		canvas.setBackground(Color.white);
 		
+		btnStart = new JButton("게임 시작");
+		btnStart.setBounds(660, 10, 150, 40);
+	// 방장만 버튼이 보이도록 하자. 구현이 안 됐으니 임시로 주석처리
+	//	btnStart.setVisible(false);
+		
 		btnExit = new JButton("나가기");
 		btnExit.setBounds(820, 10, 150, 40);
 		
@@ -101,22 +112,51 @@ public class GameRoom extends JFrame {
 		btnCanvasClear = new JButton("전체 지우기");
 		btnCanvasClear.setBounds(675, 530, 100, 40);
 		
-		memberField1 = new JLabel(nickname);
+		//플레이어 불러오는 스레드
+		Thread test = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				DataBase db = new DataBase();
+				db.Select("SELECT * FROM RoomMember");
+				while (true) {
+					try {
+						db.rs = db.pstmt.executeQuery();
+						
+						if (db.rs.next()) {
+							player1 = db.rs.getString("Player1");
+							player2 = db.rs.getString("Player2");
+							player3 = db.rs.getString("Player3");
+							player4 = db.rs.getString("Player4");
+							
+							memberField1.setText(player1);
+							memberField2.setText(player2);
+							memberField3.setText(player3);
+							memberField4.setText(player4);
+						}
+					} catch (Exception e) {
+						JOptionPane.showMessageDialog(null, e.getMessage());
+					}
+				}
+			}
+		});
+		test.start();
+		
+		memberField1 = new JLabel();
 		memberField1.setBounds(40, 70, 150, 100);
 		memberField1.setOpaque(true);
 		memberField1.setBorder(BorderFactory.createLineBorder(Color.white, 1));		
 		
-		memberField2 = new JLabel(nickname);
+		memberField2 = new JLabel();
 		memberField2.setBounds(40, 180, 150, 100);
 		memberField2.setOpaque(true);
 		memberField2.setBorder(BorderFactory.createLineBorder(Color.white, 1));	
 		
-		memberField3 = new JLabel(nickname);
+		memberField3 = new JLabel();
 		memberField3.setBounds(820, 70, 150, 100);
 		memberField3.setOpaque(true);
 		memberField3.setBorder(BorderFactory.createLineBorder(Color.white, 1));
 		
-		memberField4 = new JLabel(nickname);
+		memberField4 = new JLabel();
 		memberField4.setBounds(820, 180, 150, 100);
 		memberField4.setOpaque(true);
 		memberField4.setBorder(BorderFactory.createLineBorder(Color.white, 1));
@@ -135,6 +175,7 @@ public class GameRoom extends JFrame {
 		// 채팅창 및 채팅 입력창
 		
 		gameRoomPanel.add(canvas);
+		gameRoomPanel.add(btnStart);
 		gameRoomPanel.add(btnExit);
 		gameRoomPanel.add(btnCanvasBlack);
 		gameRoomPanel.add(btnCanvasRed);
@@ -154,32 +195,42 @@ public class GameRoom extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				DataBase db = new DataBase();
-				db.Select("SELECT * FROM Game WHERE RoomOwner = ?");
 				try {
 					//방장 닉네임으로 된 방 찾기
+					db.Select("SELECT * FROM Game WHERE RoomOwner = ?");
+					
 					db.pstmt.setString(1, nickname);
 					db.rs = db.pstmt.executeQuery();
-					
 					if (db.rs.next()) {
-						//방장이 방을 나오면 방장닉넴으로 된 레코드 삭제
+						//방장이 방을 나오면 방장닉넴으로 된 레코드 삭제(Game)
 						db.Delete("DELETE FROM Game WHERE RoomOwner = ?");
 						db.pstmt.setString(1, nickname);
 						
 						int result = db.pstmt.executeUpdate();
 						
-						if (1 == result) {
+						//방장이 방을 나오면 방장닉넴으로 된 레코드 삭제2(RoomMember)
+						db.Delete("DELETE FROM RoomMember WHERE Player1 = ?");
+						db.pstmt.setString(1, nickname);
+						
+						int result2 = db.pstmt.executeUpdate();
+					
+						if (1 == result & 1 == result2) {
 							new WaitingRoom(userid, nickname);
 							dispose();
 						}
 					}
 					else {
+						//방제목으로 어디방에 접속했는지 검색하고 플레이어들 마다 찾아서
+						//해당 플레이어가 어디 컬럼해 위치해있는지 보고 UPDATE로 NULL 지정해주자...
+						db.Select("SELECT * FROM RoomMember WHERE RoomTitle = ?");
+						db.rs = db.pstmt.executeQuery();
 						new WaitingRoom(userid, nickname);
 						dispose();
 					}
-					
 				} catch (Exception e2) {
 					JOptionPane.showMessageDialog(null, e2.getMessage());
 				}
+				db.Close();
 			}
 		});
 		//채팅방 전송 이벤트
@@ -202,14 +253,27 @@ public class GameRoom extends JFrame {
 			}
 		});
 		
-		Thread disappearRoom = new Thread(new Runnable() {
+		//이것도 구현해야함
+		//방장이 방을 나갔는데 유저가 방에 있으면 유저를 추방
+		Thread disRoom = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				DataBase db = new DataBase();
-				db.Select("SELECT * FROM ");
+				db.Select("SELECT * FROM RoomMember");
+
+				try {
+					db.rs = db.pstmt.executeQuery();
+					
+					while (!db.rs.next()) {
+						new WaitingRoom(userid, nickname);
+						dispose();
+					}
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, e.getMessage());
+				}
 			}
 		});
-	//	disappearRoom.start();
+		disRoom.start();
 		
 		gameChatting();
 		gameChatReceive(soc);
@@ -220,6 +284,7 @@ public class GameRoom extends JFrame {
 		setSize(1024, 768);
 		setResizable(false);
 		setLocationRelativeTo(null);
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		setVisible(true);
 	}
 	// --------------------- Method ---------------------

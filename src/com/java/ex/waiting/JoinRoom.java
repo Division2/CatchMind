@@ -63,6 +63,7 @@ public class JoinRoom extends JFrame {
 				} catch (Exception e2) {
 					JOptionPane.showMessageDialog(null, e2.getMessage());
 				}
+				db.Close();
 			}
 		});
 		//참여하기 버튼 이벤트
@@ -87,6 +88,7 @@ public class JoinRoom extends JFrame {
 				} catch (Exception e2) {
 					JOptionPane.showMessageDialog(null, e2.getMessage());
 				}
+				db.Close();
 			}
 		});
 		//취소 버튼 이벤트
