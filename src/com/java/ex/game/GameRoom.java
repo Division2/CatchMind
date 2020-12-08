@@ -221,52 +221,58 @@ public class GameRoom extends JFrame {
 						}
 					}
 					else {
-						//해당 방의 방 제목 구해서 setString에 방 제목 넣어주자
-						db.Select("SELECT * FROM RoomMember WHERE RoomTitle = ?");
-						db.pstmt.setString(1, "테스트");
+						db.Select("SELECT * FROM Game WHERE RoomOwner = ?");
+						db.pstmt.setString(1, player1);
 						db.rs = db.pstmt.executeQuery();
 						
 						if (db.rs.next()) {
-							if (db.rs.getString("Player2").equals(nickname)) {
-								db.Delete("UPDATE RoomMember SET Player2 = ? WHERE Player2 = ?");
-								db.pstmt.setString(1, null);
-								db.pstmt.setString(2, nickname);
-								
-								int result = db.pstmt.executeUpdate();
-								
-								if (1 == result) {
-									new WaitingRoom(userid, nickname);
-									dispose();	
+							db.Select("SELECT * FROM RoomMember WHERE RoomTitle = ?");
+							db.pstmt.setString(1, db.rs.getString("RoomTitle"));
+							db.rs = db.pstmt.executeQuery();
+							
+							if (db.rs.next()) {
+								if (db.rs.getString("Player2").equals(nickname)) {
+									db.Delete("UPDATE RoomMember SET Player2 = ? WHERE Player2 = ?");
+									db.pstmt.setString(1, null);
+									db.pstmt.setString(2, nickname);
+									
+									int result = db.pstmt.executeUpdate();
+									
+									if (1 == result) {
+										new WaitingRoom(userid, nickname);
+										dispose();
+									}
 								}
-							}
-							if (db.rs.getString("Player3").equals(nickname)) {
-								db.Delete("UPDATE RoomMember SET Player3 = ? WHERE Player3 = ?");
-								db.pstmt.setString(1, null);
-								db.pstmt.setString(2, nickname);
-								
-								int result = db.pstmt.executeUpdate();
-								
-								if (1 == result) {
-									new WaitingRoom(userid, nickname);
-									dispose();	
+								if (db.rs.getString("Player3").equals(nickname)) {
+									db.Delete("UPDATE RoomMember SET Player3 = ? WHERE Player3 = ?");
+									db.pstmt.setString(1, null);
+									db.pstmt.setString(2, nickname);
+									
+									int result = db.pstmt.executeUpdate();
+									
+									if (1 == result) {
+										new WaitingRoom(userid, nickname);
+										dispose();	
+									}
 								}
-							}
-							if (db.rs.getString("Player4").equals(nickname)) {
-								db.Delete("UPDATE RoomMember SET Player4 = ? WHERE Player4 = ?");
-								db.pstmt.setString(1, null);
-								db.pstmt.setString(2, nickname);
-								
-								int result = db.pstmt.executeUpdate();
-								
-								if (1 == result) {
-									new WaitingRoom(userid, nickname);
-									dispose();	
+								if (db.rs.getString("Player4").equals(nickname)) {
+									db.Delete("UPDATE RoomMember SET Player4 = ? WHERE Player4 = ?");
+									db.pstmt.setString(1, null);
+									db.pstmt.setString(2, nickname);
+									
+									int result = db.pstmt.executeUpdate();
+									
+									if (1 == result) {
+										new WaitingRoom(userid, nickname);
+										dispose();	
+									}
 								}
 							}
 						}
 					}
+					
 				} catch (Exception e2) {
-					JOptionPane.showMessageDialog(null, e2.getMessage());
+					e2.printStackTrace();
 				}
 				db.Close();
 			}
@@ -291,27 +297,30 @@ public class GameRoom extends JFrame {
 			}
 		});
 		
-		//이것도 구현해야함
-		//방장이 방을 나갔는데 유저가 방에 있으면 유저를 추방
 		Thread disRoom = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				DataBase db = new DataBase();
 				db.Select("SELECT * FROM RoomMember");
-
+				
 				try {
 					db.rs = db.pstmt.executeQuery();
 					
-					while (!db.rs.next()) {
-						new WaitingRoom(userid, nickname);
-						dispose();
+					while (true) {
+						if (!gameRoomPanel.isVisible()) {
+							break;
+						}
+						if (!db.rs.next()) {
+							new WaitingRoom(userid, nickname);
+							dispose();	
+						}
 					}
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(null, e.getMessage());
 				}
 			}
 		});
-	//	disRoom.start();
+		disRoom.start();
 		
 		gameChatting();
 		gameChatReceive(soc);

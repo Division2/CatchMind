@@ -242,11 +242,47 @@ public class WaitingRoom extends JFrame {
 				if (e.getClickCount() == 2) {
 					int row = tabRoom.getSelectedRow();
 					Object record = tabRoom.getValueAt(row, 4);
+					Object roomtitle = tabRoom.getValueAt(row, 1);
 					
 					if (record.equals("ºñ°ø°³")) {
 						new JoinRoom(userid, nickname);
 					}
 					else {
+						DataBase db = new DataBase();
+						db.Select("SELECT * FROM RoomMember");
+						try {
+							db.rs = db.pstmt.executeQuery();
+							if (db.rs.next()) {
+								if (db.rs.getString("Player2") == null) {
+									db.Insert("INSERT INTO RoomMember(Player2) VALUES(?)");
+									db.Update("UPDATE RoomMember SET Player2 = ? WHERE RoomTitle = ?");
+									db.pstmt.setString(1, nickname);
+									db.pstmt.setObject(2, roomtitle);
+									int result = db.pstmt.executeUpdate();
+								}
+								if (db.rs.getString("Player2") != null) {
+									if (db.rs.getString("Player3") == null) {
+										db.Insert("INSERT INTO RoomMember(Player3) VALUES(?)");
+										db.Update("UPDATE RoomMember SET Player3 = ? WHERE RoomTitle = ?");
+										db.pstmt.setString(1, nickname);
+										db.pstmt.setObject(2, roomtitle);
+										int result = db.pstmt.executeUpdate();
+									}
+								}
+								if ((db.rs.getString("Player2") != null) & (db.rs.getString("Player3") != null)) {
+									if (db.rs.getString("Player4") == null) {
+										db.Insert("INSERT INTO RoomMember(Player4) VALUES(?)");
+										db.Update("UPDATE RoomMember SET Player4 = ? WHERE RoomTitle = ?");
+										db.pstmt.setString(1, nickname);
+										db.pstmt.setObject(2, roomtitle);
+										int result = db.pstmt.executeUpdate();
+									}
+								}
+							}
+						} catch (Exception e2) {
+							JOptionPane.showMessageDialog(null, e2.getMessage());
+							e2.printStackTrace();
+						}
 						new GameRoom(userid, nickname);
 						dispose();
 					}
