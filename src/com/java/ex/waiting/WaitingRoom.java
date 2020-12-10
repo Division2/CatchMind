@@ -593,7 +593,7 @@ public class WaitingRoom extends JFrame {
 	}
 
 	//getter & setter
-	public String getUserid() { 
+	public String getUserid() {
 		return userid;
 	}
 
