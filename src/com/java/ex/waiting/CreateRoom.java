@@ -138,7 +138,7 @@ public class CreateRoom extends JFrame{
 				JOptionPane.showMessageDialog(null, "방 생성중 문제가 발생하였습니다.", "캐치마인드", JOptionPane.ERROR_MESSAGE);
 			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e.getMessage());
+			e.printStackTrace();
 		}
 		
 		//RoomMember테이블에 방 제목과 방장을 Player1로 지정
@@ -152,7 +152,7 @@ public class CreateRoom extends JFrame{
 				JOptionPane.showMessageDialog(null, "방 생성중 문제가 발생하였습니다.", "캐치마인드", JOptionPane.ERROR_MESSAGE);
 			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e.getMessage());
+			e.printStackTrace();
 		}
 		db.Close();
 	}

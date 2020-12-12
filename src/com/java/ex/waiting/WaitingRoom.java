@@ -226,7 +226,6 @@ public class WaitingRoom extends JFrame {
 							}
 						}
 					} catch (Exception e2) {
-						JOptionPane.showMessageDialog(null, e2.getMessage());
 						e2.printStackTrace();
 					}
 					new GameRoom(userid, nickname);
@@ -234,6 +233,7 @@ public class WaitingRoom extends JFrame {
 				}
 			}
 		});
+		//방 리스트 더블클릭 시 입장
 		tabRoom.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseReleased(MouseEvent e) {}
@@ -280,7 +280,6 @@ public class WaitingRoom extends JFrame {
 								}
 							}
 						} catch (Exception e2) {
-							JOptionPane.showMessageDialog(null, e2.getMessage());
 							e2.printStackTrace();
 						}
 						new GameRoom(userid, nickname);
@@ -333,6 +332,7 @@ public class WaitingRoom extends JFrame {
 						new Login();
 						dispose();
 					} catch (Exception e2) {
+						e2.printStackTrace();
 					}
 				}
 			}
@@ -373,7 +373,7 @@ public class WaitingRoom extends JFrame {
 						writer.println("message:" + message);
 						chatting.setText("");
 					} catch (Exception e2) {
-						JOptionPane.showMessageDialog(null, e2.getMessage());
+						e2.printStackTrace();
 					}
 				}
 			}
@@ -392,7 +392,7 @@ public class WaitingRoom extends JFrame {
 						writer.println("message:" + message);
 						chatting.setText("");
 					} catch (Exception e2) {
-						JOptionPane.showMessageDialog(null, e2.getMessage());
+						e2.printStackTrace();
 					}
 				}
 			}
@@ -405,7 +405,7 @@ public class WaitingRoom extends JFrame {
 				try {
 					Thread.sleep(1000);
 				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, e.getMessage());
+					e.printStackTrace();
 				}
 			}
 		});
@@ -422,7 +422,7 @@ public class WaitingRoom extends JFrame {
 					try {
 						Thread.sleep(1000);
 					} catch (Exception e) {
-						JOptionPane.showMessageDialog(null, e.getMessage());
+						e.printStackTrace();
 					}
 				}
 			}
@@ -440,7 +440,7 @@ public class WaitingRoom extends JFrame {
 					try {
 						Thread.sleep(3000);
 					} catch (Exception e) {
-						JOptionPane.showMessageDialog(null, e.getMessage());
+						e.printStackTrace();
 					}
 				}
 			}
@@ -464,7 +464,7 @@ public class WaitingRoom extends JFrame {
 						}
 					}
 				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, e.getMessage());
+					e.printStackTrace();
 				}
 				db.Close();
 			}
@@ -497,7 +497,7 @@ public class WaitingRoom extends JFrame {
 			writer.println(receiveData);
 			
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e.getMessage());
+			e.printStackTrace();
 		}
 	}
 	//채팅방 브로드캐스트 수신 메소드
@@ -514,7 +514,7 @@ public class WaitingRoom extends JFrame {
 						chattingRoom.setCaretPosition(chattingRoom.getText().length());
 					}
 				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, e.getMessage());
+					e.printStackTrace();
 				}
 			}
 		};
@@ -535,7 +535,7 @@ public class WaitingRoom extends JFrame {
 				txtMyExp.setText(db.rs.getString("Exp"));
 			}
 		} catch (Exception e) {
-			JOptionPane.showConfirmDialog(null, e.getMessage());
+			e.printStackTrace();
 		}
 		db.Close();
 	}
@@ -559,7 +559,7 @@ public class WaitingRoom extends JFrame {
 				userModel.addRow(data);
 			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e.getMessage());
+			e.printStackTrace();
 		}
 		db.Close();
 		return userModel;
@@ -586,18 +586,9 @@ public class WaitingRoom extends JFrame {
 				roomNum++;
 			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e.getMessage());
+			e.printStackTrace();
 		}
 		db.Close();
 		return roomModel;
-	}
-
-	//getter & setter
-	public String getUserid() {
-		return userid;
-	}
-
-	public void setUserid(String userid) {
-		this.userid = userid;
 	}
 }

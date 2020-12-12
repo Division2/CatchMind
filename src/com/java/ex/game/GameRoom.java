@@ -1,15 +1,27 @@
 package com.java.ex.game;
 
+import java.awt.BasicStroke;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -24,6 +36,8 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 
 import com.java.ex.database.DataBase;
+import com.java.ex.paintserver.GamePaintCanvas;
+import com.java.ex.paintserver.GamePaintDTO;
 import com.java.ex.waiting.WaitingRoom;
 
 public class GameRoom extends JFrame {
@@ -32,19 +46,21 @@ public class GameRoom extends JFrame {
 	private String nickname;
 
 	private static final String SERVER_IP = "127.0.0.1";
-	private static final int SERVER_PORT = 5001;
+	private static final int CHAT_SERVER_PORT = 5001;
 
+	// 채팅방
 	Socket soc = null;
 	BufferedReader reader = null;
 	PrintWriter writer = null;
 	String message;
+	
+	Canvas canvas;
+
+	GamePaintCanvas gamePaintCanvas;
 
 	String player1, player2, player3, player4;
 
-	private Canvas canvas;
-
 	JPanel gameRoomPanel = null;
-
 	JTextArea chattingRoom = null;
 	JTextField chatting = null;
 	JButton btnStart = null;
@@ -77,14 +93,9 @@ public class GameRoom extends JFrame {
 		gameRoomPanel = new JPanel();
 		gameRoomPanel.setLayout(null);
 
-		canvas = new Canvas();
-		canvas.setBounds(200, 70, 610, 450);
-		canvas.setBackground(Color.white);
-
 		btnStart = new JButton("게임 시작");
 		btnStart.setBounds(660, 10, 150, 40);
-		// 방장만 버튼이 보이도록 하자. 구현이 안 됐으니 임시로 주석처리
-		// btnStart.setVisible(false);
+		btnStart.setVisible(false);
 
 		btnExit = new JButton("나가기");
 		btnExit.setBounds(820, 10, 150, 40);
@@ -109,35 +120,10 @@ public class GameRoom extends JFrame {
 
 		btnCanvasClear = new JButton("전체 지우기");
 		btnCanvasClear.setBounds(675, 530, 100, 40);
-
-		// 플레이어 불러오는 스레드
-		Thread test = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				DataBase db = new DataBase();
-				db.Select("SELECT * FROM RoomMember");
-				while (true) {
-					try {
-						db.rs = db.pstmt.executeQuery();
-
-						if (db.rs.next()) {
-							player1 = db.rs.getString("Player1");
-							player2 = db.rs.getString("Player2");
-							player3 = db.rs.getString("Player3");
-							player4 = db.rs.getString("Player4");
-
-							memberField1.setText(player1);
-							memberField2.setText(player2);
-							memberField3.setText(player3);
-							memberField4.setText(player4);
-						}
-					} catch (Exception e) {
-						JOptionPane.showMessageDialog(null, e.getMessage());
-					}
-				}
-			}
-		});
-		test.start();
+		
+		gamePaintCanvas = new GamePaintCanvas(GameRoom.this);
+		canvas = gamePaintCanvas.getCanvas();
+		canvas.setBounds(200, 70, 610, 450);
 
 		memberField1 = new JLabel();
 		memberField1.setBounds(40, 70, 150, 100);
@@ -213,10 +199,6 @@ public class GameRoom extends JFrame {
 
 						int result2 = db.pstmt.executeUpdate();
 
-//						if (1 == result & 1 == result2) {
-//							new WaitingRoom(userid, nickname);
-//							dispose();
-//						}
 					} else {
 						db.Select("SELECT * FROM Game WHERE RoomOwner = ?");
 						db.pstmt.setString(1, player1);
@@ -267,9 +249,16 @@ public class GameRoom extends JFrame {
 							}
 						}
 					}
-
 				} catch (Exception e2) {
 					e2.printStackTrace();
+				}
+				GamePaintDTO gamePaintDTO = new GamePaintDTO();
+				gamePaintDTO.setSignal(3);
+				try {
+					gamePaintCanvas.getOwriter().writeObject(gamePaintDTO);
+					gamePaintCanvas.getOwriter().flush();
+				} catch (IOException e1) {
+					e1.printStackTrace();
 				}
 				db.Close();
 			}
@@ -288,12 +277,12 @@ public class GameRoom extends JFrame {
 						writer.println("message:" + message);
 						chatting.setText("");
 					} catch (Exception e2) {
-						JOptionPane.showMessageDialog(null, e2.getMessage());
+						e2.printStackTrace();
 					}
 				}
 			}
 		});
-
+		
 		// 방장이 나갔을 때 방에 접속되어 있는 유저를 추방
 		Thread disRoom = new Thread(new Runnable() {
 			@Override
@@ -305,10 +294,7 @@ public class GameRoom extends JFrame {
 					while (true) {
 						db.rs = db.pstmt.executeQuery();
 
-						if (db.rs.next()) {
-
-						}
-						else {
+						if (!db.rs.next()) {
 							if (gameRoomPanel.isVisible()) {
 								new WaitingRoom(userid, nickname);
 								dispose();
@@ -316,13 +302,55 @@ public class GameRoom extends JFrame {
 							}
 						}
 					}
+					
+					try {
+						Thread.sleep(1000);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, e.getMessage());
+					e.printStackTrace();
 				}
 			}
 		});
 		disRoom.start();
+		
+		// 플레이어 불러오는 스레드
+		Thread playerLoad = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				DataBase db = new DataBase();
+				db.Select("SELECT * FROM RoomMember");
+				while (true) {
+					try {
+						db.rs = db.pstmt.executeQuery();
 
+						if (db.rs.next()) {
+							player1 = db.rs.getString("Player1");
+							player2 = db.rs.getString("Player2");
+							player3 = db.rs.getString("Player3");
+							player4 = db.rs.getString("Player4");
+
+							memberField1.setText(player1);
+							memberField2.setText(player2);
+							memberField3.setText(player3);
+							memberField4.setText(player4);
+						}
+						
+						try {
+							Thread.sleep(1000);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					} catch (Exception e) {
+						JOptionPane.showMessageDialog(null, e.getMessage());
+					}
+				}
+			}
+		});
+		playerLoad.start();
+
+		btnStartVisible();
 		gameChatting();
 		gameChatReceive(soc);
 
@@ -340,7 +368,7 @@ public class GameRoom extends JFrame {
 	// 채팅방 접속 메소드
 	public void gameChatting() {
 		try {
-			soc = new Socket(SERVER_IP, SERVER_PORT);
+			soc = new Socket(SERVER_IP, CHAT_SERVER_PORT);
 			System.out.println(nickname + "님이 서버와 연결되었습니다.");
 
 			writer = new PrintWriter(new OutputStreamWriter(soc.getOutputStream()), true);
@@ -348,7 +376,7 @@ public class GameRoom extends JFrame {
 			writer.println(receiveData);
 
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
@@ -366,11 +394,56 @@ public class GameRoom extends JFrame {
 						chattingRoom.setCaretPosition(chattingRoom.getText().length());
 					}
 				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, e.getMessage());
+					e.printStackTrace();
 				}
 			}
 		};
 		Thread clThread = new Thread(receiver);
 		clThread.start();
+	}
+
+	// 방장만 버튼이 보이게 하는 메소드
+	public void btnStartVisible() {
+		DataBase db = new DataBase();
+		db.Select("SELECT * FROM RoomMember WHERE Player1 = ?");
+
+		try {
+			db.pstmt.setString(1, nickname);
+			db.rs = db.pstmt.executeQuery();
+
+			if (db.rs.next()) {
+				btnStart.setVisible(true);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public JButton getBtnCanvasBlack() {
+		return btnCanvasBlack;
+	}
+
+	public JButton getBtnCanvasRed() {
+		return btnCanvasRed;
+	}
+
+	public JButton getBtnCanvasGreen() {
+		return btnCanvasGreen;
+	}
+
+	public JButton getBtnCanvasBlue() {
+		return btnCanvasBlue;
+	}
+
+	public JButton getBtnCanvasYellow() {
+		return btnCanvasYellow;
+	}
+
+	public JButton getBtnCanvasEraser() {
+		return btnCanvasEraser;
+	}
+
+	public JButton getBtnCanvasClear() {
+		return btnCanvasClear;
 	}
 }
