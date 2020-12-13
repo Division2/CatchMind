@@ -1,27 +1,19 @@
 package com.java.ex.game;
 
-import java.awt.BasicStroke;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -53,7 +45,7 @@ public class GameRoom extends JFrame {
 	BufferedReader reader = null;
 	PrintWriter writer = null;
 	String message;
-	
+
 	Canvas canvas;
 
 	GamePaintCanvas gamePaintCanvas;
@@ -84,6 +76,7 @@ public class GameRoom extends JFrame {
 	JLabel memberScore2 = null;
 	JLabel memberScore3 = null;
 	JLabel memberScore4 = null;
+	JLabel lblanwser = null;
 
 	public GameRoom(String userid, String nickname) {
 		this.userid = userid;
@@ -120,7 +113,7 @@ public class GameRoom extends JFrame {
 
 		btnCanvasClear = new JButton("전체 지우기");
 		btnCanvasClear.setBounds(675, 530, 100, 40);
-		
+
 		gamePaintCanvas = new GamePaintCanvas(GameRoom.this);
 		canvas = gamePaintCanvas.getCanvas();
 		canvas.setBounds(200, 70, 610, 450);
@@ -144,6 +137,11 @@ public class GameRoom extends JFrame {
 		memberField4.setBounds(820, 180, 150, 100);
 		memberField4.setOpaque(true);
 		memberField4.setBorder(BorderFactory.createLineBorder(Color.white, 1));
+
+		lblanwser = new JLabel();
+		lblanwser.setBounds(450, 30, 100, 30);
+		lblanwser.setFont(new Font("굴림", Font.BOLD, 15));
+//		lblanwser.setVisible(false);
 
 		// 채팅창 및 채팅 입력창
 		chattingRoom = new JTextArea();
@@ -172,8 +170,50 @@ public class GameRoom extends JFrame {
 		gameRoomPanel.add(memberField2);
 		gameRoomPanel.add(memberField3);
 		gameRoomPanel.add(memberField4);
+		gameRoomPanel.add(lblanwser);
 
 		// --------------------- Button Event ---------------------
+		// 게임시작 버튼 이벤트
+		btnStart.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				DataBase db = new DataBase();
+				db.Select("SELECT * FROM RoomMember");
+				try {
+					db.rs = db.pstmt.executeQuery();
+
+					if (db.rs.next()) {
+						if (db.rs.getString("Player2") != null) {
+							db.Select("SELECT * FROM answer");
+							try {
+								db.rs = db.pstmt.executeQuery();
+
+								ArrayList<String> randomAnswer = new ArrayList<String>();
+								while (db.rs.next()) {
+									randomAnswer.add(db.rs.getString("SolveProblems"));
+								}
+
+								Random ran = new Random();
+								int ran2 = ran.nextInt(randomAnswer.size());
+
+								String answer = randomAnswer.get(ran2);
+								lblanwser.setVisible(true);
+								lblanwser.setText(randomAnswer.get(ran2));
+
+								btnStart.setEnabled(false);
+							} catch (Exception e2) {
+								e2.printStackTrace();
+							}
+						} else {
+							JOptionPane.showMessageDialog(null, "게임시작에 필요한 인원이 부족합니다.\n최소 인원은 2명입니다.", "캐치마인드", JOptionPane.ERROR_MESSAGE);
+						}
+					}
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+				db.Close();
+			}
+		});
 		// 나가기 버튼 이벤트
 		btnExit.addActionListener(new ActionListener() {
 			@Override
@@ -249,8 +289,9 @@ public class GameRoom extends JFrame {
 							}
 						}
 					}
-				} catch (Exception e2) {
-					e2.printStackTrace();
+				} catch (NullPointerException e2) {
+				} catch (Exception e3) {
+					e3.printStackTrace();
 				}
 				GamePaintDTO gamePaintDTO = new GamePaintDTO();
 				gamePaintDTO.setSignal(3);
@@ -282,7 +323,29 @@ public class GameRoom extends JFrame {
 				}
 			}
 		});
-		
+		Thread rightAnswer = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while (true) {
+					try {
+						String test = chattingRoom.getText().substring(chattingRoom.getText().length() - lblanwser.getText().length());
+						
+						if (lblanwser.getText().length() == test.length()) {
+							System.out.println("일치");
+						} else {
+							System.out.println("No");
+						}
+					} catch (Exception e) {}
+
+					try {
+						Thread.sleep(1000);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+		rightAnswer.start();
 		// 방장이 나갔을 때 방에 접속되어 있는 유저를 추방
 		Thread disRoom = new Thread(new Runnable() {
 			@Override
@@ -290,8 +353,8 @@ public class GameRoom extends JFrame {
 				DataBase db = new DataBase();
 
 				db.Select("SELECT * FROM RoomMember");
-				try {
-					while (true) {
+				while (true) {
+					try {
 						db.rs = db.pstmt.executeQuery();
 
 						if (!db.rs.next()) {
@@ -301,20 +364,18 @@ public class GameRoom extends JFrame {
 								break;
 							}
 						}
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
-					
 					try {
 						Thread.sleep(1000);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-				} catch (Exception e) {
-					e.printStackTrace();
 				}
 			}
 		});
 		disRoom.start();
-		
 		// 플레이어 불러오는 스레드
 		Thread playerLoad = new Thread(new Runnable() {
 			@Override
@@ -336,14 +397,14 @@ public class GameRoom extends JFrame {
 							memberField3.setText(player3);
 							memberField4.setText(player4);
 						}
-						
+
 						try {
 							Thread.sleep(1000);
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
 					} catch (Exception e) {
-						JOptionPane.showMessageDialog(null, e.getMessage());
+						e.printStackTrace();
 					}
 				}
 			}
@@ -418,32 +479,12 @@ public class GameRoom extends JFrame {
 			e.printStackTrace();
 		}
 	}
-
-	public JButton getBtnCanvasBlack() {
-		return btnCanvasBlack;
-	}
-
-	public JButton getBtnCanvasRed() {
-		return btnCanvasRed;
-	}
-
-	public JButton getBtnCanvasGreen() {
-		return btnCanvasGreen;
-	}
-
-	public JButton getBtnCanvasBlue() {
-		return btnCanvasBlue;
-	}
-
-	public JButton getBtnCanvasYellow() {
-		return btnCanvasYellow;
-	}
-
-	public JButton getBtnCanvasEraser() {
-		return btnCanvasEraser;
-	}
-
-	public JButton getBtnCanvasClear() {
-		return btnCanvasClear;
-	}
+	
+	public JButton getBtnCanvasBlack() {return btnCanvasBlack;}
+	public JButton getBtnCanvasRed() {return btnCanvasRed;}
+	public JButton getBtnCanvasGreen() {return btnCanvasGreen;}
+	public JButton getBtnCanvasBlue() {return btnCanvasBlue;}
+	public JButton getBtnCanvasYellow() {return btnCanvasYellow;}
+	public JButton getBtnCanvasEraser() {return btnCanvasEraser;}
+	public JButton getBtnCanvasClear() {return btnCanvasClear;}
 }

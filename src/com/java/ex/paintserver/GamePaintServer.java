@@ -24,9 +24,7 @@ public class GamePaintServer {
 				handler.start();
 				list.add(handler);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		} catch (Exception e) {}
 	}
 	
 	public static void main(String[] args) {
