@@ -45,6 +45,8 @@ public class GameRoom extends JFrame {
 	BufferedReader reader = null;
 	PrintWriter writer = null;
 	String message;
+	
+	private boolean game = true;
 
 	Canvas canvas;
 
@@ -201,6 +203,14 @@ public class GameRoom extends JFrame {
 								lblanwser.setText(randomAnswer.get(ran2));
 
 								btnStart.setEnabled(false);
+								
+								db.Select("SELECT * FROM RoomMember WHERE Player1 = ?");
+								db.pstmt.setString(1, nickname);
+								db.rs = db.pstmt.executeQuery();
+								
+								if (db.rs.next()) {
+									chatting.setEnabled(false);
+								}
 							} catch (Exception e2) {
 								e2.printStackTrace();
 							}
@@ -326,12 +336,18 @@ public class GameRoom extends JFrame {
 		Thread rightAnswer = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				while (true) {
+				while (game) {
 					try {
-						String test = chattingRoom.getText().substring(chattingRoom.getText().length() - lblanwser.getText().length());
+						String test = chattingRoom.getText().substring(chattingRoom.getText().length() - lblanwser.getText().length()-1);
+						System.out.println(test);
 						
-						if (lblanwser.getText().length() == test.length()) {
-							System.out.println("일치");
+						if ((lblanwser.getText().equals(test.trim()) & (!lblanwser.getText().equals("")))) {
+							btnStart.setEnabled(true);
+							if (btnStart.isEnabled()) {
+								chatting.setEnabled(true);
+							}
+							JOptionPane.showMessageDialog(null, "정답입니다.");
+							break;
 						} else {
 							System.out.println("No");
 						}
