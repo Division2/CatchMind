@@ -81,6 +81,7 @@ public class LostID extends JFrame{
 			
 			if (db.rs.next()) {
 				JOptionPane.showMessageDialog(null, "해당 정보로 검색한 아이디 : " + db.rs.getString("UserID"), "아이디 찾기", JOptionPane.INFORMATION_MESSAGE);
+				dispose();
 			}
 			else if(txtName.getText().equals("")) {
 				JOptionPane.showMessageDialog(null, "닉네임을 입력해주세요.", "아이디 찾기", JOptionPane.ERROR_MESSAGE);

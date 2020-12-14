@@ -39,12 +39,19 @@ public class ServerBroadCast extends Thread {
 				}
 				
                 String[] tokens = recevieData.split(":");
+                
                 if("join".equals(tokens[0])) {
                 	join(tokens[1], writer);
                     System.out.println("채팅서버 연결");
                 }
                 else if("message".equals(tokens[0])) {
                 	message(tokens[1]);
+                }
+                else if("server".equals(tokens[0])) {
+                	serverMessage(tokens[1]);
+                }
+                else if("start".equals(tokens[0])) {
+                	startMessage();
                 }
                 else if("quit".equals(tokens[0])) {
                 	exit(writer);
@@ -89,6 +96,14 @@ public class ServerBroadCast extends Thread {
 	private void message(String data) {
 		broadcast(this.nickName + " : " + data);
 	}
+	//정답을 맞출 시 다른 회원에게도 broadcast
+	private void serverMessage(String data) {
+		broadcast("정답" + " : " + data);
+	}
+	//게임이 시작됐을 때 다른 회원에게도 broadcast
+	private void startMessage() {
+		broadcast("Server : 게임이 시작되었습니다.\nServer : 플레이어들은 방장이 그리는 그림을 맞추어주세요.");
+	}
 	//broadcast
 	private void broadcast(String data) {
 		synchronized (list) {
@@ -98,5 +113,4 @@ public class ServerBroadCast extends Thread {
 			}
 		}
 	}
-
 }

@@ -46,8 +46,6 @@ public class GameRoom extends JFrame {
 	PrintWriter writer = null;
 	String message;
 	
-	private boolean game = true;
-
 	Canvas canvas;
 
 	GamePaintCanvas gamePaintCanvas;
@@ -74,11 +72,7 @@ public class GameRoom extends JFrame {
 	JLabel memberNick2 = null;
 	JLabel memberNick3 = null;
 	JLabel memberNick4 = null;
-	JLabel memberScore1 = null;
-	JLabel memberScore2 = null;
-	JLabel memberScore3 = null;
-	JLabel memberScore4 = null;
-	JLabel lblanwser = null;
+	JLabel lblanswer = null;
 
 	public GameRoom(String userid, String nickname) {
 		this.userid = userid;
@@ -140,10 +134,10 @@ public class GameRoom extends JFrame {
 		memberField4.setOpaque(true);
 		memberField4.setBorder(BorderFactory.createLineBorder(Color.white, 1));
 
-		lblanwser = new JLabel();
-		lblanwser.setBounds(450, 30, 100, 30);
-		lblanwser.setFont(new Font("굴림", Font.BOLD, 15));
-//		lblanwser.setVisible(false);
+		lblanswer = new JLabel();
+		lblanswer.setBounds(450, 30, 300, 30);
+		lblanswer.setFont(new Font("굴림", Font.BOLD, 15));
+		lblanswer.setVisible(true);
 
 		// 채팅창 및 채팅 입력창
 		chattingRoom = new JTextArea();
@@ -172,7 +166,7 @@ public class GameRoom extends JFrame {
 		gameRoomPanel.add(memberField2);
 		gameRoomPanel.add(memberField3);
 		gameRoomPanel.add(memberField4);
-		gameRoomPanel.add(lblanwser);
+		gameRoomPanel.add(lblanswer);
 
 		// --------------------- Button Event ---------------------
 		// 게임시작 버튼 이벤트
@@ -197,11 +191,9 @@ public class GameRoom extends JFrame {
 
 								Random ran = new Random();
 								int ran2 = ran.nextInt(randomAnswer.size());
-
+								
 								String answer = randomAnswer.get(ran2);
-								lblanwser.setVisible(true);
-								lblanwser.setText(randomAnswer.get(ran2));
-
+								lblanswer.setText(answer);
 								btnStart.setEnabled(false);
 								
 								db.Select("SELECT * FROM RoomMember WHERE Player1 = ?");
@@ -211,6 +203,8 @@ public class GameRoom extends JFrame {
 								if (db.rs.next()) {
 									chatting.setEnabled(false);
 								}
+								writer = new PrintWriter(new OutputStreamWriter(soc.getOutputStream()), true);
+								writer.println("start:");
 							} catch (Exception e2) {
 								e2.printStackTrace();
 							}
@@ -336,20 +330,22 @@ public class GameRoom extends JFrame {
 		Thread rightAnswer = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				while (game) {
+				while (true) {
 					try {
-						String test = chattingRoom.getText().substring(chattingRoom.getText().length() - lblanwser.getText().length()-1);
-						System.out.println(test);
+						String chatLastField = chattingRoom.getText().substring(chattingRoom.getText().length() - lblanswer.getText().length()-1);
+						System.out.println(chatLastField);
 						
-						if ((lblanwser.getText().equals(test.trim()) & (!lblanwser.getText().equals("")))) {
+						if ((lblanswer.getText().equals(chatLastField.trim()) & (!lblanswer.getText().equals("")))) {
 							btnStart.setEnabled(true);
 							if (btnStart.isEnabled()) {
 								chatting.setEnabled(true);
 							}
-							JOptionPane.showMessageDialog(null, "정답입니다.");
-							break;
-						} else {
-							System.out.println("No");
+							lblanswer.setText(chatLastField + " 정답입니다.");
+							
+							writer = new PrintWriter(new OutputStreamWriter(soc.getOutputStream()), true);
+
+							message = chatLastField;
+							writer.println("server:" + message);
 						}
 					} catch (Exception e) {}
 

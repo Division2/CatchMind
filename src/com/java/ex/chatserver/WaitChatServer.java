@@ -30,9 +30,7 @@ public class WaitChatServer {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		} finally {
 			try {
-				if (svSoc != null && !svSoc.isClosed()) {
-					svSoc.close();
-				}
+				if (svSoc != null && !svSoc.isClosed()) {svSoc.close();}
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null, e.getMessage());
 			}
@@ -40,7 +38,6 @@ public class WaitChatServer {
 	}
 	
 	public static void main(String[] args) {
-		//Chat 서버도 GUI를 만들어주자..
 		new WaitChatServer();
 	}
 }

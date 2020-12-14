@@ -81,6 +81,7 @@ public class LostPW extends JFrame{
 			
 			if(db.rs.next()) {
 				JOptionPane.showMessageDialog(null, "해당 정보로 검색한 비밀번호 : " + db.rs.getString("Password"), "비밀번호 찾기", JOptionPane.INFORMATION_MESSAGE);
+				dispose();
 			}
 			else if(txtEmail.getText().equals("")) {
 				JOptionPane.showMessageDialog(null, "이메일을 입력해주세요.", "비밀번호 찾기", JOptionPane.ERROR_MESSAGE);
