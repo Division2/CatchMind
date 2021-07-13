@@ -40,7 +40,7 @@ public class GameRoom extends JFrame {
 	private static final String SERVER_IP = "127.0.0.1";
 	private static final int CHAT_SERVER_PORT = 5001;
 
-	// Ã¤ÆÃ¹æ
+	// ì±„íŒ…ë°©
 	Socket soc = null;
 	BufferedReader reader = null;
 	PrintWriter writer = null;
@@ -82,32 +82,32 @@ public class GameRoom extends JFrame {
 		gameRoomPanel = new JPanel();
 		gameRoomPanel.setLayout(null);
 
-		btnStart = new JButton("°ÔÀÓ ½ÃÀÛ");
+		btnStart = new JButton("ê²Œì„ ì‹œì‘");
 		btnStart.setBounds(660, 10, 150, 40);
 		btnStart.setVisible(false);
 
-		btnExit = new JButton("³ª°¡±â");
+		btnExit = new JButton("ë‚˜ê°€ê¸°");
 		btnExit.setBounds(820, 10, 150, 40);
 
-		btnCanvasBlack = new JButton("°ËÁ¤");
+		btnCanvasBlack = new JButton("ê²€ì •");
 		btnCanvasBlack.setBounds(235, 530, 60, 40);
 
-		btnCanvasRed = new JButton("»¡°­");
+		btnCanvasRed = new JButton("ë¹¨ê°•");
 		btnCanvasRed.setBounds(305, 530, 60, 40);
 
-		btnCanvasGreen = new JButton("ÃÊ·Ï");
+		btnCanvasGreen = new JButton("ì´ˆë¡");
 		btnCanvasGreen.setBounds(375, 530, 60, 40);
 
-		btnCanvasBlue = new JButton("ÆÄ¶û");
+		btnCanvasBlue = new JButton("íŒŒë‘");
 		btnCanvasBlue.setBounds(445, 530, 60, 40);
 
-		btnCanvasYellow = new JButton("³ë¶û");
+		btnCanvasYellow = new JButton("ë…¸ë‘");
 		btnCanvasYellow.setBounds(515, 530, 60, 40);
 
-		btnCanvasEraser = new JButton("Áö¿ì°³");
+		btnCanvasEraser = new JButton("ì§€ìš°ê°œ");
 		btnCanvasEraser.setBounds(585, 530, 80, 40);
 
-		btnCanvasClear = new JButton("ÀüÃ¼ Áö¿ì±â");
+		btnCanvasClear = new JButton("ì „ì²´ ì§€ìš°ê¸°");
 		btnCanvasClear.setBounds(675, 530, 100, 40);
 
 		gamePaintCanvas = new GamePaintCanvas(GameRoom.this);
@@ -136,10 +136,10 @@ public class GameRoom extends JFrame {
 
 		lblanswer = new JLabel();
 		lblanswer.setBounds(450, 30, 300, 30);
-		lblanswer.setFont(new Font("±¼¸²", Font.BOLD, 15));
+		lblanswer.setFont(new Font("ï¿½ï¿½ï¿½ï¿½", Font.BOLD, 15));
 		lblanswer.setVisible(true);
 
-		// Ã¤ÆÃÃ¢ ¹× Ã¤ÆÃ ÀÔ·ÂÃ¢
+		// ì±„íŒ…ì°½ ë° ì±„íŒ… ì…ë ¥ì°½
 		chattingRoom = new JTextArea();
 		chattingRoom.setEditable(false);
 		chattingRoom.setBounds(22, 465, 653, 184);
@@ -150,8 +150,8 @@ public class GameRoom extends JFrame {
 		chatting.setBounds(200, 690, 610, 20);
 		gameRoomPanel.add(scroll1);
 		gameRoomPanel.add(chatting);
-		// Ã¤ÆÃÃ¢ ¹× Ã¤ÆÃ ÀÔ·ÂÃ¢
 
+		// ì±„íŒ…ì°½ ë° ì±„íŒ… ì…ë ¥ì°½
 		gameRoomPanel.add(canvas);
 		gameRoomPanel.add(btnStart);
 		gameRoomPanel.add(btnExit);
@@ -169,7 +169,7 @@ public class GameRoom extends JFrame {
 		gameRoomPanel.add(lblanswer);
 
 		// --------------------- Button Event ---------------------
-		// °ÔÀÓ½ÃÀÛ ¹öÆ° ÀÌº¥Æ®
+		// ê²Œì„ì‹œì‘ ë²„íŠ¼ ì´ë²¤íŠ¸
 		btnStart.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -209,7 +209,7 @@ public class GameRoom extends JFrame {
 								e2.printStackTrace();
 							}
 						} else {
-							JOptionPane.showMessageDialog(null, "°ÔÀÓ½ÃÀÛ¿¡ ÇÊ¿äÇÑ ÀÎ¿øÀÌ ºÎÁ·ÇÕ´Ï´Ù.\nÃÖ¼Ò ÀÎ¿øÀº 2¸íÀÔ´Ï´Ù.", "Ä³Ä¡¸¶ÀÎµå", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, "ê²Œì„ì‹œì‘ì— í•„ìš”í•œ ì¸ì›ì´ ë¶€ì¡±í•©ë‹ˆë‹¤.\nìµœì†Œ ì¸ì›ì€ 2ëª…ì…ë‹ˆë‹¤.", "ìºì¹˜ë§ˆì¸ë“œ", JOptionPane.ERROR_MESSAGE);
 						}
 					}
 				} catch (Exception e2) {
@@ -218,26 +218,26 @@ public class GameRoom extends JFrame {
 				db.Close();
 			}
 		});
-		// ³ª°¡±â ¹öÆ° ÀÌº¥Æ®
+		// ë‚˜ê°€ê¸° ë²„íŠ¼ ì´ë²¤íŠ¸
 		btnExit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				DataBase db = new DataBase();
 				try {
-					// ¹æÀå ´Ğ³×ÀÓÀ¸·Î µÈ ¹æ Ã£±â
+					// ë°©ì¥ ë‹‰ë„¤ì„ìœ¼ë¡œ ëœ ë°© ì°¾ê¸°
 					db.Select("SELECT * FROM Game WHERE RoomOwner = ?");
 
 					db.pstmt.setString(1, nickname);
 					db.rs = db.pstmt.executeQuery();
 
 					if (db.rs.next()) {
-						// ¹æÀåÀÌ ¹æÀ» ³ª¿À¸é ¹æÀå´Ğ³ÛÀ¸·Î µÈ ·¹ÄÚµå »èÁ¦(Game)
+						// ë°©ì¥ì´ ë°©ì„ ë‚˜ì˜¤ë©´ ë°©ì¥ë‹‰ë„´ìœ¼ë¡œ ëœ ë ˆì½”ë“œ ì‚­ì œ(Game)
 						db.Delete("DELETE FROM Game WHERE RoomOwner = ?");
 						db.pstmt.setString(1, nickname);
 
 						int result = db.pstmt.executeUpdate();
 
-						// ¹æÀåÀÌ ¹æÀ» ³ª¿À¸é ¹æÀå´Ğ³ÛÀ¸·Î µÈ ·¹ÄÚµå »èÁ¦2(RoomMember)
+						// ë°©ì¥ì´ ë°©ì„ ë‚˜ì˜¤ë©´ ë°©ì¥ë‹‰ë„´ìœ¼ë¡œ ëœ ë ˆì½”ë“œ ì‚­ì œ2(RoomMember)
 						db.Delete("DELETE FROM RoomMember WHERE Player1 = ?");
 						db.pstmt.setString(1, nickname);
 
@@ -308,7 +308,7 @@ public class GameRoom extends JFrame {
 				db.Close();
 			}
 		});
-		// Ã¤ÆÃ¹æ Àü¼Û ÀÌº¥Æ®
+		// ì±„íŒ…ë°© ì „ì†¡ ì´ë²¤íŠ¸
 		chatting.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -340,7 +340,7 @@ public class GameRoom extends JFrame {
 							if (btnStart.isEnabled()) {
 								chatting.setEnabled(true);
 							}
-							lblanswer.setText(chatLastField + " Á¤´äÀÔ´Ï´Ù.");
+							lblanswer.setText(chatLastField + "ì •ë‹µì…ë‹ˆë‹¤.");
 							
 							writer = new PrintWriter(new OutputStreamWriter(soc.getOutputStream()), true);
 
@@ -358,7 +358,7 @@ public class GameRoom extends JFrame {
 			}
 		});
 		rightAnswer.start();
-		// ¹æÀåÀÌ ³ª°¬À» ¶§ ¹æ¿¡ Á¢¼ÓµÇ¾î ÀÖ´Â À¯Àú¸¦ Ãß¹æ
+		// ë°©ì¥ì´ ë‚˜ê°”ì„ ë•Œ ë°©ì— ì ‘ì†ë˜ì–´ ìˆëŠ” ìœ ì €ë¥¼ ì¶”ë°©
 		Thread disRoom = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -388,7 +388,7 @@ public class GameRoom extends JFrame {
 			}
 		});
 		disRoom.start();
-		// ÇÃ·¹ÀÌ¾î ºÒ·¯¿À´Â ½º·¹µå
+		// í”Œë ˆì´ì–´ ë¶ˆëŸ¬ì˜¤ëŠ” ìŠ¤ë ˆë“œ
 		Thread playerLoad = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -429,7 +429,7 @@ public class GameRoom extends JFrame {
 
 		ct.add(gameRoomPanel);
 
-		setTitle("Ä³Ä¡¸¶ÀÎµå");
+		setTitle("ìºì¹˜ë§ˆì¸ë“œ");
 		setSize(1024, 768);
 		setResizable(false);
 		setLocationRelativeTo(null);
@@ -438,11 +438,11 @@ public class GameRoom extends JFrame {
 	}
 
 	// --------------------- Method ---------------------
-	// Ã¤ÆÃ¹æ Á¢¼Ó ¸Ş¼Òµå
+	// ì±„íŒ…ë°© ì ‘ì† ë©”ì†Œë“œ
 	public void gameChatting() {
 		try {
 			soc = new Socket(SERVER_IP, CHAT_SERVER_PORT);
-			System.out.println(nickname + "´ÔÀÌ ¼­¹ö¿Í ¿¬°áµÇ¾ú½À´Ï´Ù.");
+			System.out.println(nickname + "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
 
 			writer = new PrintWriter(new OutputStreamWriter(soc.getOutputStream()), true);
 			String receiveData = "join:" + nickname + "\r\n";
@@ -453,7 +453,7 @@ public class GameRoom extends JFrame {
 		}
 	}
 
-	// Ã¤ÆÃ¹æ ºê·ÎµåÄ³½ºÆ® ¼ö½Å ¸Ş¼Òµå
+	// ì±„íŒ…ë°© ë¸Œë¡œë“œìºìŠ¤íŠ¸ ìˆ˜ì‹  ë©”ì†Œë“œ
 	public void gameChatReceive(Socket soc) {
 		this.soc = soc;
 		Runnable receiver = new Runnable() {
@@ -475,7 +475,7 @@ public class GameRoom extends JFrame {
 		clThread.start();
 	}
 
-	// ¹æÀå¸¸ ¹öÆ°ÀÌ º¸ÀÌ°Ô ÇÏ´Â ¸Ş¼Òµå
+	// ë°©ì¥ë§Œ ë²„íŠ¼ì´ ë³´ì´ê²Œ í•˜ëŠ” ë©”ì†Œë“œ
 	public void btnStartVisible() {
 		DataBase db = new DataBase();
 		db.Select("SELECT * FROM RoomMember WHERE Player1 = ?");

@@ -23,7 +23,7 @@ public class DataBase {
 		Connect();
 	}
 	
-	//DB¿¬°á ¸Ş¼Òµå
+	//DBì—°ê²° ë©”ì†Œë“œ
 	public void Connect() {
 		try {
 			Class.forName(DB_DRIVER);
@@ -33,7 +33,7 @@ public class DataBase {
 		}
 	}
 	
-	//SQL Insert ¸Ş¼Òµå
+	//SQL Insert ë©”ì†Œë“œ
 	public void Insert(String dbInsert) {
 		try {
 			pstmt = conn.prepareStatement(dbInsert);
@@ -42,7 +42,7 @@ public class DataBase {
 		}
 	}
 	
-	//SQL Select ¸Ş¼Òµå
+	//SQL Select ë©”ì†Œë“œ
 	public void Select(String dbSelect) {
 		try {
 			pstmt = conn.prepareStatement(dbSelect);
@@ -51,7 +51,7 @@ public class DataBase {
 		}
 	}
 	
-	//SQL Delete ¸Ş¼Òµå
+	//SQL Delete ë©”ì†Œë“œ
 	public void Delete(String dbDelete) {
 		try {
 			pstmt = conn.prepareStatement(dbDelete);
@@ -60,7 +60,7 @@ public class DataBase {
 		}
 	}
 	
-	//SQL Update ¸Ş¼Òµå
+	//SQL Update ë©”ì†Œë“œ
 	public void Update(String dbUpdate) {
 		try {
 			pstmt = conn.prepareStatement(dbUpdate);
@@ -69,7 +69,7 @@ public class DataBase {
 		}
 	}
 	
-	//DB¿¬°á Á¾·á ¸Ş¼Òµå
+	//DBì—°ê²° ì¢…ë£Œ ë©”ì†Œë“œ
 	public void Close() {
 		try {
 			if (conn != null) {
@@ -89,7 +89,7 @@ public class DataBase {
 		}
 	}
 	
-	//Á¢¼Ó Ã³¸® ¸Ş¼Òµå
+	//ì ‘ì† ì²˜ë¦¬ ë©”ì†Œë“œ
 	public void setOnline(String userid) {
 		Update("UPDATE Account SET isOnline = 1 WHERE UserID = ?");
 		try {
@@ -100,7 +100,7 @@ public class DataBase {
 		}
 	}
 	
-	//·Î±×¾Æ¿ô Ã³¸® ¸Ş¼Òµå
+	//ë¡œê·¸ì•„ì›ƒ ì²˜ë¦¬ ë©”ì†Œë“œ
 	public void setOffline(String userid) {
 		Update("UPDATE Account SET isOnline = 0 WHERE UserID = ?");
 		try {

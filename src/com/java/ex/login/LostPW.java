@@ -29,10 +29,10 @@ public class LostPW extends JFrame{
 		lostPW = new JPanel();
 		lostPW.setLayout(null);
 		
-		lblLostPW = new JLabel("ºñ¹Ğ¹øÈ£ Ã£±â");
-		lblEmail = new JLabel("ÀÌ¸ŞÀÏ :");
-		lblPhoneNum = new JLabel("ÀüÈ­¹øÈ£ :");
-		btnLostPW = new JButton("Ã£±â");
+		lblLostPW = new JLabel("ë¹„ë°€ë²ˆí˜¸ ì°¾ê¸°");
+		lblEmail = new JLabel("ì´ë©”ì¼ :");
+		lblPhoneNum = new JLabel("ì „í™”ë²ˆí˜¸ :");
+		btnLostPW = new JButton("ì°¾ê¸°");
 		
 		txtEmail = new JTextField(10);
 		txtPhoneNum = new JTextField(10);
@@ -52,7 +52,7 @@ public class LostPW extends JFrame{
 		lostPW.add(btnLostPW);
 		
 		// --------------------- Button Event ---------------------
-		//ºñ¹Ğ¹øÈ£ Ã£´Â ¹öÆ° ÀÌº¥Æ®
+		//ë¹„ë°€ë²ˆí˜¸ ì°¾ëŠ” ë²„íŠ¼ ì´ë²¤íŠ¸
 		btnLostPW.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -62,7 +62,7 @@ public class LostPW extends JFrame{
 		
 		ct.add(lostPW);
 		
-		setTitle("ºñ¹Ğ¹øÈ£ Ã£±â");
+		setTitle("ï¿½ï¿½Ğ¹ï¿½È£ Ã£ï¿½ï¿½");
 		setSize(300, 200);
 		setResizable(false);
 		setLocationRelativeTo(null);
@@ -70,7 +70,7 @@ public class LostPW extends JFrame{
 	}
 	
 	// --------------------- Method ---------------------
-	//ºñ¹Ğ¹øÈ£ Ã£±â ¸Ş¼Òµå
+	//ë¹„ë°€ë²ˆí˜¸ ì°¾ê¸° ë©”ì†Œë“œ
 	public void isFindPW() {
 		DataBase db = new DataBase();
 		db.Select("SELECT * FROM Account WHERE Email = ? AND PhoneNum = ?");
@@ -80,17 +80,17 @@ public class LostPW extends JFrame{
 			db.rs = db.pstmt.executeQuery();
 			
 			if(db.rs.next()) {
-				JOptionPane.showMessageDialog(null, "ÇØ´ç Á¤º¸·Î °Ë»öÇÑ ºñ¹Ğ¹øÈ£ : " + db.rs.getString("Password"), "ºñ¹Ğ¹øÈ£ Ã£±â", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "í•´ë‹¹ ì •ë³´ë¡œ ê²€ìƒ‰í•œ ë¹„ë°€ë²ˆí˜¸ : " + db.rs.getString("Password"), "ë¹„ë°€ë²ˆí˜¸ ì°¾ê¸°", JOptionPane.INFORMATION_MESSAGE);
 				dispose();
 			}
 			else if(txtEmail.getText().equals("")) {
-				JOptionPane.showMessageDialog(null, "ÀÌ¸ŞÀÏÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä.", "ºñ¹Ğ¹øÈ£ Ã£±â", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "ì´ë©”ì¼ì„ ì…ë ¥í•´ì£¼ì„¸ìš”.", "ë¹„ë°€ë²ˆí˜¸ ì°¾ê¸°", JOptionPane.ERROR_MESSAGE);
 			}
 			else if(txtPhoneNum.getText().equals("")) {
-				JOptionPane.showMessageDialog(null, "ÀüÈ­¹øÈ£¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.", "ºñ¹Ğ¹øÈ£ Ã£±â", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "ì „í™”ë²ˆí˜¸ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”.", "ë¹„ë°€ë²ˆí˜¸ ì°¾ê¸°", JOptionPane.ERROR_MESSAGE);
 			}
 			else {
-				JOptionPane.showMessageDialog(null, "ÀÔ·ÂÇÑ È¸¿ø Á¤º¸°¡ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù.", "ºñ¹Ğ¹øÈ£ Ã£±â", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "ì…ë ¥í•œ íšŒì› ì •ë³´ê°€ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.", "ë¹„ë°€ë²ˆí˜¸ ì°¾ê¸°", JOptionPane.ERROR_MESSAGE);
 			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());

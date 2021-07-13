@@ -10,7 +10,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-//¼­¹ö ºê·ÎµåÄ³½ºÆ® Å¬·¡½º
+//ì„œë²„ ë¸Œë¡œë“œìºìŠ¤íŠ¸ í´ë˜ìŠ¤
 public class ServerBroadCast extends Thread {
 	
 	Socket soc = null;
@@ -33,7 +33,7 @@ public class ServerBroadCast extends Thread {
 				String recevieData = reader.readLine();
 				
 				if (null == recevieData) {
-					System.out.println("Å¬¶óÀÌ¾ğÆ® ¿¬°á ²÷±è");
+					System.out.println("í´ë¼ì´ì–¸íŠ¸ ì—°ê²° ëŠê¹€");
 					exit(writer);
 					break;
 				}
@@ -42,7 +42,7 @@ public class ServerBroadCast extends Thread {
                 
                 if("join".equals(tokens[0])) {
                 	join(tokens[1], writer);
-                    System.out.println("Ã¤ÆÃ¼­¹ö ¿¬°á");
+                    System.out.println("ì±„íŒ…ì„œë²„ ì—°ê²°");
                 }
                 else if("message".equals(tokens[0])) {
                 	message(tokens[1]);
@@ -55,54 +55,54 @@ public class ServerBroadCast extends Thread {
                 }
                 else if("quit".equals(tokens[0])) {
                 	exit(writer);
-                    System.out.println("Ã¤ÆÃ¼­¹ö ¿¬°á ÇØÁ¦");
+                    System.out.println("ì±„íŒ…ì„œë²„ ì—°ê²° í•´ì œ");
                 }
 			}
 		} catch (IOException e) {
-			//¼­¹ö ¸Ş½ÃÁö
-			System.out.println(this.nickName + "´ÔÀÌ ¼­¹ö¿Í ¿¬°áÀÌ Á¾·áµÇ¾ú½À´Ï´Ù.");
+			//ì„œë²„ ë©”ì‹œì§€
+			System.out.println(this.nickName + "ë‹˜ì´ ì„œë²„ì™€ ì—°ê²°ì´ ì¢…ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.");
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		}
 	}
-	//Ã¤ÆÃ¼­¹ö ÀÔÀå ½Ã broadcast ¸Ş½ÃÁö
+	//ì±„íŒ…ì„œë²„ ì…ì¥ ì‹œ broadcast ë©”ì‹œì§€
 	private void join(String nickname, PrintWriter writer) {
 		this.nickName = nickname;
 		
-		String data = nickname + "´ÔÀÌ ÀÔÀåÇß½À´Ï´Ù.";
+		String data = nickname + "ë‹˜ì´ ì…ì¥í–ˆìŠµë‹ˆë‹¤.";
 		broadcast(data);
 		addWriter(writer);
 	}
-	//Ã¤ÆÃ¼­¹ö ¿¬°á ²÷±æ ½Ã broadcast ¸Ş½ÃÁö
+	//ì±„íŒ…ì„œë²„ ì—°ê²° ëŠê¸¸ ì‹œ broadcast ë©”ì‹œì§€
 	private void exit(PrintWriter writer) {
 		removeClient(writer);
 		
-		String data = this.nickName + "´ÔÀÌ ÅğÀåÇß½À´Ï´Ù.";
+		String data = this.nickName + "ë‹˜ì´ í‡´ì¥í–ˆìŠµë‹ˆë‹¤.";
 		broadcast(data);
 	}
-	//Ã¤ÆÃ¼­¹ö ¿¬°á ½Ã list¿¡ Ãß°¡
+	//ì±„íŒ…ì„œë²„ ì—°ê²° ì‹œ listì— ì¶”ê°€
 	private void addWriter(PrintWriter writer) {
 		synchronized (writer) {
 			list.add(writer);
 		}
 	}
-	//Ã¤ÆÃ¼­¹ö ¿¬°á ²÷±æ ½Ã list¿¡¼­ »èÁ¦
+	//ì±„íŒ…ì„œë²„ ì—°ê²° ëŠê¸¸ ì‹œ listì—ì„œ ì‚­ì œ
 	private void removeClient(PrintWriter writer) {
 		synchronized (list) {
 			list.remove(writer);
 		}
 	}
-	//È¸¿øÀÌ Ã¤ÆÃÃ¢¿¡ ÀÔ·Â ½Ã ´Ù¸¥ È¸¿ø¿¡°Ôµµ broadcast
+	//íšŒì›ì´ ì±„íŒ…ì°½ì— ì…ë ¥ ì‹œ ë‹¤ë¥¸ íšŒì›ì—ê²Œë„ broadcast
 	private void message(String data) {
 		broadcast(this.nickName + " : " + data);
 	}
-	//Á¤´äÀ» ¸ÂÃâ ½Ã ´Ù¸¥ È¸¿ø¿¡°Ôµµ broadcast
+	//ì •ë‹µì„ ë§ì¶œ ì‹œ ë‹¤ë¥¸ íšŒì›ì—ê²Œë„ broadcast
 	private void serverMessage(String data) {
-		broadcast("Á¤´ä" + " : " + data);
+		broadcast("ì •ë‹µ" + " : " + data);
 	}
-	//°ÔÀÓÀÌ ½ÃÀÛµÆÀ» ¶§ ´Ù¸¥ È¸¿ø¿¡°Ôµµ broadcast
+	//ê²Œì„ì´ ì‹œì‘ëì„ ë•Œ ë‹¤ë¥¸ íšŒì›ì—ê²Œë„ broadcast
 	private void startMessage() {
-		broadcast("Server : °ÔÀÓÀÌ ½ÃÀÛµÇ¾ú½À´Ï´Ù.\nServer : ÇÃ·¹ÀÌ¾îµéÀº ¹æÀåÀÌ ±×¸®´Â ±×¸²À» ¸ÂÃß¾îÁÖ¼¼¿ä.");
+		broadcast("Server : ê²Œì„ì´ ì‹œì‘ë˜ì—ˆìŠµë‹ˆë‹¤.\\nServer : í”Œë ˆì´ì–´ë“¤ì€ ë°©ì¥ì´ ê·¸ë¦¬ëŠ” ê·¸ë¦¼ì„ ë§ì¶”ì–´ì£¼ì„¸ìš”.");
 	}
 	//broadcast
 	private void broadcast(String data) {

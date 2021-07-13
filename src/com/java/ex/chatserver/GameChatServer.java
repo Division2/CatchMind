@@ -8,7 +8,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-//Ã¤ÆÃ ¼­¹ö Å¬·¡½º
+//ì±„íŒ… ì„œë²„ í´ë˜ìŠ¤
 public class GameChatServer {
 	
 	ServerSocket svSoc = null;
@@ -18,10 +18,10 @@ public class GameChatServer {
 	
 	public GameChatServer() {
 		try {
-			//¼­¹ö ¼ÒÄÏ »ı¼º
+			//ì„œë²„ ì†Œì¼“ ìƒì„±
 			svSoc = new ServerSocket(SERVER_PORT);
 			
-			//Å¬¶óÀÌ¾ğÆ® ¿äÃ» ´ë±â
+			//í´ë¼ì´ì–¸íŠ¸ ìš”ì²­ ëŒ€ê¸°
 			while (true) {
 				soc = svSoc.accept();
 				new ServerBroadCast(soc, list).start();

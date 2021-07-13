@@ -22,7 +22,7 @@ public class Email {
 
 	public Email(String authEmail) {
 		
-		//ÀÎÁõ¹øÈ£ ·£´ıÀ¸·Î »ı¼º
+		//ì¸ì¦ë²ˆí˜¸ ëœë¤ìœ¼ë¡œ ìƒì„±
 		char ranChar1 = (char) ((int)(Math.random()*(90-65+1))+65); 
 		char ranChar2 = (char) ((int)(Math.random()*(90-65+1))+65); 
 		int ranNum1 = (int)(Math.random()*(9-1+1))+1;
@@ -32,11 +32,11 @@ public class Email {
 		
 		authCode = new String("" + ranChar1 + ranChar2 + ranNum1 + ranNum2 + ranNum3 + ranNum4);
 		
-		//½Ã½ºÅÛ °èÁ¤
+		//ì‹œìŠ¤í…œ ê³„ì •
 		String userName = "yjsk7015@gmail.com";
 		String password = "tjdehd1@";
 
-		// SMTP ¼­¹ö Á¤º¸¸¦ ¼³Á¤
+		// SMTP ì„œë²„ ì •ë³´ë¥¼ ì„¤ì •
 		Properties prop = new Properties();
 		prop.put("mail.smtp.host", "smtp.gmail.com"); 
 		prop.put("mail.smtp.port", 465); 
@@ -54,18 +54,18 @@ public class Email {
 			MimeMessage message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(userName));
 
-			//¼ö½ÅÀÚ ÀÌ¸ŞÀÏ ÁÖ¼Ò
+			//ìˆ˜ì‹ ì ì´ë©”ì¼ ì£¼ì†Œ
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(authEmail)); 
 
-			//¸ŞÀÏ Á¦¸ñ
-			message.setSubject("[CatchMind] È¸¿ø°¡ÀÔ ÀÎÁõ¹øÈ£");
+			//ë©”ì¼ ì œëª©
+			message.setSubject("[CatchMind] íšŒì›ê°€ì… ì¸ì¦ë²ˆí˜¸");
 
-			//¸ŞÀÏ ³»¿ë
-			message.setText("ÀÎÁõ ¹øÈ£: " + authCode); 
+			//ë©”ì¼ ë‚´ìš©
+			message.setText("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£: " + authCode); 
 
-			//¸ŞÀÏ Àü¼ÛºÎºĞ
+			//ë©”ì¼ ì „ì†¡ë¶€ë¶„
 			Transport.send(message);
-			JOptionPane.showMessageDialog(null, "ÀÎÁõ¹øÈ£°¡ ¸ŞÀÏ·Î Àü¼ÛµÇ¾ú½À´Ï´Ù.", "È¸¿ø°¡ÀÔ", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "ì¸ì¦ë²ˆí˜¸ê°€ ë©”ì¼ë¡œ ì „ì†¡ë˜ì—ˆìŠµë‹ˆë‹¤.", "íšŒì›ê°€ì…", JOptionPane.INFORMATION_MESSAGE);
 			
 		} catch (AddressException e) {
 			e.printStackTrace();
