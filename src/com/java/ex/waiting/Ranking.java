@@ -51,7 +51,7 @@ public class Ranking extends JFrame {
 	//랭킹 출력 메소드
 	public void viewRanking() {
 		DataBase db = new DataBase();
-		db.Select("SELECT * FROM Account order by Level desc");
+		db.Select("SELECT * FROM Account ORDER BY Level DESC, Exp ASC");
 		
 		int rankNum = 0;
 		try {

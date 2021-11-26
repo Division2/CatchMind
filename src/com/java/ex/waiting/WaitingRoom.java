@@ -436,6 +436,7 @@ public class WaitingRoom extends JFrame {
 			public void run() {
 				while (true) {
 					if (!waitingRoomPanel.isVisible()) {
+						System.out.println("zz");
 						break;
 					}
 					tabRoom.setModel(roomCheck());
