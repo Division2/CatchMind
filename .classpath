@@ -8,6 +8,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="activation-1.1.jar"/>
 	<classpathentry kind="lib" path="mail-1.4.7.jar"/>
-	<classpathentry kind="lib" path="mysql-connector-java-5.1.45-bin.jar"/>
+	<classpathentry kind="lib" path="mysql-connector-java-8.0.26.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

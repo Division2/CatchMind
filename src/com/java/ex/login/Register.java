@@ -21,8 +21,11 @@ import com.java.ex.database.DataBase;
 
 public class Register extends JFrame implements Runnable {
 
+	private static final long serialVersionUID = 1L;
+
 	private String authCode;
 	
+	// ì»´í¬ë„ŒíŠ¸ init
 	JPanel registerPanel = null;
 	JLabel lblValidPassword = null;
 	JLabel lblValidNickName = null;
@@ -51,7 +54,7 @@ public class Register extends JFrame implements Runnable {
 	JButton btnAuthCode = null;
 
 	public Register() {
-		// --------------------- Login Form Disign ---------------------
+		// --------------------- Register Form Disign ---------------------
 		Container ct = getContentPane();
 		registerPanel = new JPanel();
 		registerPanel.setLayout(null);
@@ -61,14 +64,14 @@ public class Register extends JFrame implements Runnable {
 		lblValidNickName = new JLabel();
 		lblValidPhoneNum = new JLabel();
 		
-		lblRegister = new JLabel("È¸¿ø°¡ÀÔ");
-		lblAccount = new JLabel("»ç¿ëÇÒ ¾ÆÀÌµğ :");
-		lblAuthStatus = new JLabel("ÀÎÁõÄÚµå :");
-		lblPassword1st = new JLabel("ºñ¹Ğ¹øÈ£ :");
-		lblPassword2rd = new JLabel("ºñ¹Ğ¹øÈ£ È®ÀÎ :");
-		lblEmail = new JLabel("ÀÌ¸ŞÀÏ :");
-		lblNickName = new JLabel("´Ğ³×ÀÓ :");
-		lblPhoneNum = new JLabel("ÀüÈ­¹øÈ£ :");
+		lblRegister = new JLabel("íšŒì›ê°€ì…");
+		lblAccount = new JLabel("ì‚¬ìš©í•  ì•„ì´ë”” :");
+		lblAuthStatus = new JLabel("ì¸ì¦ì½”ë“œ :");
+		lblPassword1st = new JLabel("ë¹„ë°€ë²ˆí˜¸ :");
+		lblPassword2rd = new JLabel("ë¹„ë°€ë²ˆí˜¸ í™•ì¸ :");
+		lblEmail = new JLabel("ì´ë©”ì¼ :");
+		lblNickName = new JLabel("ë‹‰ë„¤ì„ :");
+		lblPhoneNum = new JLabel("ì „í™”ë²ˆí˜¸ :");
 		txtAccount = new JTextField(10);
 		txtAuthStatus = new JTextField(10);
 		txtPassword1st = new JPasswordField(10);
@@ -76,11 +79,11 @@ public class Register extends JFrame implements Runnable {
 		txtEmail = new JTextField(10);
 		txtNickName = new JTextField(10);
 		txtPhoneNum = new JTextField(10);
-		btnRegister = new JButton("°¡ÀÔÇÏ±â");
-		btnCancel = new JButton("Ãë¼Ò");
-		btnDuplicate = new JButton("Áßº¹È®ÀÎ");
-		btnAuthStatus = new JButton("È®ÀÎ");
-		btnAuthCode = new JButton("º¸³»±â");
+		btnRegister = new JButton("ê°€ì…í•˜ê¸°");
+		btnCancel = new JButton("ì·¨ì†Œ");
+		btnDuplicate = new JButton("ì¤‘ë³µí™•ì¸");
+		btnAuthStatus = new JButton("í™•ì¸");
+		btnAuthCode = new JButton("ë³´ë‚´ê¸°");
 		
 		lblValidPassword.setBounds(131, 180, 200, 30);
 		lblValidEmail.setBounds(131, 240, 200, 30);
@@ -135,48 +138,48 @@ public class Register extends JFrame implements Runnable {
 		registerPanel.add(btnAuthCode);
 
 		// --------------------- Button Event ---------------------
-		//Áßº¹È®ÀÎ ¹öÆ° ÀÌº¥Æ®
+		//ì¤‘ë³µí™•ì¸ ë²„íŠ¼ ì´ë²¤íŠ¸
 		btnDuplicate.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				isDuplicate();
 			}
 		});
-		//ÀÎÁõÈ®ÀÎ ¹öÆ° ÀÌº¥Æ®
+		//ì¸ì¦í™•ì¸ ë²„íŠ¼ ì´ë²¤íŠ¸
 		btnAuthStatus.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				isAuthStatusChecked();
 			}
 		});
-		//ÀÎÁõÄÚµå Àü¼Û ¹öÆ° ÀÌº¥Æ®
+		//ì¸ì¦ì½”ë“œ ì „ì†¡ ë²„íŠ¼ ì´ë²¤íŠ¸
 		btnAuthCode.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				authCode = new Email(txtEmail.getText()).getAuthCode();
 			}
 		});
-		//È¸¿ø°¡ÀÔ Ãë¼Ò ¹öÆ° ÀÌº¥Æ®
+		//íšŒì›ê°€ì… ì·¨ì†Œ ë²„íŠ¼ ì´ë²¤íŠ¸
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				isCancel();
 			}
 		});
-		//È¸¿ø°¡ÀÔ ¹öÆ° ÀÌº¥Æ®
+		//íšŒì›ê°€ì… ë²„íŠ¼ ì´ë²¤íŠ¸
 		btnRegister.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				isRegister();
 			}
 		});
-		//ÀüÈ­¹øÈ£ Å°ÀÔ·Â ±æÀÌÁ¦ÇÑ ÀÌº¥Æ®
+		//ì „í™”ë²ˆí˜¸ í‚¤ì…ë ¥ ê¸¸ì´ì œí•œ ì´ë²¤íŠ¸
 		txtPhoneNum.addKeyListener(new KeyAdapter() {
 			public void keyTyped(KeyEvent e) {
 				char phoneNum = e.getKeyChar();
 				if (((phoneNum < '0') || (phoneNum > '9')) && (phoneNum != '\b')) {
 					e.consume();
-					JOptionPane.showMessageDialog(null, "¼ıÀÚ ¿Ü ÀÔ·ÂÀº Á¦ÇÑµË´Ï´Ù.", "È¸¿ø°¡ÀÔ", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "ìˆ«ì ì™¸ ì…ë ¥ì€ ì œí•œë©ë‹ˆë‹¤.", "íšŒì›ê°€ì…", JOptionPane.ERROR_MESSAGE);
 				}
 				if (txtPhoneNum.getText().length() > 10) {
 					e.consume();
@@ -184,13 +187,13 @@ public class Register extends JFrame implements Runnable {
 			}
 		});
 		
-		//À¯È¿¼º °Ë»ç ½º·¹µå
+		//ìœ íš¨ì„± ê²€ì‚¬ ìŠ¤ë ˆë“œ
 		Thread txtCheck = new Thread(this);
 		txtCheck.start();
 		
 		ct.add(registerPanel);
 		
-		setTitle("È¸¿ø°¡ÀÔ");
+		setTitle("íšŒì›ê°€ì…");
 		setSize(400, 550);
 		setResizable(false);
 		setLocationRelativeTo(null);
@@ -198,7 +201,7 @@ public class Register extends JFrame implements Runnable {
 	}
 	
 	// --------------------- Method ---------------------
-	//È¸¿ø°¡ÀÔ ¸Ş¼Òµå
+	//íšŒì›ê°€ì… ë©”ì†Œë“œ
 	public void isRegister() {
 		DataBase db = new DataBase();
 		db.Insert("INSERT INTO Account(UserID, Password, NickName, Email, PhoneNum, Level, Exp, AuthStatus, isOnline) VALUES(?, ?, ?, ?, ?, 1, 0, 1, 0)");
@@ -209,7 +212,7 @@ public class Register extends JFrame implements Runnable {
 				!lblValidPhoneNum.getForeground().equals(Color.blue) ||
 				btnDuplicate.isEnabled() ||
 				btnAuthStatus.isEnabled()) {
-			JOptionPane.showMessageDialog(null, "ÀÔ·ÂÇÑ Á¤º¸¸¦ È®ÀÎÇØÁÖ¼¼¿ä.");
+			JOptionPane.showMessageDialog(null, "ì…ë ¥í•œ ì •ë³´ë¥¼ í™•ì¸í•´ì£¼ì„¸ìš”.");
 			return;
 		}
 		
@@ -222,10 +225,10 @@ public class Register extends JFrame implements Runnable {
 			int result = db.pstmt.executeUpdate();
 			
 			if (1 != result) {
-				JOptionPane.showMessageDialog(null, "È¸¿ø°¡ÀÔÀÌ ½ÇÆĞÇÏ¿´½À´Ï´Ù.", "È¸¿ø°¡ÀÔ", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "íšŒì›ê°€ì…ì´ ì‹¤íŒ¨í•˜ì˜€ìŠµë‹ˆë‹¤.", "íšŒì›ê°€ì…", JOptionPane.ERROR_MESSAGE);
 			}
 			else {
-				JOptionPane.showMessageDialog(null, "È¸¿ø°¡ÀÔÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù!", "È¸¿ø°¡ÀÔ", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "íšŒì›ê°€ì…ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤!", "íšŒì›ê°€ì…", JOptionPane.INFORMATION_MESSAGE);
 				dispose();
 			}
 		} catch (Exception e) {
@@ -233,22 +236,22 @@ public class Register extends JFrame implements Runnable {
 		}
 	}
 	
-	//ÀÎÁõ¹øÈ£ Ã¼Å© ¸Ş¼Òµå
+	//ì¸ì¦ë²ˆí˜¸ ì²´í¬ ë©”ì†Œë“œ
 	public void isAuthStatusChecked() {
 		if (txtAuthStatus.getText().equals(authCode)) {
-			JOptionPane.showMessageDialog(null, "ÀÎÁõµÇ¾ú½À´Ï´Ù.");
+			JOptionPane.showMessageDialog(null, "ì¸ì¦ë˜ì—ˆìŠµë‹ˆë‹¤.");
 			txtAuthStatus.setEnabled(false);
 			btnAuthStatus.setEnabled(false);
 		}
 		else if(txtAuthStatus.getText().equals("")) {
-			JOptionPane.showMessageDialog(null, "ÄÚµå°¡ ÀÔ·ÂµÇÁö ¾Ê¾Ò½À´Ï´Ù.", "È¸¿ø°¡ÀÔ", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "ì½”ë“œê°€ ì…ë ¥ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.", "íšŒì›ê°€ì…", JOptionPane.ERROR_MESSAGE);
 		}
 		else {
-			JOptionPane.showMessageDialog(null, "À¯È¿ÇÏÁö ¾Ê´Â ÄÚµåÀÔ´Ï´Ù.", "È¸¿ø°¡ÀÔ", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "ìœ íš¨í•˜ì§€ ì•ŠëŠ” ì½”ë“œì…ë‹ˆë‹¤.", "íšŒì›ê°€ì…", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
-	//¾ÆÀÌµğ Áßº¹°Ë»ç ¸Ş¼Òµå
+	//ì•„ì´ë”” ì¤‘ë³µê²€ì‚¬ ë©”ì†Œë“œ
 	public void isDuplicate() {		
 		DataBase db = new DataBase();
 		db.Select("SELECT * FROM account WHERE UserID = ?");
@@ -257,22 +260,21 @@ public class Register extends JFrame implements Runnable {
 			db.pstmt.setString(1, txtAccount.getText());
 			db.rs = db.pstmt.executeQuery();
 			if (db.rs.next()) {
-				JOptionPane.showMessageDialog(null, "ÀÌ¹Ì »ç¿ëÁßÀÎ ¾ÆÀÌµğÀÔ´Ï´Ù.", "È¸¿ø°¡ÀÔ", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "ì´ë¯¸ ì‚¬ìš©ì¤‘ì¸ ì•„ì´ë””ì…ë‹ˆë‹¤.", "íšŒì›ê°€ì…", JOptionPane.ERROR_MESSAGE);
 			}
 			else if(txtAccount.getText().equals("")) {
-				JOptionPane.showMessageDialog(null, "¾ÆÀÌµğ¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.", "È¸¿ø°¡ÀÔ", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "ì•„ì´ë””ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”.", "íšŒì›ê°€ì…", JOptionPane.ERROR_MESSAGE);
 			}
 			else {
-				JOptionPane.showMessageDialog(null, "»ı¼º °¡´ÉÇÑ ¾ÆÀÌµğÀÔ´Ï´Ù.", "È¸¿ø°¡ÀÔ", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "ìƒì„± ê°€ëŠ¥í•œ ì•„ì´ë””ì…ë‹ˆë‹¤.", "íšŒì›ê°€ì…", JOptionPane.INFORMATION_MESSAGE);
 				txtAccount.setEnabled(false);
 				btnDuplicate.setEnabled(false);
 			}
-		} catch (Exception e) {
-		}
+		} catch (Exception e) {}
 		db.Close();
 	}
 	
-	//ÀÌ¸ŞÀÏ Çü½Ä °ËÁõ ¸Ş¼Òµå
+	//ì´ë©”ì¼ í˜•ì‹ ê²€ì¦ ë©”ì†Œë“œ
 	public boolean isValidEmail(String email) {
 		boolean result = false; 
 		String regex = "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$"; 
@@ -283,7 +285,7 @@ public class Register extends JFrame implements Runnable {
 		return result; 
 	}
 	
-	//ÀÔ·ÂÇÑ Á¤º¸ Ãë¼Ò ¸Ş¼Òµå
+	//ì…ë ¥í•œ ì •ë³´ ì·¨ì†Œ ë©”ì†Œë“œ
 	public void isCancel() {
 		txtAccount.setText("");
 		txtPassword1st.setText("");
@@ -293,6 +295,11 @@ public class Register extends JFrame implements Runnable {
 		txtNickName.setText("");
 		txtPhoneNum.setText("");
 		
+		lblValidPassword.setText("");
+		lblValidEmail.setText("");
+		lblValidNickName.setText("");
+		lblValidPhoneNum.setText("");
+		
 		txtAccount.setEnabled(true);
 		txtAuthStatus.setEnabled(true);
 		btnAuthStatus.setEnabled(true);
@@ -301,36 +308,36 @@ public class Register extends JFrame implements Runnable {
 		authCode = null;
 	}
 	// --------------------- Thread Method ---------------------
-	//ÀÌ¸ŞÀÏ À¯È¿¼º °Ë»ç ¸Ş¼Òµå
+	//ì´ë©”ì¼ ìœ íš¨ì„± ê²€ì‚¬ ë©”ì†Œë“œ
 	public void emailVerifier() {
 		DataBase db = new DataBase();
 		db.Select("SELECT * FROM Account WHERE Email = ?");
 		
-		//ÀÌ¸ŞÀÏ °ø¹é °ËÁõ
+		//ì´ë©”ì¼ ê³µë°± ê²€ì¦
 		if (txtEmail.getText().equals("")) {
 			lblValidEmail.setText("");
 			return;
 		}
 		
-		//ÀÌ¸ŞÀÏ Çü½Ä °ËÁõ
+		//ì´ë©”ì¼ í˜•ì‹ ê²€ì¦
 		if (!isValidEmail(txtEmail.getText())) {
 			lblValidEmail.setForeground(Color.red);
-			lblValidEmail.setText("À¯È¿ÇÏÁö ¾ÊÀº ÀÌ¸ŞÀÏ Çü½ÄÀÔ´Ï´Ù.");
+			lblValidEmail.setText("ìœ íš¨í•˜ì§€ ì•Šì€ ì´ë©”ì¼ í˜•ì‹ì…ë‹ˆë‹¤.");
 			return;
 		}
 
-		//ÀÌ¸ŞÀÏ Áßº¹ °ËÁõ
+		//ì´ë©”ì¼ ì¤‘ë³µ ê²€ì¦
 		try {
 			db.pstmt.setString(1, txtEmail.getText());
 			db.rs = db.pstmt.executeQuery();
 			
 			if (db.rs.next()) {
 				lblValidEmail.setForeground(Color.red);
-				lblValidEmail.setText("ÀÌ¹Ì »ç¿ëÁßÀÎ ÀÌ¸ŞÀÏÀÔ´Ï´Ù.");
+				lblValidEmail.setText("ì´ë¯¸ ì‚¬ìš©ì¤‘ì¸ ì´ë©”ì¼ì…ë‹ˆë‹¤.");
 			}
 			else {
 				lblValidEmail.setForeground(Color.blue);
-				lblValidEmail.setText("»ç¿ë °¡´ÉÇÑ ÀÌ¸ŞÀÏÀÔ´Ï´Ù.");
+				lblValidEmail.setText("ì‚¬ìš© ê°€ëŠ¥í•œ ì´ë©”ì¼ì…ë‹ˆë‹¤.");
 			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
@@ -338,49 +345,49 @@ public class Register extends JFrame implements Runnable {
 		db.Close();
 	}
 	
-	//ºñ¹Ğ¹øÈ£ µ¿ÀÏ¼º °Ë»ç ¸Ş¼Òµå
+	//ë¹„ë°€ë²ˆí˜¸ ë™ì¼ì„± ê²€ì‚¬ ë©”ì†Œë“œ
 	public void passwordVerifier() {
 		
-		//ºñ¹Ğ¹øÈ£ °ø¹é °ËÁõ
+		//ë¹„ë°€ë²ˆí˜¸ ê³µë°± ê²€ì¦
 		if (txtPassword1st.getText().equals("") || txtPassword2rd.getText().equals("")) {
 			lblValidPassword.setText("");
 			return;
 		}
 		
-		//ºñ¹Ğ¹øÈ£ µ¿ÀÏ¼º °ËÁõ
+		//ë¹„ë°€ë²ˆí˜¸ ë™ì¼ì„± ê²€ì¦
 		if (txtPassword1st.getText().equals(txtPassword2rd.getText())) {
 			lblValidPassword.setForeground(Color.blue);
-			lblValidPassword.setText("ºñ¹Ğ¹øÈ£°¡ ÀÏÄ¡ÇÕ´Ï´Ù.");
+			lblValidPassword.setText("ë¹„ë°€ë²ˆí˜¸ê°€ ì¼ì¹˜í•©ë‹ˆë‹¤.");
 		}
 		else {
 			lblValidPassword.setForeground(Color.red);
-			lblValidPassword.setText("ºñ¹Ğ¹øÈ£°¡ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù.");
+			lblValidPassword.setText("ë¹„ë°€ë²ˆí˜¸ê°€ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.");
 		}
 	}
 	
-	//´Ğ³×ÀÓ À¯È¿¼º °Ë»ç ¸Ş¼Òµå
+	//ë‹‰ë„¤ì„ ìœ íš¨ì„± ê²€ì‚¬ ë©”ì†Œë“œ
 	public void nickNameVerifier() {
 		DataBase db = new DataBase();
 		db.Select("SELECT * FROM Account WHERE NickName = ?");
 		
-		//´Ğ³×ÀÓ °ø¹é °ËÁõ
+		//ë‹‰ë„¤ì„ ê³µë°± ê²€ì¦
 		if (txtNickName.getText().equals("")) {
 			lblValidNickName.setText("");
 			return;
 		}
 		
-		//´Ğ³×ÀÓ Áßº¹ °ËÁõ
+		//ë‹‰ë„¤ì„ ì¤‘ë³µ ê²€ì¦
 		try {
 			db.pstmt.setString(1, txtNickName.getText());
 			db.rs = db.pstmt.executeQuery();
 			
 			if (db.rs.next()) {
 				lblValidNickName.setForeground(Color.red);
-				lblValidNickName.setText("ÀÌ¹Ì »ç¿ëÁßÀÎ ´Ğ³×ÀÓÀÔ´Ï´Ù.");
+				lblValidNickName.setText("ì´ë¯¸ ì‚¬ìš©ì¤‘ì¸ ë‹‰ë„¤ì„ì…ë‹ˆë‹¤.");
 			}
 			else {
 				lblValidNickName.setForeground(Color.blue);
-				lblValidNickName.setText("»ç¿ë °¡´ÉÇÑ ´Ğ³×ÀÓÀÔ´Ï´Ù.");
+				lblValidNickName.setText("ì‚¬ìš© ê°€ëŠ¥í•œ ë‹‰ë„¤ì„ì…ë‹ˆë‹¤.");
 			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
@@ -388,29 +395,29 @@ public class Register extends JFrame implements Runnable {
 		db.Close();
 	}
 	
-	//ÀüÈ­¹øÈ£ À¯È¿¼º °Ë»ç ¸Ş¼Òµå
+	//ì „í™”ë²ˆí˜¸ ìœ íš¨ì„± ê²€ì‚¬ ë©”ì†Œë“œ
 	public void phoneNumVerifier() {
 		DataBase db = new DataBase();
 		db.Select("SELECT * FROM Account WHERE PhoneNum = ?");
 		
-		//ÀüÈ­¹øÈ£ °ø¹é °ËÁõ
+		//ì „í™”ë²ˆí˜¸ ê³µë°± ê²€ì¦
 		if (txtPhoneNum.getText().equals("")) {
 			lblValidPhoneNum.setText("");
 			return;
 		}
 		
-		//ÀüÈ­¹øÈ£ Áßº¹ °ËÁõ
+		//ì „í™”ë²ˆí˜¸ ì¤‘ë³µ ê²€ì¦
 		try {
 			db.pstmt.setString(1, txtPhoneNum.getText());
 			db.rs = db.pstmt.executeQuery();
 			
 			if (db.rs.next()) {
 				lblValidPhoneNum.setForeground(Color.red);
-				lblValidPhoneNum.setText("ÀÌ¹Ì »ç¿ëÁßÀÎ ÀüÈ­¹øÈ£ÀÔ´Ï´Ù.");
+				lblValidPhoneNum.setText("ì´ë¯¸ ì‚¬ìš©ì¤‘ì¸ ì „í™”ë²ˆí˜¸ì…ë‹ˆë‹¤.");
 			}
 			else {
 				lblValidPhoneNum.setForeground(Color.blue);
-				lblValidPhoneNum.setText("»ç¿ë °¡´ÉÇÑ ÀüÈ­¹øÈ£ÀÔ´Ï´Ù.");
+				lblValidPhoneNum.setText("ì‚¬ìš© ê°€ëŠ¥í•œ ì „í™”ë²ˆí˜¸ì…ë‹ˆë‹¤.");
 			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());

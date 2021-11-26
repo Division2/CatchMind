@@ -10,9 +10,10 @@ import javax.swing.JOptionPane;
 
 public class DataBase {
 	private static final String DB_URL = "jdbc:mysql://localhost:3306/catchmind?useSSL=false";
-	private static final String DB_DRIVER = "com.mysql.jdbc.Driver";
-	private static final String DB_USER = "catchmind";
-	private static final String DB_PASS = "tjdehd1@";
+//	private static final String DB_DRIVER = "com.mysql.jdbc.Driver";
+	private static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
+	private static final String DB_USER = "root";
+	private static final String DB_PASS = "1234";
 	
 	private Connection conn = null;
 	private Statement stmt = null;

@@ -15,6 +15,8 @@ import com.java.ex.database.DataBase;
 
 public class LostPW extends JFrame{
 	
+	private static final long serialVersionUID = 1L;
+	
 	JPanel lostPW = null;
 	JLabel lblLostPW = null;
 	JLabel lblEmail = null;
@@ -62,7 +64,7 @@ public class LostPW extends JFrame{
 		
 		ct.add(lostPW);
 		
-		setTitle("��й�ȣ ã��");
+		setTitle("비밀번호 찾기");
 		setSize(300, 200);
 		setResizable(false);
 		setLocationRelativeTo(null);

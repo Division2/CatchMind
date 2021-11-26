@@ -61,7 +61,7 @@ public class Email {
 			message.setSubject("[CatchMind] 회원가입 인증번호");
 
 			//메일 내용
-			message.setText("���� ��ȣ: " + authCode); 
+			message.setText("인증번호 : " + authCode); 
 
 			//메일 전송부분
 			Transport.send(message);

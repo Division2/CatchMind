@@ -19,6 +19,9 @@ import com.java.ex.waiting.WaitingRoom;
 
 public class Login extends JFrame {
 
+	private static final long serialVersionUID = 1L;
+	
+	// ì»´í¬ë„ŒíŠ¸ init
 	JPanel loginPanel = null;
 	JLabel lblLoginLabel = null;
 	JLabel lblIDLabel = null;
@@ -36,15 +39,15 @@ public class Login extends JFrame {
 		loginPanel = new JPanel();
 		loginPanel.setLayout(null);
 		
-		lblLoginLabel = new JLabel("·Î±×ÀÎ");
+		lblLoginLabel = new JLabel("ë¡œê·¸ì¸");
 		lblIDLabel = new JLabel("Account :");
 		lblPWLabel = new JLabel("Password :");
 		txtID = new JTextField(15);
 		txtPW = new JPasswordField(15);
-		btnLogin = new JButton("·Î±×ÀÎ");
-		lblLostID = new JLabel("¾ÆÀÌµğ Ã£±â |");
-		lblLostPW = new JLabel("ºñ¹Ğ¹øÈ£ Ã£±â |");
-		lblRegister = new JLabel("È¸¿ø°¡ÀÔ");
+		btnLogin = new JButton("ë¡œê·¸ì¸");
+		lblLostID = new JLabel("ì•„ì´ë”” ì°¾ê¸° |");
+		lblLostPW = new JLabel("ë¹„ë°€ë²ˆí˜¸ ì°¾ê¸° |");
+		lblRegister = new JLabel("íšŒì›ê°€ì…");
 		
 		lblLoginLabel.setBounds(125, 25, 100, 20);
 		lblIDLabel.setBounds(31, 55, 100, 20);
@@ -67,35 +70,35 @@ public class Login extends JFrame {
 		loginPanel.add(lblRegister);
 		
 		// --------------------- Button Event ---------------------
-		//·Î±×ÀÎ ¹öÆ° ÀÌº¥Æ®
+		//ë¡œê·¸ì¸ ë²„íŠ¼ ì´ë²¤íŠ¸
 		btnLogin.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				isLoginCheck();
 			}
 		});
-		//ºñ¹Ğ¹øÈ£ ÅØ½ºÆ® ÀÌº¥Æ®
+		//ë¹„ë°€ë²ˆí˜¸ í…ìŠ¤íŠ¸ ì´ë²¤íŠ¸
 		txtPW.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				isLoginCheck();
 			}
 		});
-		//¾ÆÀÌµğ Ã£±â ÀÌº¥Æ®
+		//ì•„ì´ë”” ì°¾ê¸° ì´ë²¤íŠ¸
 		lblLostID.addMouseListener(new MouseAdapter() {
 			@Override
             public void mouseClicked(MouseEvent e) {
 				new LostID();
             }
 		});
-		//ºñ¹Ğ¹øÈ£ Ã£±â ÀÌº¥Æ®
+		//ë¹„ë°€ë²ˆí˜¸ ì°¾ê¸° ì´ë²¤íŠ¸
 		lblLostPW.addMouseListener(new MouseAdapter() {
 			@Override
             public void mouseClicked(MouseEvent e) {
 				new LostPW();
             }
 		});
-		//È¸¿ø°¡ÀÔ ÀÌº¥Æ®
+		//íšŒì›ê°€ì… ì´ë²¤íŠ¸
 		lblRegister.addMouseListener(new MouseAdapter() {
 			@Override
             public void mouseClicked(MouseEvent e) {
@@ -105,7 +108,7 @@ public class Login extends JFrame {
 		
 		ct.add(loginPanel);
 		
-		setTitle("Ä³Ä¡¸¶ÀÎµå ·Î±×ÀÎ");
+		setTitle("ìºì¹˜ë§ˆì¸ë“œ ë¡œê·¸ì¸");
 		setSize(300, 200);
 		setResizable(false);
 		setLocationRelativeTo(null);
@@ -114,7 +117,7 @@ public class Login extends JFrame {
 	}
 
 	// --------------------- Method ---------------------
-	//·Î±×ÀÎ Ã¼Å· ¸Ş¼Òµå
+	//ë¡œê·¸ì¸ ì²´í‚¹ ë©”ì†Œë“œ
 	public void isLoginCheck() {
 		DataBase db = new DataBase();
 		db.Select("SELECT * FROM Account WHERE UserID = ? AND Password = ?");
@@ -125,28 +128,28 @@ public class Login extends JFrame {
 			
 			if (db.rs.next()) {
 				if (db.rs.getString("isOnline").equals("1")) {
-					JOptionPane.showMessageDialog(null, "ÀÌ¹Ì Á¢¼ÓÁßÀÔ´Ï´Ù.", "·Î±×ÀÎ", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "ì´ë¯¸ ì ‘ì†ì¤‘ì…ë‹ˆë‹¤.", "ë¡œê·¸ì¸", JOptionPane.ERROR_MESSAGE);
 				}
 				else {
 					if(db.rs.getString("AuthStatus").equals("0")){
-						JOptionPane.showMessageDialog(null, "ÀÎÁõµÇÁö ¾ÊÀº »ç¿ëÀÚÀÔ´Ï´Ù.", "·Î±×ÀÎ", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "ì¸ì¦ë˜ì§€ ì•Šì€ ì‚¬ìš©ìì…ë‹ˆë‹¤.", "ë¡œê·¸ì¸", JOptionPane.ERROR_MESSAGE);
 					}
 					else {
 						db.setOnline(txtID.getText());
 						new WaitingRoom(txtID.getText(), db.rs.getString("NickName"));
 						dispose();
-						JOptionPane.showMessageDialog(null, "·Î±×ÀÎ ¼º°øÇÏ¿´½À´Ï´Ù.", "·Î±×ÀÎ", JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(null, "ë¡œê·¸ì¸ ì„±ê³µí•˜ì˜€ìŠµë‹ˆë‹¤.", "ë¡œê·¸ì¸", JOptionPane.INFORMATION_MESSAGE);
 					}
 				}
 			}
 			else if(txtID.getText().equals("")) {
-				JOptionPane.showMessageDialog(null, "¾ÆÀÌµğ°¡ ÀÔ·ÂµÇÁö ¾Ê¾Ò½À´Ï´Ù.", "·Î±×ÀÎ", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "ì•„ì´ë””ê°€ ì…ë ¥ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.", "ë¡œê·¸ì¸", JOptionPane.ERROR_MESSAGE);
 			}	
 			else if(txtPW.getText().equals("")) {
-				JOptionPane.showMessageDialog(null, "ºñ¹Ğ¹øÈ£°¡ ÀÔ·ÂµÇÁö ¾Ê¾Ò½À´Ï´Ù.", "·Î±×ÀÎ", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "ë¹„ë°€ë²ˆí˜¸ê°€ ì…ë ¥ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.", "ë¡œê·¸ì¸", JOptionPane.ERROR_MESSAGE);
 			}
 			else {
-				JOptionPane.showMessageDialog(null, "¾ÆÀÌµğ ¶Ç´Â ºñ¹Ğ¹øÈ£°¡ Æ²·È½À´Ï´Ù.", "·Î±×ÀÎ", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "ì•„ì´ë”” ë˜ëŠ” ë¹„ë°€ë²ˆí˜¸ê°€ í‹€ë ¸ìŠµë‹ˆë‹¤.", "ë¡œê·¸ì¸", JOptionPane.ERROR_MESSAGE);
 			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());

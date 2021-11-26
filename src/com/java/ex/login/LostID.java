@@ -15,6 +15,9 @@ import com.java.ex.database.DataBase;
 
 public class LostID extends JFrame{
 	
+	private static final long serialVersionUID = 1L;
+	
+	// 컴포넌트 init
 	JPanel lostID = null;
 	JLabel lblLostID = null;
 	JLabel lblName = null;
@@ -24,7 +27,7 @@ public class LostID extends JFrame{
 	JButton btnLostID = null;
 	
 	public LostID() {
-		// --------------------- Login Form Disign ---------------------
+		// --------------------- LostID Form Disign ---------------------
 		Container ct = getContentPane();
 		lostID = new JPanel();
 		lostID.setLayout(null);
@@ -62,7 +65,7 @@ public class LostID extends JFrame{
 		
 		ct.add(lostID);
 		
-		setTitle("���̵� ã��");
+		setTitle("아이디 찾기");
 		setSize(300, 200);
 		setResizable(false);
 		setLocationRelativeTo(null);
