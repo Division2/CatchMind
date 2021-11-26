@@ -236,14 +236,12 @@ public class GameRoom extends JFrame {
 						// 방장이 방을 나오면 방장닉넴으로 된 레코드 삭제(Game)
 						db.Delete("DELETE FROM Game WHERE RoomOwner = ?");
 						db.pstmt.setString(1, nickname);
-
-						int result = db.pstmt.executeUpdate();
+						db.pstmt.executeUpdate();
 
 						// 방장이 방을 나오면 방장닉넴으로 된 레코드 삭제2(RoomMember)
 						db.Delete("DELETE FROM RoomMember WHERE Player1 = ?");
 						db.pstmt.setString(1, nickname);
-
-						int result2 = db.pstmt.executeUpdate();
+						db.pstmt.executeUpdate();
 
 					} else {
 						db.Select("SELECT * FROM Game WHERE RoomOwner = ?");

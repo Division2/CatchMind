@@ -54,10 +54,10 @@ public class Login extends JFrame {
 		lblPWLabel.setBounds(20, 75, 100, 20);
 		txtID.setBounds(90, 55, 100, 20);
 		txtPW.setBounds(90, 75, 100, 20);
-		btnLogin.setBounds(195, 55, 70, 40);
-		lblLostID.setBounds(40, 100, 70, 20);
-		lblLostPW.setBounds(110, 100, 85, 20);
-		lblRegister.setBounds(195, 100, 70, 20);
+		btnLogin.setBounds(195, 55, 80, 40);
+		lblLostID.setBounds(30, 100, 85, 20);
+		lblLostPW.setBounds(110, 100, 95, 20);
+		lblRegister.setBounds(205, 100, 70, 20);
 		
 		loginPanel.add(lblLoginLabel);
 		loginPanel.add(lblIDLabel);
@@ -120,6 +120,7 @@ public class Login extends JFrame {
 	//로그인 체킹 메소드
 	public void isLoginCheck() {
 		DataBase db = new DataBase();
+		
 		db.Select("SELECT * FROM Account WHERE UserID = ? AND Password = ?");
 		try {
 			db.pstmt.setString(1, txtID.getText());

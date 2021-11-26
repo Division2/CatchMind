@@ -105,11 +105,11 @@ public class Register extends JFrame implements Runnable {
 		txtAuthStatus.setBounds(130, 270, 120, 30);
 		txtNickName.setBounds(130, 300, 120, 30);
 		txtPhoneNum.setBounds(130, 360, 120, 30);
-		btnDuplicate.setBounds(270, 60, 85, 30);
-		btnAuthStatus.setBounds(270, 270, 85, 30);
+		btnDuplicate.setBounds(270, 60, 95, 30);
+		btnAuthStatus.setBounds(270, 270, 95, 30);
 		btnRegister.setBounds(80, 450, 100, 50);
 		btnCancel.setBounds(200, 450, 100, 50);
-		btnAuthCode.setBounds(270, 210, 85, 30);
+		btnAuthCode.setBounds(270, 210, 95, 30);
 		
 		registerPanel.add(lblValidPassword);
 		registerPanel.add(lblValidEmail);
@@ -247,7 +247,7 @@ public class Register extends JFrame implements Runnable {
 			JOptionPane.showMessageDialog(null, "코드가 입력되지 않았습니다.", "회원가입", JOptionPane.ERROR_MESSAGE);
 		}
 		else {
-			JOptionPane.showMessageDialog(null, "유효하지 않는 코드입니다.", "회원가입", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "잘못된 코드입니다.", "회원가입", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
