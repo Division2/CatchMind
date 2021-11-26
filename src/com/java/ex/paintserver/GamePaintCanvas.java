@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
@@ -30,7 +29,7 @@ public class GamePaintCanvas {
 	private static final String SERVER_IP = "127.0.0.1";
 	private static final int PAINT_SERVER_PORT = 5002;
 
-	// ±×¸²
+	// ê·¸ë¦¼
 	int x1, y1, x2, y2, z1, z2;
 	int color;
 	int thickness = 5;
@@ -68,11 +67,11 @@ public class GamePaintCanvas {
 			owriter = new ObjectOutputStream(socket.getOutputStream());
 			oreader = new ObjectInputStream(socket.getInputStream());
 		} catch (UnknownHostException e) {
-			System.out.println("¼­¹ö Ã£À» ¼ö ¾øÀ½");
+			System.out.println("ì„œë²„ ì°¾ì„ ìˆ˜ ì—†ìŒ");
 			e.printStackTrace();
 			System.exit(0);
 		} catch (IOException e) {
-			System.out.println("¼­¹ö ¿¬°á ½ÇÆĞ");
+			System.out.println("ì„œë²„ ì—°ê²° ì‹¤íŒ¨");
 			e.printStackTrace();
 			System.exit(0);
 		}
@@ -132,49 +131,49 @@ public class GamePaintCanvas {
 		};
 		canvas.setBackground(Color.white);
 
-		// °ËÁ¤»ö Ææ ¹öÆ°
+		// ê²€ì •ìƒ‰ íœ ë²„íŠ¼
 		btnCanvasBlack.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				color = 0;
 			}
 		});
-		// »¡°£»ö Ææ ¹öÆ°
+		// ë¹¨ê°„ìƒ‰ íœ ë²„íŠ¼
 		btnCanvasRed.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				color = 1;
 			}
 		});
-		// ÃÊ·Ï»ö Ææ ¹öÆ°
+		// ì´ˆë¡ìƒ‰ íœ ë²„íŠ¼
 		btnCanvasGreen.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				color = 2;
 			}
 		});
-		// ÆÄ¶õ»ö Ææ ¹öÆ°
+		// íŒŒë€ìƒ‰ íœ ë²„íŠ¼
 		btnCanvasBlue.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				color = 3;
 			}
 		});
-		// ³ë¶õ»ö Ææ ¹öÆ°
+		// ë…¸ë€ìƒ‰ íœ ë²„íŠ¼
 		btnCanvasYellow.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				color = 4;
 			}
 		});
-		// Áö¿ì°³ ¹öÆ°
+		// ì§€ìš°ê°œ ë²„íŠ¼
 		btnCanvasEraser.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				color = 5;
 			}
 		});
-		// ÃÊ±âÈ­ ¹öÆ°
+		// ì´ˆê¸°í™” ë²„íŠ¼
 		btnCanvasClear.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -191,7 +190,7 @@ public class GamePaintCanvas {
 			}
 		});
 
-		// ¸¶¿ì½º ÇÁ·¹½º
+		// ë§ˆìš°ìŠ¤ í”„ë ˆìŠ¤
 		canvas.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -200,7 +199,7 @@ public class GamePaintCanvas {
 			}
 		});
 
-		// ¸¶¿ì½º µå·¡±×
+		// ë§ˆìš°ìŠ¤ ë“œë˜ê·¸
 		canvas.addMouseMotionListener(new MouseAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {

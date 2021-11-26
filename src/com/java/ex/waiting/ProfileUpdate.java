@@ -15,6 +15,8 @@ import com.java.ex.database.DataBase;
 
 public class ProfileUpdate extends JFrame {
 	
+	private static final long serialVersionUID = 1L;
+	
 	private String userid;
 	
 	JPanel profileUpdatePanel = null;
@@ -34,18 +36,18 @@ public class ProfileUpdate extends JFrame {
 	JButton btnModifyCancel = null;
 	
 	public ProfileUpdate(String userid) {
-		// --------------------- Login Form Disign ---------------------
+		// --------------------- ProfileUpdate Form Disign ---------------------
 		this.userid = userid;
 		Container ct = getContentPane();
 		profileUpdatePanel = new JPanel();
 		profileUpdatePanel.setLayout(null);
 		
-		lblUserID = new JLabel("¾ÆÀÌµğ : ");
-		lblCurrentPassword = new JLabel("ÇöÀç ºñ¹Ğ¹øÈ£ : ");
-		lblChangePassword = new JLabel("º¯°æÇÒ ºñ¹Ğ¹øÈ£ : ");
-		lblCurrentEmail = new JLabel("ÀÌ¸ŞÀÏ : ");
-		lblNickName = new JLabel("´Ğ³×ÀÓ : ");
-		lblPhoneNum = new JLabel("ÀüÈ­¹øÈ£ : ");
+		lblUserID = new JLabel("ì•„ì´ë”” : ");
+		lblCurrentPassword = new JLabel("í˜„ì¬ ë¹„ë°€ë²ˆí˜¸ : ");
+		lblChangePassword = new JLabel("ë³€ê²½í•  ë¹„ë°€ë²ˆí˜¸ : ");
+		lblCurrentEmail = new JLabel("ì´ë©”ì¼ : ");
+		lblNickName = new JLabel("ë‹‰ë„¤ì„ : ");
+		lblPhoneNum = new JLabel("ì „í™”ë²ˆí˜¸ : ");
 		
 		txtUserID = new JTextField(10);
 		txtCurrentPassword = new JTextField(10);
@@ -54,8 +56,8 @@ public class ProfileUpdate extends JFrame {
 		txtNickName = new JTextField(10);
 		txtPhoneNum = new JTextField(10);
 		
-		btnModifyOk = new JButton("º¯°æ");
-		btnModifyCancel = new JButton("Ãë¼Ò");
+		btnModifyOk = new JButton("ë³€ê²½");
+		btnModifyCancel = new JButton("ì·¨ì†Œ");
 		
 		lblUserID.setBounds(10, 10, 100, 30);
 		lblCurrentPassword.setBounds(10, 30, 150, 30);
@@ -96,7 +98,7 @@ public class ProfileUpdate extends JFrame {
 		profileUpdatePanel.add(btnModifyCancel);
 		
 		// --------------------- Button Event ---------------------
-		//ÇÁ·ÎÇÊ ¼öÁ¤ ¹öÆ° ÀÌº¥Æ®
+		//í”„ë¡œí•„ ìˆ˜ì • ë²„íŠ¼ ì´ë²¤íŠ¸
 		btnModifyOk.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -114,7 +116,7 @@ public class ProfileUpdate extends JFrame {
 					int result = db.pstmt.executeUpdate();
 
 					if (1 == result) {
-						JOptionPane.showMessageDialog(null, "È¸¿øÁ¤º¸°¡ ¼º°øÀûÀ¸·Î º¯°æµÇ¾ú½À´Ï´Ù.", "Ä³Ä¡¸¶ÀÎµå", JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(null, "íšŒì›ì •ë³´ê°€ ì„±ê³µì ìœ¼ë¡œ ë³€ê²½ë˜ì—ˆìŠµë‹ˆë‹¤.", "ìºì¹˜ë§ˆì¸ë“œ", JOptionPane.INFORMATION_MESSAGE);
 						dispose();
 					}
 					
@@ -124,7 +126,7 @@ public class ProfileUpdate extends JFrame {
 				db.Close();
 			}
 		});
-		//ÇÁ·ÎÇÊ ¼öÁ¤ Ãë¼Ò ¹öÆ° ÀÌº¥Æ®
+		//í”„ë¡œí•„ ìˆ˜ì • ì·¨ì†Œ ë²„íŠ¼ ì´ë²¤íŠ¸
 		btnModifyCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -136,14 +138,14 @@ public class ProfileUpdate extends JFrame {
 		
 		ct.add(profileUpdatePanel);
 		
-		setTitle("Ä³Ä¡¸¶ÀÎµå Á¤º¸¼öÁ¤");
+		setTitle("ìºì¹˜ë§ˆì¸ë“œ ì •ë³´ìˆ˜ì •");
 		setSize(280, 250);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 	// --------------------- Method ---------------------
-	//ÇÁ·ÎÇÊ ¼öÁ¤ ¸Ş¼Òµå
+	//í”„ë¡œí•„ ìˆ˜ì • ë©”ì†Œë“œ
 	public void profileModify() {
 		DataBase db = new DataBase();
 		db.Select("SELECT * FROM Account WHERE UserID = ?");

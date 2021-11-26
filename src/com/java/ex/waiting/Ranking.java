@@ -13,17 +13,19 @@ import com.java.ex.database.DataBase;
 
 public class Ranking extends JFrame {
 	
+	private static final long serialVersionUID = 1L;
+	
 	JPanel rankingPanel = null;
 	JTable tabRanking = null;
 	DefaultTableModel rankingModel = null;
 	
 	public Ranking() {
-		// --------------------- Login Form Disign ---------------------
+		// --------------------- Ranking Form Disign ---------------------
 		Container ct = getContentPane();
 		rankingPanel = new JPanel();
 		rankingPanel.setLayout(null);
 
-		String[] rankingList = {"¼øÀ§", "´Ğ³×ÀÓ", "·¹º§", "°æÇèÄ¡"};
+		String[] rankingList = {"ìˆœìœ„", "ë‹‰ë„¤ì„", "ë ˆë²¨", "ê²½í—˜ì¹˜"};
 		rankingModel = new DefaultTableModel(rankingList, 0) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -39,14 +41,14 @@ public class Ranking extends JFrame {
 		
 		ct.add(rankingPanel);
 		
-		setTitle("Ä³Ä¡¸¶ÀÎµå ·©Å·");
+		setTitle("ìºì¹˜ë§ˆì¸ë“œ ë­í‚¹");
 		setSize(300, 500);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 	// --------------------- Method ---------------------
-	//·©Å· Ãâ·Â ¸Ş¼Òµå
+	//ë­í‚¹ ì¶œë ¥ ë©”ì†Œë“œ
 	public void viewRanking() {
 		DataBase db = new DataBase();
 		db.Select("SELECT * FROM Account order by Level desc");

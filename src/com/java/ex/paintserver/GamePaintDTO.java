@@ -3,6 +3,9 @@ package com.java.ex.paintserver;
 import java.io.Serializable;
 
 public class GamePaintDTO implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	
 	private int signal;
 	private int x1, y1, x2, y2;
 	private int stroke;

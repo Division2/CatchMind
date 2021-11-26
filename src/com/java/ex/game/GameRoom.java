@@ -34,6 +34,8 @@ import com.java.ex.waiting.WaitingRoom;
 
 public class GameRoom extends JFrame {
 
+	private static final long serialVersionUID = 1L;
+	
 	private String userid;
 	private String nickname;
 

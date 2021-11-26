@@ -31,6 +31,8 @@ import com.java.ex.login.Login;
 
 public class WaitingRoom extends JFrame {
 	
+	private static final long serialVersionUID = 1L;
+	
 	private String userid;
 	private String nickname;
 	
@@ -65,12 +67,12 @@ public class WaitingRoom extends JFrame {
 	JTextField txtMyExp = null;
 	
 	public WaitingRoom(String userid, String nickname) {
-		// --------------------- Login Form Disign ---------------------
+		// --------------------- WaitingRoom Form Disign ---------------------
 		this.userid = userid;
 		this.nickname = nickname;
 		
 		if (null == userid) {
-			JOptionPane.showMessageDialog(null, "ºñÁ¤»óÀûÀÎ Á¢±ÙÀÔ´Ï´Ù!", "Ä³Ä¡¸¶ÀÎµå", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "ë¹„ì •ìƒì ì¸ ì ‘ê·¼ì…ë‹ˆë‹¤!", "ìºì¹˜ë§ˆì¸ë“œ", JOptionPane.ERROR_MESSAGE);
 			System.exit(0);
 		}
 
@@ -78,17 +80,17 @@ public class WaitingRoom extends JFrame {
 		waitingRoomPanel = new JPanel();
 		waitingRoomPanel.setLayout(null);
 
-		btnJoinRoom = new JButton("Âü¿©ÇÏ±â");
-		btnCreateRoom = new JButton("¹æ¸¸µé±â");
-		btnRanking = new JButton("·©Å·");
-		btnUpdateProfile = new JButton("Á¤º¸ ¼öÁ¤");
-		btnLogout = new JButton("·Î±×¾Æ¿ô");
-		btnExit = new JButton("°ÔÀÓÁ¾·á");
-		btnSendChatting = new JButton("º¸³»±â");
-		lblMyProfile = new JLabel("³» Á¤º¸");
-		lblMyNickName = new JLabel("´Ğ³×ÀÓ");
-		lblMyLevel = new JLabel("·¹º§");
-		lblMyExp = new JLabel("°æÇèÄ¡");
+		btnJoinRoom = new JButton("ì°¸ì—¬í•˜ê¸°");
+		btnCreateRoom = new JButton("ë°©ë§Œë“¤ê¸°");
+		btnRanking = new JButton("ë­í‚¹");
+		btnUpdateProfile = new JButton("ì •ë³´ ìˆ˜ì •");
+		btnLogout = new JButton("ë¡œê·¸ì•„ì›ƒ");
+		btnExit = new JButton("ê²Œì„ì¢…ë£Œ");
+		btnSendChatting = new JButton("ë³´ë‚´ê¸°");
+		lblMyProfile = new JLabel("ë‚´ ì •ë³´");
+		lblMyNickName = new JLabel("ë‹‰ë„¤ì„");
+		lblMyLevel = new JLabel("ë ˆë²¨");
+		lblMyExp = new JLabel("ê²½í—˜ì¹˜");
 		txtMyNickName = new JTextField(10);
 		txtMyLevel = new JTextField(10);
 		txtMyExp = new JTextField(10);
@@ -101,7 +103,7 @@ public class WaitingRoom extends JFrame {
 		btnExit.setBounds(889, 20, 100, 50);
 		btnSendChatting.setBounds(535, 660, 85, 20);
 		lblMyProfile.setBounds(785, 455, 100, 50);
-		lblMyProfile.setFont(new Font("¸¼Àº °íµñ", Font.BOLD, 15));;
+		lblMyProfile.setFont(new Font("ë§‘ì€ ê³ ë”•", Font.BOLD, 15));
 		lblMyNickName.setBounds(720, 500, 100, 50);
 		lblMyLevel.setBounds(720, 540, 100, 50);
 		lblMyExp.setBounds(720, 580, 100, 50);
@@ -130,8 +132,8 @@ public class WaitingRoom extends JFrame {
 		waitingRoomPanel.add(txtMyLevel);
 		waitingRoomPanel.add(txtMyExp);
 		
-		//´ë±â¹æ Å×ÀÌºí
-		String[] roomList = { "No", "¹æ Á¦¸ñ", "¹æÀå", "ÀÎ¿ø", "ºñ°í" };
+		//ëŒ€ê¸°ë°© í…Œì´ë¸”
+		String[] roomList = { "No", "ë°© ì œëª©", "ë°©ì¥", "ì¸ì›", "ë¹„ê³ " };
 		roomModel = new DefaultTableModel(roomList, 0) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -148,10 +150,10 @@ public class WaitingRoom extends JFrame {
 		JScrollPane scroll1 = new JScrollPane(tabRoom);
 		scroll1.setBounds(20, 90, 600, 350);
 		waitingRoomPanel.add(scroll1);
-		//´ë±â¹æ Å×ÀÌºí
+		//ëŒ€ê¸°ë°© í…Œì´ë¸”
 		
-		//À¯Àú¸ñ·Ï Å×ÀÌºí
-		String[] userList = { "´Ğ³×ÀÓ", "·¹º§"};
+		//ìœ ì €ëª©ë¡ í…Œì´ë¸”
+		String[] userList = { "ë‹‰ë„¤ì„", "ë ˆë²¨"};
 		userModel = new DefaultTableModel(userList, 0) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -166,9 +168,9 @@ public class WaitingRoom extends JFrame {
 		scroll2.setBounds(640, 90, 350, 350);
 		scroll2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		waitingRoomPanel.add(scroll2);
-		//À¯Àú¸ñ·Ï Å×ÀÌºí
+		//ìœ ì €ëª©ë¡ í…Œì´ë¸”
 		
-		// Ã¤ÆÃÃ¢ ¹× Ã¤ÆÃ ÀÔ·ÂÃ¢
+		// ì±„íŒ…ì°½ ë° ì±„íŒ… ì…ë ¥ì°½
 		chattingRoom = new JTextArea();
 		chattingRoom.setEditable(false);
 		chattingRoom.setBounds(22, 465, 653, 184);
@@ -179,10 +181,10 @@ public class WaitingRoom extends JFrame {
 		chatting.setBounds(20, 660, 500, 20);
 		waitingRoomPanel.add(scroll3);
 		waitingRoomPanel.add(chatting);
-		// Ã¤ÆÃÃ¢ ¹× Ã¤ÆÃ ÀÔ·ÂÃ¢
+		// ì±„íŒ…ì°½ ë° ì±„íŒ… ì…ë ¥ì°½
 		
 		// --------------------- Button Event ---------------------
-		//Âü¿©ÇÏ±â ¹öÆ° ÀÌº¥Æ®
+		//ì°¸ì—¬í•˜ê¸° ë²„íŠ¼ ì´ë²¤íŠ¸
 		btnJoinRoom.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -190,7 +192,7 @@ public class WaitingRoom extends JFrame {
 				Object record = tabRoom.getValueAt(row, 4);
 				Object roomtitle = tabRoom.getValueAt(row, 1);
 				
-				if (record.equals("ºñ°ø°³")) {
+				if (record.equals("ë¹„ê³µê°œ")) {
 					new JoinRoom(userid, nickname);
 				}
 				else {
@@ -204,7 +206,7 @@ public class WaitingRoom extends JFrame {
 								db.Update("UPDATE RoomMember SET Player2 = ? WHERE RoomTitle = ?");
 								db.pstmt.setString(1, nickname);
 								db.pstmt.setObject(2, roomtitle);
-								int result = db.pstmt.executeUpdate();
+								db.pstmt.executeUpdate();
 							}
 							if (db.rs.getString("Player2") != null) {
 								if (db.rs.getString("Player3") == null) {
@@ -212,7 +214,7 @@ public class WaitingRoom extends JFrame {
 									db.Update("UPDATE RoomMember SET Player3 = ? WHERE RoomTitle = ?");
 									db.pstmt.setString(1, nickname);
 									db.pstmt.setObject(2, roomtitle);
-									int result = db.pstmt.executeUpdate();
+									db.pstmt.executeUpdate();
 								}
 							}
 							if ((db.rs.getString("Player2") != null) & (db.rs.getString("Player3") != null)) {
@@ -221,7 +223,7 @@ public class WaitingRoom extends JFrame {
 									db.Update("UPDATE RoomMember SET Player4 = ? WHERE RoomTitle = ?");
 									db.pstmt.setString(1, nickname);
 									db.pstmt.setObject(2, roomtitle);
-									int result = db.pstmt.executeUpdate();
+									db.pstmt.executeUpdate();
 								}
 							}
 						}
@@ -233,7 +235,7 @@ public class WaitingRoom extends JFrame {
 				}
 			}
 		});
-		//¹æ ¸®½ºÆ® ´õºíÅ¬¸¯ ½Ã ÀÔÀå
+		//ë°© ë¦¬ìŠ¤íŠ¸ ë”ë¸”í´ë¦­ ì‹œ ì…ì¥
 		tabRoom.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseReleased(MouseEvent e) {}
@@ -244,7 +246,7 @@ public class WaitingRoom extends JFrame {
 					Object record = tabRoom.getValueAt(row, 4);
 					Object roomtitle = tabRoom.getValueAt(row, 1);
 					
-					if (record.equals("ºñ°ø°³")) {
+					if (record.equals("ë¹„ê³µê°œ")) {
 						new JoinRoom(userid, nickname);
 					}
 					else {
@@ -258,7 +260,7 @@ public class WaitingRoom extends JFrame {
 									db.Update("UPDATE RoomMember SET Player2 = ? WHERE RoomTitle = ?");
 									db.pstmt.setString(1, nickname);
 									db.pstmt.setObject(2, roomtitle);
-									int result = db.pstmt.executeUpdate();
+									db.pstmt.executeUpdate();
 								}
 								if (db.rs.getString("Player2") != null) {
 									if (db.rs.getString("Player3") == null) {
@@ -266,7 +268,7 @@ public class WaitingRoom extends JFrame {
 										db.Update("UPDATE RoomMember SET Player3 = ? WHERE RoomTitle = ?");
 										db.pstmt.setString(1, nickname);
 										db.pstmt.setObject(2, roomtitle);
-										int result = db.pstmt.executeUpdate();
+										db.pstmt.executeUpdate();
 									}
 								}
 								if ((db.rs.getString("Player2") != null) & (db.rs.getString("Player3") != null)) {
@@ -275,7 +277,7 @@ public class WaitingRoom extends JFrame {
 										db.Update("UPDATE RoomMember SET Player4 = ? WHERE RoomTitle = ?");
 										db.pstmt.setString(1, nickname);
 										db.pstmt.setObject(2, roomtitle);
-										int result = db.pstmt.executeUpdate();
+										db.pstmt.executeUpdate();
 									}
 								}
 							}
@@ -294,34 +296,34 @@ public class WaitingRoom extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {}
 		});
-		//¹æ¸¸µé±â ¹öÆ° ÀÌº¥Æ®
+		//ë°©ë§Œë“¤ê¸° ë²„íŠ¼ ì´ë²¤íŠ¸
 		btnCreateRoom.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new CreateRoom(userid, nickname);
 			}
 		});
-		//·©Å· ¹öÆ° ÀÌº¥Æ®
+		//ë­í‚¹ ë²„íŠ¼ ì´ë²¤íŠ¸
 		btnRanking.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new Ranking();
 			}
 		});
-		//Á¤º¸¼öÁ¤ ¹öÆ° ÀÌº¥Æ®
+		//ì •ë³´ìˆ˜ì • ë²„íŠ¼ ì´ë²¤íŠ¸
 		btnUpdateProfile.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				new ProfileUpdate(userid);
 			}
 		});
-		//·Î±×¾Æ¿ô ¹öÆ° ÀÌº¥Æ®
+		//ë¡œê·¸ì•„ì›ƒ ë²„íŠ¼ ì´ë²¤íŠ¸
 		btnLogout.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				DataBase db = new DataBase();
-				Object[] options = {"¿¹", "¾Æ´Ï¿À"};
-				int logout = JOptionPane.showOptionDialog(null, "Á¤¸» ·Î±×¾Æ¿ô ÇÏ½Ã°Ú½À´Ï±î?", "Ä³Ä¡¸¶ÀÎµå", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+				Object[] options = {"ì˜ˆ", "ì•„ë‹ˆì˜¤"};
+				int logout = JOptionPane.showOptionDialog(null, "ì •ë§ ë¡œê·¸ì•„ì›ƒ í•˜ì‹œê² ìŠµë‹ˆê¹Œ?", "ìºì¹˜ë§ˆì¸ë“œ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
 				if (JOptionPane.YES_OPTION == logout) {
 					try {
@@ -337,13 +339,13 @@ public class WaitingRoom extends JFrame {
 				}
 			}
 		});
-		//°ÔÀÓÁ¾·á ¹öÆ° ÀÌº¥Æ®
+		//ê²Œì„ì¢…ë£Œ ë²„íŠ¼ ì´ë²¤íŠ¸
 		btnExit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				DataBase db = new DataBase();
-				Object[] options = {"¿¹", "¾Æ´Ï¿À"};
-				int exit = JOptionPane.showOptionDialog(null, "Á¤¸» Á¾·áÇÏ½Ã°Ú½À´Ï±î?", "Ä³Ä¡¸¶ÀÎµå", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+				Object[] options = {"ì˜ˆ", "ì•„ë‹ˆì˜¤"};
+				int exit = JOptionPane.showOptionDialog(null, "ì •ë§ ì¢…ë£Œí•˜ì‹œê² ìŠµë‹ˆê¹Œ?", "ìºì¹˜ë§ˆì¸ë“œ", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
 				if (JOptionPane.YES_OPTION == exit) {
 	                try {
@@ -359,7 +361,7 @@ public class WaitingRoom extends JFrame {
 				}
 			}
 		});
-		//Ã¤ÆÃ º¸³»±â ¹öÆ° ÀÌº¥Æ®
+		//ì±„íŒ… ë³´ë‚´ê¸° ë²„íŠ¼ ì´ë²¤íŠ¸
 		btnSendChatting.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -378,7 +380,7 @@ public class WaitingRoom extends JFrame {
 				}
 			}
 		});
-		//Ã¤ÆÃ º¸³»±â ÅØ½ºÆ® ÀÌº¥Æ®(¿£ÅÍ)
+		//ì±„íŒ… ë³´ë‚´ê¸° í…ìŠ¤íŠ¸ ì´ë²¤íŠ¸(ì—”í„°)
 		chatting.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -397,7 +399,7 @@ public class WaitingRoom extends JFrame {
 				}
 			}
 		});
-		//ÇÁ·ÎÇÊ(³»Á¤º¸) ¾÷µ¥ÀÌÆ® ½º·¹µå ¸Ş¼Òµå
+		//í”„ë¡œí•„(ë‚´ì •ë³´) ì—…ë°ì´íŠ¸ ìŠ¤ë ˆë“œ ë©”ì†Œë“œ
 		Thread myProfile = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -410,7 +412,7 @@ public class WaitingRoom extends JFrame {
 			}
 		});
 		myProfile.start();
-		//Á¢¼ÓÀÚ ¸®½ºÆ® ½º·¹µå ¸Ş¼Òµå
+		//ì ‘ì†ì ë¦¬ìŠ¤íŠ¸ ìŠ¤ë ˆë“œ ë©”ì†Œë“œ
 		Thread onlineUserCheck = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -428,7 +430,7 @@ public class WaitingRoom extends JFrame {
 			}
 		});
 		onlineUserCheck.start();
-		//°ÔÀÓ¹æ ¸®½ºÆ® ½º·¹µå ¸Ş¼Òµå
+		//ê²Œì„ë°© ë¦¬ìŠ¤íŠ¸ ìŠ¤ë ˆë“œ ë©”ì†Œë“œ
 		Thread onlineRoomCheck = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -446,7 +448,7 @@ public class WaitingRoom extends JFrame {
 			}
 		});
 		onlineRoomCheck.start();
-		//³»°¡ ¹æÀåÀÏ °æ¿ì ÇØ´ç ¹æ¿¡ ÀÚµ¿ ÀÔÀå
+		//ë‚´ê°€ ë°©ì¥ì¼ ê²½ìš° í•´ë‹¹ ë°©ì— ìë™ ì…ì¥
 		Thread ownerJoinRoom = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -470,15 +472,15 @@ public class WaitingRoom extends JFrame {
 			}
 		});
 		ownerJoinRoom.start();
-		//¿Ö ´Ù ¾ß¸ÅÁö,, ÀÌ¹ø¿£ Àß ¸ô¶úÀ¸´Ï±î ´ÙÀ½¿£ ¼ÒÄÏ°°Àº°Å ÇÏÁö¸»°í ³­ÀÌµµ Á¶ÀıÇØ¼­ ÇÏÀÚ..
+		//ì™œ ë‹¤ ì•¼ë§¤ì§€,, ì´ë²ˆì—” ì˜ ëª°ëìœ¼ë‹ˆê¹Œ ë‹¤ìŒì—” ì†Œì¼“ê°™ì€ê±° í•˜ì§€ë§ê³  ë‚œì´ë„ ì¡°ì ˆí•´ì„œ í•˜ì..
 		
-		//Ã¤ÆÃ¹æ Á¢¼Ó
+		//ì±„íŒ…ë°© ì ‘ì†
 		waitChatting();
 		waitChatReceive(soc);
 		
 		ct.add(waitingRoomPanel);
 		
-		setTitle("Ä³Ä¡¸¶ÀÎµå ´ë±â½Ç");
+		setTitle("ìºì¹˜ë§ˆì¸ë“œ ëŒ€ê¸°ì‹¤");
 		setSize(1024, 768);
 		setResizable(false);
 		setLocationRelativeTo(null);
@@ -486,11 +488,11 @@ public class WaitingRoom extends JFrame {
 		setVisible(true);
 	}
 	// --------------------- Method ---------------------
-	//Ã¤ÆÃ¹æ Á¢¼Ó ¸Ş¼Òµå
+	//ì±„íŒ…ë°© ì ‘ì† ë©”ì†Œë“œ
 	public void waitChatting() {
 		try {
 			soc = new Socket(SERVER_IP, SERVER_PORT);
-			System.out.println(nickname + "´ÔÀÌ ¼­¹ö¿Í ¿¬°áµÇ¾ú½À´Ï´Ù.");
+			System.out.println(nickname + "ë‹˜ì´ ì„œë²„ì™€ ì—°ê²°ë˜ì—ˆìŠµë‹ˆë‹¤.");
 			
 			writer = new PrintWriter(new OutputStreamWriter(soc.getOutputStream()), true);
 			String receiveData = "join:" + nickname + "\r\n";
@@ -500,7 +502,7 @@ public class WaitingRoom extends JFrame {
 			e.printStackTrace();
 		}
 	}
-	//Ã¤ÆÃ¹æ ºê·ÎµåÄ³½ºÆ® ¼ö½Å ¸Ş¼Òµå
+	//ì±„íŒ…ë°© ë¸Œë¡œë“œìºìŠ¤íŠ¸ ìˆ˜ì‹  ë©”ì†Œë“œ
 	public void waitChatReceive(Socket soc) {
 		this.soc = soc;
 		Runnable receiver = new Runnable() {
@@ -521,7 +523,7 @@ public class WaitingRoom extends JFrame {
 		Thread clThread = new Thread(receiver);
 		clThread.start();
 	}
-	//³» Á¤º¸ ºÒ·¯¿À´Â ¸Ş¼Òµå
+	//ë‚´ ì •ë³´ ë¶ˆëŸ¬ì˜¤ëŠ” ë©”ì†Œë“œ
 	public void myProfile() {
 		DataBase db = new DataBase();
 		db.Select("SELECT * FROM Account WHERE UserID = ?");
@@ -539,10 +541,10 @@ public class WaitingRoom extends JFrame {
 		}
 		db.Close();
 	}
-	//JTable(tabUser)¿¡ Á¢¼ÓÀÚ ¸®½ºÆ® ³Ö´Â ¸Ş¼Òµå
+	//JTable(tabUser)ì— ì ‘ì†ì ë¦¬ìŠ¤íŠ¸ ë„£ëŠ” ë©”ì†Œë“œ
 	public DefaultTableModel online() {
-		//À¯Àú¸ñ·Ï Å×ÀÌºí
-		String[] userList = { "´Ğ³×ÀÓ", "·¹º§"};
+		//ìœ ì €ëª©ë¡ í…Œì´ë¸”
+		String[] userList = { "ë‹‰ë„¤ì„", "ë ˆë²¨"};
 		userModel = new DefaultTableModel(userList, 0) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -564,10 +566,10 @@ public class WaitingRoom extends JFrame {
 		db.Close();
 		return userModel;
 	}
-	//JTable(tabRoom)¿¡ ¹æ ¸®½ºÆ® ³Ö´Â ¸Ş¼Òµå
+	//JTable(tabRoom)ì— ë°© ë¦¬ìŠ¤íŠ¸ ë„£ëŠ” ë©”ì†Œë“œ
 	public DefaultTableModel roomCheck() {
-		//´ë±â¹æ Å×ÀÌºí
-		String[] roomList = { "No", "¹æ Á¦¸ñ", "¹æÀå", "ÀÎ¿ø", "ºñ°í" };
+		//ëŒ€ê¸°ë°© í…Œì´ë¸”
+		String[] roomList = { "No", "ë°© ì œëª©", "ë°©ì¥", "ì¸ì›", "ë¹„ê³ " };
 		roomModel = new DefaultTableModel(roomList, 0) {
 			@Override
 			public boolean isCellEditable(int row, int column) {

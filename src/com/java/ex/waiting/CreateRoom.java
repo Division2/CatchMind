@@ -17,8 +17,10 @@ import javax.swing.JTextField;
 import com.java.ex.database.DataBase;
 
 public class CreateRoom extends JFrame{
+	
+	private static final long serialVersionUID = 1L;
 
-	private String isStatus = "°ø°³";
+	private String isStatus = "ï¿½ï¿½ï¿½ï¿½";
 	
 	JPanel createRoomPanel = null;
 	JLabel lblRoomName = null;
@@ -36,16 +38,16 @@ public class CreateRoom extends JFrame{
 		createRoomPanel = new JPanel();
 		createRoomPanel.setLayout(null);
 		
-		lblRoomName = new JLabel("¹æ Á¦¸ñ : ");
-		lblRoomState = new JLabel("»óÅÂ : ");
-		lblRoomPassword = new JLabel("ºñ¹Ğ¹øÈ£ : ");
+		lblRoomName = new JLabel("ë°© ì œëª© : ");
+		lblRoomState = new JLabel("ìƒíƒœ : ");
+		lblRoomPassword = new JLabel("ë¹„ë°€ë²ˆí˜¸ : ");
 		
 		txtRoomName = new JTextField(10);
-		chkRoomStateCheck = new JCheckBox("ºñ°ø°³");
+		chkRoomStateCheck = new JCheckBox("ë¹„ê³µê°œ");
 		txtRoomPassword = new JTextField(10);
 		
-		btnMakeRoom = new JButton("¹æ »ı¼º");
-		btnMakeRoomCancel = new JButton("Ãë¼Ò");
+		btnMakeRoom = new JButton("ë°© ìƒì„±");
+		btnMakeRoomCancel = new JButton("ì·¨ì†Œ");
 		
 		lblRoomName.setBounds(20, 10, 100, 30);
 		lblRoomState.setBounds(20, 40, 100, 30);
@@ -71,15 +73,15 @@ public class CreateRoom extends JFrame{
 		createRoomPanel.add(btnMakeRoomCancel);
 		
 		// --------------------- Button Event ---------------------
-		//¹æ¸¸µé±â ¹öÆ° ÀÌº¥Æ®
+		//ë°©ë§Œë“¤ê¸° ë²„íŠ¼ ì´ë²¤íŠ¸
 		btnMakeRoom.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (txtRoomName.getText().equals("")) {
-					JOptionPane.showMessageDialog(null, "¹æ Á¦¸ñÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä.", "Ä³Ä¡¸¶ÀÎµå", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "ë°© ì œëª©ì„ ì…ë ¥í•´ì£¼ì„¸ìš”.", "ìºì¹˜ë§ˆì¸ë“œ", JOptionPane.INFORMATION_MESSAGE);
 				}
 				else if ((txtRoomPassword.isEnabled()) && (txtRoomPassword.getText().equals(""))) {
-					JOptionPane.showMessageDialog(null, "ºñ°ø°³ Ã¼Å© ½Ã ¹æ ºñ¹Ğ¹øÈ£¸¦ ÀÔ·ÂÇØ¾ßÇÕ´Ï´Ù.", "Ä³Ä¡¸¶ÀÎµå", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "ë¹„ê³µê°œ ì²´í¬ ì‹œ ë°© ë¹„ë°€ë²ˆí˜¸ë¥¼ ì…ë ¥í•´ì•¼í•©ë‹ˆë‹¤.", "ìºì¹˜ë§ˆì¸ë“œ", JOptionPane.INFORMATION_MESSAGE);
 				}
 				else {
 					makingRoom(ownerNickName);
@@ -87,43 +89,43 @@ public class CreateRoom extends JFrame{
 				}
 			}
 		});
-		//¹æ¸¸µé±â Ãë¼Ò ÀÌº¥Æ®
+		//ë°©ë§Œë“¤ê¸° ì·¨ì†Œ ì´ë²¤íŠ¸
 		btnMakeRoomCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				dispose();
 			}
 		});
-		//¹æ °ø°³ & ºñ°ø°³ ¿©ºÎ Ã¼Å©¹Ú½º ÀÌº¥Æ®
+		//ë°© ê³µê°œ & ë¹„ê³µê°œ ì—¬ë¶€ ì²´í¬ë°•ìŠ¤ ì´ë²¤íŠ¸
 		chkRoomStateCheck.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				if(chkRoomStateCheck.isSelected()) {
 					txtRoomPassword.setEnabled(true);
-					isStatus = "ºñ°ø°³";
+					isStatus = "ë¹„ê³µê°œ";
 				}
 				else {
 					txtRoomPassword.setEnabled(false);
 					txtRoomPassword.setText("");
-					isStatus = "°ø°³";
+					isStatus = "ê³µê°œ";
 				}
 			}
 		});
 		
 		ct.add(createRoomPanel);
 		
-		setTitle("Ä³Ä¡¸¶ÀÎµå ¹æ¸¸µé±â");
+		setTitle("ìºì¹˜ë§ˆì¸ë“œ ë°©ë§Œë“¤ê¸°");
 		setSize(300, 200);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 	// --------------------- Method ---------------------
-	//¹æ¸¸µé±â ¸Ş¼Òµå
+	//ë°©ë§Œë“¤ê¸° ë©”ì†Œë“œ
 	public void makingRoom(String ownerNickName) {
 		DataBase db = new DataBase();
 		
-		//Game Å×ÀÌºí¿¡ ¹æ »ı¼º
+		//Game í…Œì´ë¸”ì— ë°© ìƒì„±
 		db.Insert("INSERT INTO Game(RoomTitle, RoomOwner, Personnel, Status, Password, RoomCheck) VALUES (?, ?, ?, ?, ?, ?)");
 		try {
 			db.pstmt.setString(1, txtRoomName.getText());
@@ -135,13 +137,13 @@ public class CreateRoom extends JFrame{
 			int result = db.pstmt.executeUpdate();
 			
 			if (1 != result) {
-				JOptionPane.showMessageDialog(null, "¹æ »ı¼ºÁß ¹®Á¦°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.", "Ä³Ä¡¸¶ÀÎµå", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "ë°© ìƒì„±ì¤‘ ë¬¸ì œê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.", "ìºì¹˜ë§ˆì¸ë“œ", JOptionPane.ERROR_MESSAGE);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		//RoomMemberÅ×ÀÌºí¿¡ ¹æ Á¦¸ñ°ú ¹æÀåÀ» Player1·Î ÁöÁ¤
+		//RoomMemberí…Œì´ë¸”ì— ë°© ì œëª©ê³¼ ë°©ì¥ì„ Player1ë¡œ ì§€ì •
 		db.Insert("INSERT INTO RoomMember(RoomTitle, Player1) VALUES(?, ?)");
 		try {
 			db.pstmt.setString(1, txtRoomName.getText());
@@ -149,7 +151,7 @@ public class CreateRoom extends JFrame{
 			int result = db.pstmt.executeUpdate();
 			
 			if (1 != result) {
-				JOptionPane.showMessageDialog(null, "¹æ »ı¼ºÁß ¹®Á¦°¡ ¹ß»ıÇÏ¿´½À´Ï´Ù.", "Ä³Ä¡¸¶ÀÎµå", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "ë°© ìƒì„±ì¤‘ ë¬¸ì œê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.", "ìºì¹˜ë§ˆì¸ë“œ", JOptionPane.ERROR_MESSAGE);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

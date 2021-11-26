@@ -16,6 +16,8 @@ import com.java.ex.game.GameRoom;
 
 public class JoinRoom extends JFrame {
 	
+	private static final long serialVersionUID = 1L;
+	
 	JPanel joinRoomPanel = null;
 	JLabel lblPassword = null;
 	JTextField txtPassword = null;
@@ -27,10 +29,10 @@ public class JoinRoom extends JFrame {
 		joinRoomPanel = new JPanel();
 		joinRoomPanel.setLayout(null);
 		
-		lblPassword = new JLabel("¹æ ºñ¹Ğ¹øÈ£ : ");
+		lblPassword = new JLabel("ë°© ë¹„ë°€ë²ˆí˜¸ : ");
 		txtPassword = new JTextField(10);
-		btnJoin = new JButton("Âü¿©ÇÏ±â");
-		btnCancel = new JButton("µ¹¾Æ°¡±â");
+		btnJoin = new JButton("ì°¸ì—¬í•˜ê¸°");
+		btnCancel = new JButton("ëŒì•„ê°€ê¸°");
 		
 		lblPassword.setBounds(30, 10, 80, 20);
 		txtPassword.setBounds(120, 10, 130, 20);
@@ -42,7 +44,7 @@ public class JoinRoom extends JFrame {
 		joinRoomPanel.add(btnJoin);
 		joinRoomPanel.add(btnCancel);
 		
-		//ºñ¹Ğ¹øÈ£ ÅØ½ºÆ®ÇÊµå ÀÌº¥Æ®
+		//ë¹„ë°€ë²ˆí˜¸ í…ìŠ¤íŠ¸í•„ë“œ ì´ë²¤íŠ¸
 		txtPassword.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -58,7 +60,7 @@ public class JoinRoom extends JFrame {
 						dispose();
 					}
 					else {
-						JOptionPane.showMessageDialog(null, "ºñ¹Ğ¹øÈ£°¡ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù!", "Ä³Ä¡¸¶ÀÎµå", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "ë¹„ë°€ë²ˆí˜¸ê°€ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤!", "ìºì¹˜ë§ˆì¸ë“œ", JOptionPane.ERROR_MESSAGE);
 					}
 				} catch (Exception e2) {
 					JOptionPane.showMessageDialog(null, e2.getMessage());
@@ -66,7 +68,7 @@ public class JoinRoom extends JFrame {
 				db.Close();
 			}
 		});
-		//Âü¿©ÇÏ±â ¹öÆ° ÀÌº¥Æ®
+		//ì°¸ì—¬í•˜ê¸° ë²„íŠ¼ ì´ë²¤íŠ¸
 		btnJoin.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -83,7 +85,7 @@ public class JoinRoom extends JFrame {
 						dispose();
 					}
 					else {
-						JOptionPane.showMessageDialog(null, "ºñ¹Ğ¹øÈ£°¡ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù!", "Ä³Ä¡¸¶ÀÎµå", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "ë¹„ë°€ë²ˆí˜¸ê°€ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤!", "ìºì¹˜ë§ˆì¸ë“œ", JOptionPane.ERROR_MESSAGE);
 					}
 				} catch (Exception e2) {
 					JOptionPane.showMessageDialog(null, e2.getMessage());
@@ -91,7 +93,7 @@ public class JoinRoom extends JFrame {
 				db.Close();
 			}
 		});
-		//Ãë¼Ò ¹öÆ° ÀÌº¥Æ®
+		//ì·¨ì†Œ ë²„íŠ¼ ì´ë²¤íŠ¸
 		btnCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -101,7 +103,7 @@ public class JoinRoom extends JFrame {
 		
 		ct.add(joinRoomPanel);
 		
-		setTitle("Ä³Ä¡¸¶ÀÎµå Âü¿©ÇÏ±â");
+		setTitle("ìºì¹˜ë§ˆì¸ë“œ ì°¸ì—¬í•˜ê¸°");
 		setSize(300, 200);
 		setResizable(false);
 		setLocationRelativeTo(null);
