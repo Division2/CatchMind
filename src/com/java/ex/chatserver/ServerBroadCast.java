@@ -102,7 +102,8 @@ public class ServerBroadCast extends Thread {
 	}
 	//게임이 시작됐을 때 다른 회원에게도 broadcast
 	private void startMessage() {
-		broadcast("Server : 게임이 시작되었습니다.\\nServer : 플레이어들은 방장이 그리는 그림을 맞추어주세요.");
+		broadcast("Server : 게임이 시작되었습니다.");
+		broadcast("Server : 플레이어들은 방장이 그리는 그림을 맞추어주세요.");
 	}
 	//broadcast
 	private void broadcast(String data) {

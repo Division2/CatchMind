@@ -20,7 +20,7 @@ public class CreateRoom extends JFrame{
 	
 	private static final long serialVersionUID = 1L;
 
-	private String isStatus = "����";
+	private String isStatus = "공개";
 	
 	JPanel createRoomPanel = null;
 	JLabel lblRoomName = null;
@@ -33,7 +33,7 @@ public class CreateRoom extends JFrame{
 	JButton btnMakeRoomCancel = null;
 	
 	public CreateRoom(String ownerid, String ownerNickName) {
-		// --------------------- Login Form Disign ---------------------
+		// --------------------- CreateRoom Form Disign ---------------------
 		Container ct = getContentPane();
 		createRoomPanel = new JPanel();
 		createRoomPanel.setLayout(null);

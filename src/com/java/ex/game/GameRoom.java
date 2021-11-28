@@ -138,7 +138,7 @@ public class GameRoom extends JFrame {
 
 		lblanswer = new JLabel();
 		lblanswer.setBounds(450, 30, 300, 30);
-		lblanswer.setFont(new Font("����", Font.BOLD, 15));
+		lblanswer.setFont(new Font("맑은 고딕", Font.BOLD, 15));
 		lblanswer.setVisible(true);
 
 		// 채팅창 및 채팅 입력창
@@ -197,6 +197,7 @@ public class GameRoom extends JFrame {
 								String answer = randomAnswer.get(ran2);
 								lblanswer.setText(answer);
 								btnStart.setEnabled(false);
+								btnExit.setEnabled(false);
 								
 								db.Select("SELECT * FROM RoomMember WHERE Player1 = ?");
 								db.pstmt.setString(1, nickname);
@@ -333,19 +334,20 @@ public class GameRoom extends JFrame {
 				while (true) {
 					try {
 						String chatLastField = chattingRoom.getText().substring(chattingRoom.getText().length() - lblanswer.getText().length()-1);
-						System.out.println(chatLastField);
 						
 						if ((lblanswer.getText().equals(chatLastField.trim()) & (!lblanswer.getText().equals("")))) {
 							btnStart.setEnabled(true);
 							if (btnStart.isEnabled()) {
 								chatting.setEnabled(true);
 							}
-							lblanswer.setText(chatLastField + "정답입니다.");
+							lblanswer.setText(chatLastField + " 정답입니다.");
 							
 							writer = new PrintWriter(new OutputStreamWriter(soc.getOutputStream()), true);
 
 							message = chatLastField;
 							writer.println("server:" + message);
+							
+							btnExit.setEnabled(true);
 						}
 					} catch (Exception e) {}
 
@@ -442,7 +444,6 @@ public class GameRoom extends JFrame {
 	public void gameChatting() {
 		try {
 			soc = new Socket(SERVER_IP, CHAT_SERVER_PORT);
-			System.out.println(nickname + "���� ������ ����Ǿ����ϴ�.");
 
 			writer = new PrintWriter(new OutputStreamWriter(soc.getOutputStream()), true);
 			String receiveData = "join:" + nickname + "\r\n";
