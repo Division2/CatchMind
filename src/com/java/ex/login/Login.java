@@ -1,6 +1,7 @@
 package com.java.ex.login;
 
 import java.awt.Container;
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -58,6 +59,10 @@ public class Login extends JFrame {
 		lblLostID.setBounds(30, 100, 85, 20);
 		lblLostPW.setBounds(110, 100, 95, 20);
 		lblRegister.setBounds(205, 100, 70, 20);
+		
+		lblLostID.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		lblLostPW.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		lblRegister.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		
 		loginPanel.add(lblLoginLabel);
 		loginPanel.add(lblIDLabel);
