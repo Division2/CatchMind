@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -90,27 +91,27 @@ public class GameRoom extends JFrame {
 
 		btnExit = new JButton("나가기");
 		btnExit.setBounds(820, 10, 150, 40);
-
-		btnCanvasBlack = new JButton("검정");
+		
+		btnCanvasBlack = new JButton(new ImageIcon("src/images/black.png"));
 		btnCanvasBlack.setBounds(235, 530, 60, 40);
 
-		btnCanvasRed = new JButton("빨강");
+		btnCanvasRed = new JButton(new ImageIcon("src/images/red.png"));
 		btnCanvasRed.setBounds(305, 530, 60, 40);
 
-		btnCanvasGreen = new JButton("초록");
+		btnCanvasGreen = new JButton(new ImageIcon("src/images/green.png"));
 		btnCanvasGreen.setBounds(375, 530, 60, 40);
 
-		btnCanvasBlue = new JButton("파랑");
+		btnCanvasBlue = new JButton(new ImageIcon("src/images/blue.png"));
 		btnCanvasBlue.setBounds(445, 530, 60, 40);
 
-		btnCanvasYellow = new JButton("노랑");
+		btnCanvasYellow = new JButton(new ImageIcon("src/images/yellow.png"));
 		btnCanvasYellow.setBounds(515, 530, 60, 40);
 
-		btnCanvasEraser = new JButton("지우개");
+		btnCanvasEraser = new JButton("지우기");
 		btnCanvasEraser.setBounds(585, 530, 80, 40);
 
 		btnCanvasClear = new JButton("전체 지우기");
-		btnCanvasClear.setBounds(675, 530, 100, 40);
+		btnCanvasClear.setBounds(675, 530, 110, 40);
 
 		gamePaintCanvas = new GamePaintCanvas(GameRoom.this);
 		canvas = gamePaintCanvas.getCanvas();
@@ -197,7 +198,6 @@ public class GameRoom extends JFrame {
 								String answer = randomAnswer.get(ran2);
 								lblanswer.setText(answer);
 								btnStart.setEnabled(false);
-								btnExit.setEnabled(false);
 								
 								db.Select("SELECT * FROM RoomMember WHERE Player1 = ?");
 								db.pstmt.setString(1, nickname);
@@ -206,6 +206,7 @@ public class GameRoom extends JFrame {
 								if (db.rs.next()) {
 									chatting.setEnabled(false);
 								}
+								
 								writer = new PrintWriter(new OutputStreamWriter(soc.getOutputStream()), true);
 								writer.println("start:");
 							} catch (Exception e2) {
@@ -243,8 +244,11 @@ public class GameRoom extends JFrame {
 						db.Delete("DELETE FROM RoomMember WHERE Player1 = ?");
 						db.pstmt.setString(1, nickname);
 						db.pstmt.executeUpdate();
-
-					} else {
+						
+						new WaitingRoom(userid, nickname);
+						dispose();
+					}
+					else {
 						db.Select("SELECT * FROM Game WHERE RoomOwner = ?");
 						db.pstmt.setString(1, player1);
 						db.rs = db.pstmt.executeQuery();
@@ -328,6 +332,7 @@ public class GameRoom extends JFrame {
 				}
 			}
 		});
+		//정답 맞췄을 때 broadcast
 		Thread rightAnswer = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -346,8 +351,6 @@ public class GameRoom extends JFrame {
 
 							message = chatLastField;
 							writer.println("server:" + message);
-							
-							btnExit.setEnabled(true);
 						}
 					} catch (Exception e) {}
 
@@ -360,36 +363,6 @@ public class GameRoom extends JFrame {
 			}
 		});
 		rightAnswer.start();
-		// 방장이 나갔을 때 방에 접속되어 있는 유저를 추방
-		Thread disRoom = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				DataBase db = new DataBase();
-
-				db.Select("SELECT * FROM RoomMember");
-				while (true) {
-					try {
-						db.rs = db.pstmt.executeQuery();
-
-						if (!db.rs.next()) {
-							if (gameRoomPanel.isVisible()) {
-								new WaitingRoom(userid, nickname);
-								dispose();
-								break;
-							}
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					try {
-						Thread.sleep(1000);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		});
-		disRoom.start();
 		// 플레이어 불러오는 스레드
 		Thread playerLoad = new Thread(new Runnable() {
 			@Override
@@ -398,6 +371,7 @@ public class GameRoom extends JFrame {
 				db.Select("SELECT * FROM RoomMember");
 				while (true) {
 					try {
+						
 						db.rs = db.pstmt.executeQuery();
 
 						if (db.rs.next()) {
@@ -424,6 +398,38 @@ public class GameRoom extends JFrame {
 			}
 		});
 		playerLoad.start();
+		// 방장이 나갔을 때 방에 접속되어 있는 유저를 추방
+		Thread disRoom = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				DataBase db = new DataBase();
+				System.out.println(player1);
+
+				db.Select("SELECT * FROM Game WHERE RoomOwner = ?");
+				while (true) {
+					try {
+						db.pstmt.setString(1, player1);
+						db.rs = db.pstmt.executeQuery();
+
+						if (!db.rs.next()) {
+							if (gameRoomPanel.isVisible()) {
+								new WaitingRoom(userid, nickname);
+								dispose();
+								break;
+							}
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					try {
+						Thread.sleep(1000);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+		disRoom.start();
 
 		btnStartVisible();
 		gameChatting();
@@ -479,7 +485,7 @@ public class GameRoom extends JFrame {
 	// 방장만 버튼이 보이게 하는 메소드
 	public void btnStartVisible() {
 		DataBase db = new DataBase();
-		db.Select("SELECT * FROM RoomMember WHERE Player1 = ?");
+		db.Select("SELECT * FROM Game WHERE RoomOwner = ?");
 
 		try {
 			db.pstmt.setString(1, nickname);
